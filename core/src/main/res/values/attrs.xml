@@ -1,0 +1,45 @@
+<resources>
+
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CollapsingAvatarToolbar">
+        <attr name="collapsedMargin" format="dimension" />
+        <attr name="expandedMargin" format="dimension" />
+
+        <attr name="collapsedImageSize" format="dimension" />
+        <attr name="expandedImageSize" format="dimension" />
+
+        <attr name="collapsedTextSize" format="dimension" />
+        <attr name="expandedTextSize" format="dimension" />
+
+        <attr name="avatar_gravity">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+
+        <attr name="title_gravity">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+
+        <attr name="titleTopMargin" format="dimension" />
+        <attr name="titleColMargin" format="dimension" />
+        <attr name="titleExMargin" format="dimension" />
+
+    </declare-styleable>
+
+    <declare-styleable name="DRecyclerView">
+        <attr name="spanCount"/>
+        <attr name="android:overScrollMode"/>
+    </declare-styleable>
+
+</resources>

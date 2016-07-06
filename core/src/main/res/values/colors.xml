@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="theme_color">#fff26f9b</color> <!--  主色调 -->
+    <color name="accent">#00796b</color>
+    <color name="accentLight">#009688</color>
+    <color name="primaryLight">#7DD4B7</color>
+
+    <!-- 常用 -->
+    <color name="transparent">#00000000</color>
+    <color name="divide">#FFcccccc</color>
+    <color name="white">#FFffffff</color>
+    <color name="black_overlay">#66000000</color>
+
+    <!-- 字体颜色 -->
+    <color name="text_black">#353535</color>
+    <color name="text_gray">#9B9B9B</color>
+    <color name="text_red">#FF5340</color>
+
+</resources>

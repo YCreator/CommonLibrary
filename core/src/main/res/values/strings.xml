@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">core</string>
+
+    <!-- DRecyclerView -->
+    <string name="footer_text_loadmore">LOAD MORE</string>
+    <string name="footer_text_end">THE END</string>
+    <string name="ok">确定</string>
+</resources>
