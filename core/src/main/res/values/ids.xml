@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item type="id" name="toolbar" />
+  <item type="id" name="title" />
+  <item type="id" name="gridView" />
+  <item type="id" name="listView" />
+  <item type="id" name="ptr_pull_to_refresh" />
+  <item type="id" name="grid_ptr_pull_to_refresh" />
+  <item type="id" name="recyclerView" />
+
+  <item type="id" name="cat_avatar" />
+  <item type="id" name="cat_title" />
+</resources>

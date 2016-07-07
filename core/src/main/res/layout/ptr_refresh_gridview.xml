@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/grid_ptr_pull_to_refresh"
+    android:id="@id/grid_ptr_pull_to_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     cube_ptr:ptr_duration_to_close="200"
@@ -12,7 +12,7 @@
     cube_ptr:ptr_resistance="1.7">
 
     <GridView
-        android:id="@+id/gridView"
+        android:id="@id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animationCache="false"

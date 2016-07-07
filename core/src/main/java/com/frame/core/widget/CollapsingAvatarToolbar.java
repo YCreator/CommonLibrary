@@ -146,7 +146,7 @@ public class CollapsingAvatarToolbar extends FrameLayout implements AppBarLayout
 
     @NonNull
     private View findAvatar() {
-        View avatar = null;//this.findViewById(R.id.cat_avatar);
+        View avatar = this.findViewById(R.id.cat_avatar);
         if (avatar == null) {
             throw new IllegalStateException("View with id ta_avatar not found");
         }
@@ -155,7 +155,7 @@ public class CollapsingAvatarToolbar extends FrameLayout implements AppBarLayout
 
     @NonNull
     private TextView findTitle() {
-        TextView title = null; //(TextView) this.findViewById(R.id.cat_title);
+        TextView title = (TextView) this.findViewById(R.id.cat_title);
         if (title == null) {
             throw new IllegalStateException("TextView with id ta_title not found");
         }

@@ -32,4 +32,11 @@
     <dimen name="flexible_min_height">48dp</dimen>
 
     <dimen name="header_height">200dp</dimen>
+
+    <dimen name="dimen_tiny">3dp</dimen>
+    <dimen name="dimen_small">6dp</dimen>
+    <dimen name="dimen_normal">9dp</dimen>
+    <dimen name="dimen_large">12dp</dimen>
+    <dimen name="dimen_xlarge">16dp</dimen>
+    <dimen name="button_size">48dp</dimen>
 </resources>
