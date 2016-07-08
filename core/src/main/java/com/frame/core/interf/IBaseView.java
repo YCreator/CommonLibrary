@@ -1,7 +1,7 @@
 package com.frame.core.interf;
 
 /**
- *Activity基类接口
+ *  Activity, Fragment基类接口
  * Created by Administrator on 2015/12/2.
  */
 public interface IBaseView {

@@ -1,6 +1,7 @@
 package com.frame.core.interf;
 
 /**
+ * 访问数据处理接口
  * Created by yzd on 2016/3/18.
  */
 public interface LoadDataView {

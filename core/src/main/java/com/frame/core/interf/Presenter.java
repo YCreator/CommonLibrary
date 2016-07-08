@@ -1,7 +1,7 @@
 package com.frame.core.interf;
 
 /**
- *
+ * 主持人接口
  * Created by yzd on 2016/3/18.
  */
 public interface Presenter {

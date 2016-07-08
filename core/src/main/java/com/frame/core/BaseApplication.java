@@ -4,6 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import com.frame.core.db.DatabaseManager;
+import com.frame.core.net.okhttp.CookiesManager;
 
 /**
  * application基类
@@ -14,6 +18,7 @@ public class BaseApplication extends Application {
     static Context _context;
     static Resources _resource;
     static AssetManager _asset;
+    static CookiesManager cookiesManager;
 
     @Override
     public void onCreate() {
@@ -36,6 +41,17 @@ public class BaseApplication extends Application {
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
+    }
+
+    public static CookiesManager getCookiesManager() {
+        if (cookiesManager == null) {
+            cookiesManager = new CookiesManager(get_context());
+        }
+        return cookiesManager;
+    }
+
+    public void initDatabase(SQLiteOpenHelper helper) {
+        DatabaseManager.initializeInstance(helper);
     }
 
     public static Context get_context() {
