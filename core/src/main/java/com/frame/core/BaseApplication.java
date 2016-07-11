@@ -9,6 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.frame.core.db.DatabaseManager;
 import com.frame.core.net.okhttp.CookiesManager;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 /**
  * application基类
  * Created by yzd on 2016/6/17.
@@ -19,6 +23,7 @@ public class BaseApplication extends Application {
     static Resources _resource;
     static AssetManager _asset;
     static CookiesManager cookiesManager;
+    static ThreadPoolExecutor executor;
 
     @Override
     public void onCreate() {
@@ -52,6 +57,13 @@ public class BaseApplication extends Application {
 
     public void initDatabase(SQLiteOpenHelper helper) {
         DatabaseManager.initializeInstance(helper);
+    }
+
+    public static ThreadPoolExecutor getExecutor() {
+        if (executor == null) {
+            executor = new ThreadPoolExecutor(3, 3, 200, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(20));
+        }
+        return executor;
     }
 
     public static Context get_context() {
