@@ -7,13 +7,15 @@ import android.util.SparseArray;
 
 import com.frame.core.entity.JsonEntity;
 import com.frame.core.interf.Mapper;
-import com.frame.core.util.EntityType;
 import com.frame.core.util.TLog;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.Response;
 
 /**
@@ -36,7 +38,6 @@ public final class RepCallback implements Callback {
     private Mapper mapper;
     private Class clazz;
     private Class<? extends JsonEntity> templateClazz;
-    private EntityType type;
 
     private RepCallback() {
         obj = new SparseArray<>();
@@ -61,19 +62,23 @@ public final class RepCallback implements Callback {
     }
 
     private RepCallback(@NonNull OkCallbackListener httpData, @NonNull Mapper mapper
-            , Class clazz, @NonNull Class<? extends JsonEntity> templateClazz, EntityType type) {
+            , Class clazz, @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
         this.mapper = mapper;
         this.clazz = clazz;
         this.templateClazz = templateClazz;
-        this.type = type;
     }
 
     @SuppressWarnings("unchecked")
     private boolean analyzeJson(String body) throws Exception {
         TLog.i(TAG, "start====>"+body);
-        JsonEntity data = JsonEntity.fromJson(body, clazz, templateClazz);
+        JsonEntity data;
+        if (clazz != null) {
+             data = JsonEntity.fromJson(body, clazz, templateClazz);
+        } else {
+             data = JsonEntity.fromJson(body, templateClazz);
+        }
         if (data != null) {
             TLog.i(TAG, "notNull");
             if (data.isSuccess() && data instanceof JsonEntity.ArrayData) {
@@ -92,35 +97,6 @@ public final class RepCallback implements Callback {
             return data.isSuccess();
         }
         TLog.i(TAG, "exception");
-       /* if (type != null) {
-            JsonEntity data = null;
-            switch (type) {
-                case LIST_ENTITY: {
-                    data = JsonEntity.fromJson(body, clazz, templateClazz);
-                    if (data != null && data instanceof JsonEntity.ArrayData) {
-                        obj.put(0, mapper.transformEntityCollection(((JsonEntity.ArrayData)data).getArrayData()));
-                        return data.isSuccess();
-                    }
-                }
-                case OBJECT_ENTITY: {
-                    data =  JsonEntity.fromJson(body, clazz, templateClazz);
-                    if (data != null && data instanceof JsonEntity.Data) {
-                        obj.put(0, mapper.transformEntity(((JsonEntity.Data)data).getData()));
-                        return data.isSuccess();
-                    }
-                }
-                default: {
-                    if (data != null) {
-                        data.setSuccess(false);
-                        obj.put(0, data.getMessage());
-                        return data.isSuccess();
-                    }
-                }
-            }
-        } else {
-            JsonEntity data = JsonEntity.fromJson(body, templateClazz);
-            return data.isSuccess();
-        }*/
         throw new Exception();
     }
 
@@ -147,7 +123,16 @@ public final class RepCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        TLog.i(TAG, response + "");
+        Headers headers = response.headers();
+        Set<String> names = headers.names();
+        for (String name : names) {
+            List<String> values = headers.values(name);
+            for (String value : values) {
+                TLog.i(name+"=======>"+value);
+            }
+        }
+
+        TLog.i(response.toString());
         boolean isSuccess;
         if (response.isSuccessful()) {
             String entityBody = response.body().string();
@@ -195,7 +180,6 @@ public final class RepCallback implements Callback {
         private Mapper mapper;                  //数据交接
         private Class clazz;                    //实体模型
         private Class<? extends JsonEntity> templateClazz;         //解析模板
-        private EntityType type;                //数据类型
 
         public Builder setListener(OkCallbackListener httpData) {
             this.httpData = httpData;
@@ -217,15 +201,10 @@ public final class RepCallback implements Callback {
             return this;
         }
 
-        public Builder setType(EntityType type) {
-            this.type = type;
-            return this;
-        }
-
         public RepCallback build() {
             if (httpData != null && mapper != null && clazz != null
                      && templateClazz != null) {
-                return new RepCallback(httpData, mapper, clazz, templateClazz, type);
+                return new RepCallback(httpData, mapper, clazz, templateClazz);
             } else if (httpData != null && templateClazz != null) {
                 return new RepCallback(httpData, templateClazz);
             } else {

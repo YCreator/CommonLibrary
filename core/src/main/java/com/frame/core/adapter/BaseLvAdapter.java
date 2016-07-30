@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import com.frame.core.interf.AdapterItem;
 import com.frame.core.interf.IAdapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,7 +27,10 @@ public abstract class BaseLvAdapter<T> extends BaseAdapter implements IAdapter<T
 
     private LayoutInflater mInflater;
 
-    protected BaseLvAdapter(@NonNull List<T> mData) {
+    protected BaseLvAdapter( List<T> mData) {
+        if (mData == null) {
+            mData = new ArrayList<>();
+        }
         this.mData = mData;
     }
 

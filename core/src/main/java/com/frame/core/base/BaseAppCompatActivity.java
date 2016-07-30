@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import com.frame.core.R;
 import com.frame.core.interf.IBaseView;
 import com.frame.core.util.MyPreferences;
+import com.frame.core.util.StackManager;
 import com.frame.core.util.TLog;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -72,6 +73,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onBeforeSetContentLayout();
+        StackManager.getStackManager().pushActivity(this);
         setContentView(initPageLayoutID());
         ButterKnife.bind(this);
         initActionBar();
@@ -98,6 +100,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        StackManager.getStackManager().popActivity(this);
     }
 
     /**
@@ -160,9 +163,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     /**
      * 返回首页
      */
-    protected void turnBack() {
+    protected void turnBack(Class<? extends BaseAppCompatActivity> clazz) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            navigateUpTo(new Intent(this, mainClazz));
+            navigateUpTo(new Intent(this, clazz));
     }
 
     protected void onBeforeSetContentLayout() {
@@ -279,7 +282,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
      * 关闭加载对话框
      */
     public void dismissLoadingDialog() {
-        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing() && !isDestroy()) {
             mLoadingDialog.dismiss();
             mLoadingDialog = null;
         }

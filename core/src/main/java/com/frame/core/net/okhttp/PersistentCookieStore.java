@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.frame.core.util.TLog;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,6 +43,7 @@ public class PersistentCookieStore {
             String[] cookieNames = TextUtils.split((String) entry.getValue(), ",");
             for (String name : cookieNames) {
                 String encodedCookie = cookiePrefs.getString(name, null);
+                TLog.i("cookies_encodeCookie",name+"===========>" + (encodedCookie != null ? encodedCookie : "null"));
                 if (encodedCookie != null) {
                     Cookie decodedCookie = decodeCookie(encodedCookie);
                     if (decodedCookie != null) {
@@ -73,10 +76,28 @@ public class PersistentCookieStore {
             }
         }
 
+        TLog.i("cookies_save",url.host()+"_"+ TextUtils.join(",", cookies.get(url.host()).keySet()));
+        TLog.i("cookies_save",name+"_"+encodeCookie(new SerializableOkHttpCookies(cookie)));
+
         //讲cookies持久化到本地
         SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
         prefsWriter.putString(url.host(), TextUtils.join(",", cookies.get(url.host()).keySet()));
         prefsWriter.putString(name, encodeCookie(new SerializableOkHttpCookies(cookie)));
+        prefsWriter.apply();
+    }
+
+    public void add(String host, String token, String coo) {
+        Cookie cookie = decodeCookie(coo);
+        TLog.i(cookie.toString());
+        TLog.i(cookie.persistent()+"");
+        if (!cookies.containsKey(host)) {
+            cookies.put(host, new ConcurrentHashMap<String, Cookie>());
+        }
+        cookies.get(host).put(token, cookie);
+        //讲cookies持久化到本地
+        SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
+        prefsWriter.putString(host, token);
+        prefsWriter.putString(token, encodeCookie(new SerializableOkHttpCookies(cookie)));
         prefsWriter.apply();
     }
 
@@ -93,6 +114,10 @@ public class PersistentCookieStore {
         prefsWriter.apply();
         cookies.clear();
         return true;
+    }
+
+    public void remoteCookie() {
+        cookies.clear();
     }
 
     public boolean remove(HttpUrl url, Cookie cookie) {
@@ -197,4 +222,16 @@ public class PersistentCookieStore {
         }
         return data;
     }
+
+    public void getCookiePrefs() {
+        Map<String, ?> prefsMap = cookiePrefs.getAll();
+        for (Map.Entry<String, ?> entry : prefsMap.entrySet()) {
+            TLog.i("cookie_map", entry.getKey()+"========>"+entry.getValue());
+        }
+    }
+
+    public SharedPreferences getCookiePref() {
+        return cookiePrefs;
+    }
+
 }

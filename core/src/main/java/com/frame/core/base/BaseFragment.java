@@ -49,7 +49,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
     public static final String TAG = BaseFragment.class.getSimpleName();
 
     protected boolean isActivityCreated = false; // 页面控件是否已初始化
-    private boolean isFirstVisible = true; // 是否第一次可见
+    public boolean isFirstVisible = true; // 是否第一次可见
 
     protected View mFragmentView;
 

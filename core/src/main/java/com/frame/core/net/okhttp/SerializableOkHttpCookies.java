@@ -1,5 +1,7 @@
 package com.frame.core.net.okhttp;
 
+import com.frame.core.util.TLog;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -50,6 +52,7 @@ public class SerializableOkHttpCookies implements Serializable {
         boolean httpOnly = in.readBoolean();
         boolean hostOnly = in.readBoolean();
         boolean persistent = in.readBoolean();
+        TLog.i("persistent====>"+persistent);
         Cookie.Builder builder = new Cookie.Builder();
         builder = builder.name(name);
         builder = builder.value(value);

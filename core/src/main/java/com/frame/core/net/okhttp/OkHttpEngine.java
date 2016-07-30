@@ -28,7 +28,7 @@ import okhttp3.Response;
  * okHttp3引擎
  * Created by Administrator on 2016/1/11.
  */
-public class OkHttpEngine implements Engine {
+public final class OkHttpEngine implements Engine {
 
     private static OkHttpEngine okHttpEngine;
     private final OkHttpClient mOkHttpClient;
@@ -53,15 +53,12 @@ public class OkHttpEngine implements Engine {
     }
 
     private OkHttpEngine() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS);
-        CookiesManager cookiesManager = BaseApplication.getCookiesManager();
-        if (cookiesManager != null) {
-            builder.cookieJar(cookiesManager);
-        }
-        mOkHttpClient = builder.build();
+        mOkHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .cookieJar(BaseApplication.getCookiesManager())
+                .build();
     }
 
     public OkHttpClient getOkHttpClient() {
@@ -230,6 +227,7 @@ public class OkHttpEngine implements Engine {
         if (paramsMap == null) return new FormBody.Builder().build();
         FormBody.Builder builder = new FormBody.Builder();
         for (String key : paramsMap.keySet()) {
+            TLog.i(key + "========>" + paramsMap.get(key));
             builder.add(key, paramsMap.get(key));
         }
         return builder.build();

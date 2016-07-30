@@ -4,7 +4,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="theme_color">#fff26f9b</color> <!--  主色调 -->
+    <!--<color name="theme_color">#fff26f9b</color> &lt;!&ndash;  主色调 &ndash;&gt;-->
+    <color name="theme_color">#3abb57</color> <!--  主色调 -->
     <color name="accent">#00796b</color>
     <color name="accentLight">#009688</color>
     <color name="primaryLight">#7DD4B7</color>
@@ -14,10 +15,20 @@
     <color name="divide">#FFcccccc</color>
     <color name="white">#FFffffff</color>
     <color name="black_overlay">#66000000</color>
+    <color name="ared">#e3010f</color>
+    <color name="orange">#f89957</color>
+    <color name="bg_gray">#f0f0f0</color>
+    <color name="bg_light">#fff5ee</color>
 
     <!-- 字体颜色 -->
     <color name="text_black">#353535</color>
     <color name="text_gray">#9B9B9B</color>
     <color name="text_red">#FF5340</color>
+
+    //
+    <!--  半透明 -->
+    <color name="viewfinder_mask">#60000000</color>
+    <!-- 黑色半透明30%-->
+    <color name="alpha_black">#20000000</color>
 
 </resources>

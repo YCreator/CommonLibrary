@@ -104,6 +104,14 @@ public class StringUtil {
         return pattern.matcher(paramString).matches();
     }
 
+    public static boolean isPhoneNo(String paramString){
+        if (isEmpty(paramString)){
+            return false;
+        }
+        Pattern pattern = Pattern.compile("(\\(\\d{3,4}\\)|\\d{3,4}-|\\s)?\\d{8}");
+        return pattern.matcher(paramString).matches();
+    }
+
     public static String hideMidelMobileNo(String paramString) {
         return hideMidelMobileNo(paramString, '*');
     }

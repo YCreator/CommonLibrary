@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.frame.core.db.DatabaseManager;
 import com.frame.core.net.okhttp.CookiesManager;
+import com.frame.core.util.AppHelper;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -24,6 +25,7 @@ public class BaseApplication extends Application {
     static AssetManager _asset;
     static CookiesManager cookiesManager;
     static ThreadPoolExecutor executor;
+    static String deviceId;
 
     @Override
     public void onCreate() {
@@ -57,6 +59,13 @@ public class BaseApplication extends Application {
 
     public void initDatabase(SQLiteOpenHelper helper) {
         DatabaseManager.initializeInstance(helper);
+    }
+
+    public static String getDeviceId() {
+        if (deviceId == null) {
+            deviceId = AppHelper.getDeviceId(get_context());
+        }
+        return deviceId;
     }
 
     public static ThreadPoolExecutor getExecutor() {

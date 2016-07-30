@@ -224,6 +224,33 @@ public class Encryptor {
         }
     }
 
+    @SuppressLint("TrulyRandom")
+    public static String encrypt(String key, String input){
+        byte[] crypted = null;
+        try{
+            SecretKeySpec skey = new SecretKeySpec(key.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, skey);
+            crypted = cipher.doFinal(input.getBytes());
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+        return new String(Base64.encode(crypted, Base64.DEFAULT));
+    }
+
+    public static String decrypt(String key, String input){
+        byte[] output = null;
+        try{
+            SecretKeySpec skey = new SecretKeySpec(key.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, skey);
+            output = cipher.doFinal(Base64.decode(input, Base64.DEFAULT));
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+        return new String(output != null ? output : new byte[]{});
+    }
+
     /**
      * AES加密
      */

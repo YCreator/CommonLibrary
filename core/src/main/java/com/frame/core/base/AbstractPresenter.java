@@ -2,12 +2,10 @@ package com.frame.core.base;
 
 import android.content.Context;
 
-import com.frame.core.interf.Presenter;
-
 /**
  * Created by yzd on 2016/5/26.
  */
-public abstract class AbstractPresenter<T> implements Presenter {
+public abstract class AbstractPresenter<T>{
 
     private Context mContext;
     private T view;
