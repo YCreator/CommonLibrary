@@ -137,7 +137,15 @@ public final class RepCallback implements Callback {
         if (response.isSuccessful()) {
             String entityBody = response.body().string();
             obj.put(1, entityBody);
-            TLog.i(TAG, entityBody);
+            //TLog.i(TAG, entityBody);
+            int size = entityBody.length() / 500;
+            int other = entityBody.length() % 500;
+            for (int i = 0; i < size; i++) {
+                TLog.i(TAG, entityBody.substring(i*500, (i+1) * 500));
+            }
+            if (other > 0) {
+                TLog.i(entityBody.substring(size * 500, entityBody.length()));
+            }
             try {
                 isSuccess = analyzeJson(entityBody);
             } catch (Exception e) {

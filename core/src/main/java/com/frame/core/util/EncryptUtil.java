@@ -30,6 +30,7 @@ import javax.crypto.spec.SecretKeySpec;
  * 加密/解密工具
  * Created by yzd on 2016/6/23.
  */
+@Deprecated
 public class EncryptUtil {
 
     /**

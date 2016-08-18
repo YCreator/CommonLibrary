@@ -67,10 +67,10 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
         TLog.i(TAG,"setUserVisibleHint====>"+isVisibleToUser+"====>"+position);
         if (isActivityCreated) {
             if (isVisibleToUser) {
-                if (isFirstVisible) {
+               /* if (isFirstVisible) {
                     isFirstVisible = false;
                     onPageFirstVisible();
-                }
+                }*/
                 onPageStart();
             } else {
                 onPageEnd();
@@ -107,15 +107,15 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        TLog.i(TAG,"onActivityCreated====>"+position);
+        TLog.i(TAG,"onActivityCreated====>"+position+"_"+getUserVisibleHint());
         super.onActivityCreated(savedInstanceState);
         isActivityCreated = true;
-        if (getUserVisibleHint()) {
+       // if (getUserVisibleHint()) {
             if (isFirstVisible) {
                 isFirstVisible = false;
                 onPageFirstVisible();
             }
-        }
+       // }
         process(savedInstanceState);
     }
 

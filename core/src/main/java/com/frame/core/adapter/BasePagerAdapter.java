@@ -6,6 +6,8 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.frame.core.R;
+
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -48,7 +50,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         }
         // 通过item得到将要被add到viewpager中的view
         View view = getViewFromItem(item, position);
-        view.setTag(0, type);
+        view.setTag(R.id.tag, type);
 
         if (view.getParent() != null) {
             ((ViewGroup) view.getParent()).removeView(view);
@@ -73,7 +75,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         T item = (T) object;
         // 现在通过item拿到其中的view，然后remove掉
         container.removeView(getViewFromItem(item, position));
-        Object type = getViewFromItem(item, position).getTag(0);
+        Object type = getViewFromItem(item, position).getTag(R.id.tag);
         mCache.putItem(type, item);
     }
 

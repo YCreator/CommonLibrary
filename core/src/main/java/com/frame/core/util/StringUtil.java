@@ -2,11 +2,14 @@ package com.frame.core.util;
 
 import android.annotation.SuppressLint;
 
+import java.text.Collator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -14,6 +17,12 @@ import java.util.regex.Pattern;
  * Created by Administrator on 2015/12/22.
  */
 public class StringUtil {
+
+    private static final String FIRST_PINYIN_UNIHAN = "\u963F";
+    private static final String LAST_PINYIN_UNIHAN = "\u84D9";
+
+    private static final char FIRST_UNIHAN = '\u3400';
+    private static final Collator COLLATOR = Collator.getInstance(Locale.CHINA);
 
     private static final ThreadLocal<SimpleDateFormat> dateFormate;
 
@@ -30,8 +39,8 @@ public class StringUtil {
     /**
      * 判断字符串是否有内容
      *
-     * @param paramCharSequence     验证的文本
-     * @return                      返回
+     * @param paramCharSequence 验证的文本
+     * @return 返回
      */
     public static boolean isEmpty(CharSequence paramCharSequence) {
         if (paramCharSequence == null || "".equals(paramCharSequence)) {
@@ -44,6 +53,42 @@ public class StringUtil {
             }
         }
         return true;
+    }
+
+    // 判断是否输入特殊符号，是，返回true,否，返回false
+    public static boolean isSpecial(String string) {
+        String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\]<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(string);
+        return m.find();
+    }
+
+    // 判断是否输入有中文字符,是，返回true,否，返回false
+    public static Boolean isChinese(String string) {
+        char[] chars = string.toCharArray();
+        for (char c : chars) {
+            if (isCharHanzi(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isCharHanzi(char character) {
+        int cmp;
+        final String letter = Character.toString(character);
+        if (character < 256 || character < FIRST_UNIHAN) {
+            return false;
+        } else {
+            cmp = COLLATOR.compare(letter, FIRST_PINYIN_UNIHAN);
+            if (cmp < 0) {
+                return false;
+            } else {
+                cmp = COLLATOR.compare(letter, LAST_PINYIN_UNIHAN);
+                return cmp <= 0;
+            }
+        }
+
     }
 
     /**
@@ -68,8 +113,8 @@ public class StringUtil {
     /**
      * 检测email格式
      *
-     * @param paramString       验证的文本
-     * @return                  返回
+     * @param paramString 验证的文本
+     * @return 返回
      */
     public static boolean isEmail(String paramString) {
         if (isEmpty(paramString))
@@ -85,8 +130,8 @@ public class StringUtil {
     /**
      * 检测手机号码的格式
      *
-     * @param paramString   验证的文本
-     * @return              返回
+     * @param paramString 验证的文本
+     * @return 返回
      */
     public static boolean isMobileNO(String paramString) {
         /**
@@ -99,17 +144,36 @@ public class StringUtil {
         if (isEmpty(paramString))
             return false;
 
-        // String checkMobileRule = "[1][35478]\\d{9}";
-        Pattern pattern = Pattern.compile("^[1]((3[0-9])|(5[^4,\\D])|(8[0,5-9])|(4[5,7])|(7[0,6-8]))\\d{8}$");
+        String checkMobileRule = "[1][35478]\\d{9}";
+        // Pattern pattern = Pattern.compile("^[1]((3[0-9])|(5[^4,\\D])|(8[0,5-9])|(4[5,7])|(7[0,6-8]))\\d{8}$");
+        Pattern pattern = Pattern.compile(checkMobileRule);
         return pattern.matcher(paramString).matches();
     }
 
-    public static boolean isPhoneNo(String paramString){
-        if (isEmpty(paramString)){
+    public static boolean isPhoneNo(String paramString) {
+        if (isEmpty(paramString)) {
             return false;
         }
         Pattern pattern = Pattern.compile("(\\(\\d{3,4}\\)|\\d{3,4}-|\\s)?\\d{8}");
         return pattern.matcher(paramString).matches();
+    }
+
+    public static boolean isInteger(String value) {
+        try {
+            int i = Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isFloat(String value) {
+        try {
+            float i = Float.parseFloat(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public static String hideMidelMobileNo(String paramString) {
@@ -119,9 +183,9 @@ public class StringUtil {
     /**
      * 隐藏手机号中间号码
      *
-     * @param paramString   手机号
-     * @param h             替代的符号
-     * @return              加密后的手机号
+     * @param paramString 手机号
+     * @param h           替代的符号
+     * @return 加密后的手机号
      */
     public static String hideMidelMobileNo(String paramString, char h) {
         if (isMobileNO(paramString)) {

@@ -117,7 +117,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         if (getActionBarToolbar() == null) {
             return;
         }
-        mActionBarToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        mActionBarToolbar.setNavigationIcon(setBackIcon() == 0 ? R.drawable.abc_ic_ab_back_mtrl_am_alpha : setBackIcon());
         mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +154,15 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         return false;
     }
 
+    /**
+     * 设置返回键图标
+     * @return
+     */
+    @DrawableRes
+    protected int setBackIcon() {
+        return 0;
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         finish();
@@ -169,7 +178,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     }
 
     protected void onBeforeSetContentLayout() {
-        setStatusStyle(R.color.theme_color);
+        //setStatusStyle(R.color.theme_color);
     }
 
     protected void setStatusStyle(int colorId) {
@@ -252,7 +261,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    public void lauchActivity(Class<? extends Activity> cls, @Nullable Bundle bundle, int flags) {
+    public void launchActivity(Class<? extends Activity> cls, @Nullable Bundle bundle, int flags) {
         Intent intent = new Intent(this, cls);
         intent.setFlags(flags);
         if (bundle != null) intent.putExtras(bundle);

@@ -7,7 +7,14 @@
   <item type="id" name="ptr_pull_to_refresh" />
   <item type="id" name="grid_ptr_pull_to_refresh" />
   <item type="id" name="recyclerView" />
+  <item type="id" name="viewPage" />
+  <item type="id" name="tag" />
 
   <item type="id" name="cat_avatar" />
   <item type="id" name="cat_title" />
+
+  <item type="id" name="content_view" />
+  <item type="id" name="tv_tips" />
+  <item type="id" name="iv_tips" />
+  <item type="id" name="btn_function" />
 </resources>

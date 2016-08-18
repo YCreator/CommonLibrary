@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.frame.core.R;
 import com.frame.core.interf.AdapterItem;
 import com.frame.core.interf.IAdapter;
 
@@ -66,7 +67,7 @@ public abstract class CommPagerAdapter<T> extends BasePagerAdapter<View> impleme
 
     @SuppressWarnings("unchecked")
     private void initItem(int position, View view) {
-        final AdapterItem item = (AdapterItem) view.getTag(0);
+        final AdapterItem item = (AdapterItem) view.getTag(R.id.viewPage);
         item.onUpdateViews(mDataList.get(position), position);
     }
 
@@ -77,7 +78,7 @@ public abstract class CommPagerAdapter<T> extends BasePagerAdapter<View> impleme
         }
         AdapterItem item = onCreateItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
-        view.setTag(0, item);
+        view.setTag(R.id.viewPage, item);
         item.initItemViews(view);
         item.onSetViews();
         return view;

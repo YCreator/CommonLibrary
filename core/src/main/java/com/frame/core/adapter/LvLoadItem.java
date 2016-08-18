@@ -1,25 +1,48 @@
 package com.frame.core.adapter;
 
+import android.content.Context;
+import android.support.annotation.ColorInt;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.frame.core.R;
-import com.frame.core.interf.AdapterItem;
 import com.frame.core.interf.FootLoading;
 import com.frame.core.util.PixelUtil;
 
-
 /**
- * Created by Administrator on 2016/1/3.
+ * Created by yzd on 2016/7/16.
  */
-public class LoadMoreItem implements AdapterItem, FootLoading {
+public class LvLoadItem implements FootLoading {
 
     private View itemView;
     private TextView tv;
-    private int gloaH;
 
     private boolean isCanLoading = true;
+    private int gloaH;
+    private AbsListView.LayoutParams params;
+
+    public LvLoadItem(Context context) {
+        itemView = LayoutInflater.from(context).inflate(R.layout.loading_more, null);
+        gloaH = PixelUtil.getScreenH();
+        params = new AbsListView.LayoutParams(PixelUtil.getScreenW(),gloaH / 12);
+        itemView.setLayoutParams(params);
+        tv = (TextView) itemView.findViewById(com.frame.core.R.id.loading_tv);
+    }
+
+    public View getItemView() {
+        return itemView;
+    }
+
+    public void bindListviewFoot(ListView listView) {
+        listView.addFooterView(itemView);
+    }
+
+    public void setBackground(@ColorInt  int colorInt) {
+        itemView.setBackgroundColor(colorInt);
+    }
 
     public void setCanLoading(boolean canLoading) {
         isCanLoading = canLoading;
@@ -27,29 +50,6 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
 
     public boolean isCanLoading() {
         return isCanLoading;
-    }
-
-    @Override
-    public int getLayoutResId() {
-        return R.layout.loading_more;
-    }
-
-    @Override
-    public void initItemViews(View itemView) {
-        gloaH = PixelUtil.getScreenH();
-        this.itemView = itemView ;
-        tv = (TextView) itemView.findViewById(R.id.loading_tv);
-        setIndexLoadMoreState(isCanLoading);
-    }
-
-    @Override
-    public void onSetViews() {
-        tv.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onUpdateViews(Object model, int position) {
-
     }
 
     /**
@@ -61,12 +61,12 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
         this.isCanLoading = isCanLoadMore;
         if (itemView != null) {
             if (isCanLoadMore) {
-                ViewGroup.LayoutParams params = itemView.getLayoutParams();
                 params.height = gloaH / 12;
                 completeLoading();
             } else {
-                ViewGroup.LayoutParams params = itemView.getLayoutParams();
-                params.height = gloaH;
+                params.height = gloaH / 2;
+                //params.height = PixelUtil.getScreenMetrics(itemView.getContext()).y;
+                itemView.setLayoutParams(params);
                 nothing();
             }
         }
@@ -110,7 +110,10 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
 
     @Override
     public void nothing() {
-        tv.setText("--没有数据--");
+        nothing("--没有数据--");
     }
 
+    public void nothing(String msg) {
+        tv.setText(msg);
+    }
 }
