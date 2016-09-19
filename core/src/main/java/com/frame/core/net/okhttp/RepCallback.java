@@ -7,15 +7,11 @@ import android.util.SparseArray;
 
 import com.frame.core.entity.JsonEntity;
 import com.frame.core.interf.Mapper;
-import com.frame.core.util.TLog;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Headers;
 import okhttp3.Response;
 
 /**
@@ -55,7 +51,7 @@ public final class RepCallback implements Callback {
     }
 
     private RepCallback(@NonNull OkCallbackListener httpData
-            ,@NonNull Class<? extends JsonEntity> templateClazz) {
+            , @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
         this.templateClazz = templateClazz;
@@ -72,31 +68,24 @@ public final class RepCallback implements Callback {
 
     @SuppressWarnings("unchecked")
     private boolean analyzeJson(String body) throws Exception {
-        TLog.i(TAG, "start====>"+body);
         JsonEntity data;
         if (clazz != null) {
-             data = JsonEntity.fromJson(body, clazz, templateClazz);
+            data = JsonEntity.fromJson(body, clazz, templateClazz);
         } else {
-             data = JsonEntity.fromJson(body, templateClazz);
+            data = JsonEntity.fromJson(body, templateClazz);
         }
         if (data != null) {
-            TLog.i(TAG, "notNull");
             if (data.isSuccess() && data instanceof JsonEntity.ArrayData) {
-                TLog.i(TAG, "ArrayData");
-                obj.put(0, mapper.transformEntityCollection(((JsonEntity.ArrayData)data).getArrayData()));
+                obj.put(0, mapper.transformEntityCollection(((JsonEntity.ArrayData) data).getArrayData()));
             } else if (data.isSuccess() && data instanceof JsonEntity.Data) {
-                TLog.i(TAG, "Data");
-                obj.put(0, mapper.transformEntity(((JsonEntity.Data)data).getData()));
+                obj.put(0, mapper.transformEntity(((JsonEntity.Data) data).getData()));
             } else if (data.isSuccess() && clazz != null) {
-                TLog.i(TAG, "error");
                 throw new Exception("模板中未实现相应的接口");
             } else if (!data.isSuccess()) {
-                TLog.i(TAG, "msg===>"+data.getMessage());
                 obj.put(0, data.getMessage());
             }
             return data.isSuccess();
         }
-        TLog.i(TAG, "exception");
         throw new Exception();
     }
 
@@ -123,29 +112,10 @@ public final class RepCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        Headers headers = response.headers();
-        Set<String> names = headers.names();
-        for (String name : names) {
-            List<String> values = headers.values(name);
-            for (String value : values) {
-                TLog.i(name+"=======>"+value);
-            }
-        }
-
-        TLog.i(response.toString());
         boolean isSuccess;
         if (response.isSuccessful()) {
             String entityBody = response.body().string();
             obj.put(1, entityBody);
-            //TLog.i(TAG, entityBody);
-            int size = entityBody.length() / 500;
-            int other = entityBody.length() % 500;
-            for (int i = 0; i < size; i++) {
-                TLog.i(TAG, entityBody.substring(i*500, (i+1) * 500));
-            }
-            if (other > 0) {
-                TLog.i(entityBody.substring(size * 500, entityBody.length()));
-            }
             try {
                 isSuccess = analyzeJson(entityBody);
             } catch (Exception e) {
@@ -211,7 +181,7 @@ public final class RepCallback implements Callback {
 
         public RepCallback build() {
             if (httpData != null && mapper != null && clazz != null
-                     && templateClazz != null) {
+                    && templateClazz != null) {
                 return new RepCallback(httpData, mapper, clazz, templateClazz);
             } else if (httpData != null && templateClazz != null) {
                 return new RepCallback(httpData, templateClazz);

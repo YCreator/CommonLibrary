@@ -26,6 +26,7 @@ public class BaseApplication extends Application {
     static CookiesManager cookiesManager;
     static ThreadPoolExecutor executor;
     static String deviceId;
+    public static int MODEL;
 
     @Override
     public void onCreate() {

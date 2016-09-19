@@ -99,6 +99,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isDestroyed = true;
         ButterKnife.unbind(this);
         StackManager.getStackManager().popActivity(this);
     }
@@ -275,9 +276,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
      * @param isCancelable 是否可被用户关闭
      */
     public void showLoadingDialog(String msg, boolean isCancelable) {
-        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-            return;
-        } else {
+        if (mLoadingDialog == null || !mLoadingDialog.isShowing()) {
             mLoadingDialog = new ProgressDialog(this);
             mLoadingDialog.setMessage(msg);
             mLoadingDialog.setIndeterminate(true);
@@ -291,7 +290,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
      * 关闭加载对话框
      */
     public void dismissLoadingDialog() {
-        if (mLoadingDialog != null && mLoadingDialog.isShowing() && !isDestroy()) {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing() && !isDestroyed()) {
             mLoadingDialog.dismiss();
             mLoadingDialog = null;
         }
@@ -315,8 +314,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
      *
      * @return
      */
-    public boolean isDestroy() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && isDestroyed()) || isDestroyed;
+    public boolean isDestroyed() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && super.isDestroyed()) || isDestroyed;
     }
 
     /**

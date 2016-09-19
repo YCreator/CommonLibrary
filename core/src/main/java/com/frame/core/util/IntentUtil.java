@@ -1,14 +1,36 @@
 package com.frame.core.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 
 /**
  * 跳转工具
  * Created by yzd on 2016/5/23.
  */
 public class IntentUtil {
+
+    /**
+     * 跳转到手机相册
+     * @param activity
+     * @param type1
+     * @param type2
+     */
+    public static void intentImgLib(Activity activity, int type1, int type2) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            activity.startActivityForResult(intent, type1);
+        } else {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            activity.startActivityForResult(intent, type2);
+        }
+    }
 
     /**
      * 跳转到手机浏览器

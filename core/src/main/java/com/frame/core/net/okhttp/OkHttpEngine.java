@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * okHttp3引擎
@@ -38,7 +39,7 @@ public final class OkHttpEngine implements Engine {
         mCookiesManager = cookiesManager;
     }
 
-    public static CookiesManager getCookieStore() {
+    public CookiesManager getCookieStore() {
         if (mCookiesManager == null && BaseApplication.get_context() != null) {
             mCookiesManager = new CookiesManager(BaseApplication.get_context());
         }
@@ -53,10 +54,14 @@ public final class OkHttpEngine implements Engine {
     }
 
     private OkHttpEngine() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         mOkHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .addInterceptor(interceptor)
                 .cookieJar(BaseApplication.getCookiesManager())
                 .build();
     }
@@ -77,29 +82,24 @@ public final class OkHttpEngine implements Engine {
         mOkHttpClient.newCall(request).enqueue(responseCallback);
     }
 
-    public void post(String url, RequestBody paramRequestParams) {
-    }
-
-    public void postAsync(String url, Callback responseCallback, String tag) {
-        postAsync(url, new FormBody.Builder().build(), responseCallback, tag);
-    }
-
-    public void postAsync(String url, Map<String, String> paramRequestParams
-            , Callback responseCallback, String tag) {
-        postAsync(url, getRequestBody(paramRequestParams), responseCallback, tag);
+    public void postAsync(String url, Map<String, String> paramRequestParams, Callback responseCallback) {
+        postAsync(url, getRequestBody(paramRequestParams), responseCallback);
     }
 
     public void postAsync(String url, Callback responseCallback) {
-        postAsync(url, new FormBody.Builder().build(), responseCallback, "default");
+        postAsync(url, new FormBody.Builder().build(), responseCallback);
     }
 
-    public void postAsync(String url, RequestBody paramRequestParams
-            , Callback responseCallback) {
-        postAsync(url, paramRequestParams, responseCallback, "default");
+    public void postAsync(String url, RequestBody paramRequestParams, Callback responseCallback) {
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON)
+                .post(paramRequestParams)
+                .build();
+        mOkHttpClient.newCall(request).enqueue(responseCallback);
     }
 
-    public void postAsync(String url, RequestBody paramRequestParams
-            , Callback responseCallback, String tag) {
+    public void postAsync(String url, RequestBody paramRequestParams, Callback responseCallback, String tag) {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON)
@@ -195,6 +195,9 @@ public final class OkHttpEngine implements Engine {
             body.add(entry.getKey(), entry.getValue());
         }
         return body.build();
+    }
+
+    public void post(String url, RequestBody paramRequestParams) {
     }
 
     @Override
