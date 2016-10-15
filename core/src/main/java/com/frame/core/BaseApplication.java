@@ -27,6 +27,7 @@ public class BaseApplication extends Application {
     static ThreadPoolExecutor executor;
     static String deviceId;
     public static int MODEL;
+    public static final boolean DEBUG = false;       //控制开发和生产模式
 
     @Override
     public void onCreate() {
@@ -51,6 +52,10 @@ public class BaseApplication extends Application {
         super.onTrimMemory(level);
     }
 
+    /**
+     * cookie管理器
+     * @return
+     */
     public static CookiesManager getCookiesManager() {
         if (cookiesManager == null) {
             cookiesManager = new CookiesManager(get_context());
@@ -58,10 +63,18 @@ public class BaseApplication extends Application {
         return cookiesManager;
     }
 
+    /**
+     * 数据库初始化
+     * @param helper
+     */
     public void initDatabase(SQLiteOpenHelper helper) {
         DatabaseManager.initializeInstance(helper);
     }
 
+    /**
+     * 获取设备id
+     * @return
+     */
     public static String getDeviceId() {
         if (deviceId == null) {
             deviceId = AppHelper.getDeviceId(get_context());
@@ -69,6 +82,10 @@ public class BaseApplication extends Application {
         return deviceId;
     }
 
+    /**
+     * 应用内通用一个线程池
+     * @return
+     */
     public static ThreadPoolExecutor getExecutor() {
         if (executor == null) {
             executor = new ThreadPoolExecutor(3, 3, 200, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(20));

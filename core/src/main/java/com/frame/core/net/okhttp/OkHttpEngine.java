@@ -54,16 +54,22 @@ public final class OkHttpEngine implements Engine {
     }
 
     private OkHttpEngine() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        mOkHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(true)
-                .addInterceptor(interceptor)
-                .cookieJar(BaseApplication.getCookiesManager())
-                .build();
+        mOkHttpClient = initOkHttpConfig();
+    }
+
+    private OkHttpClient initOkHttpConfig() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(15, TimeUnit.SECONDS);
+        builder.readTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(10, TimeUnit.SECONDS);
+        builder.retryOnConnectionFailure(true);
+        builder.cookieJar(BaseApplication.getCookiesManager());
+        if (BaseApplication.DEBUG) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(interceptor);
+        }
+        return builder.build();
     }
 
     public OkHttpClient getOkHttpClient() {

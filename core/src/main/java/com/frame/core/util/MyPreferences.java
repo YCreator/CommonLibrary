@@ -43,6 +43,6 @@ public class MyPreferences {
         context.getSharedPreferences(SHAREDPREFERENCES_NAME, Context.MODE_PRIVATE)//保存修改后的值
                 .edit()
                 .putString(KEY_GUIDE_ACTIVITY, sb.toString())
-                .commit();
+                .apply();
     }
 }

@@ -6,7 +6,7 @@ package com.frame.core.interf.view;
  */
 public interface BaseMvpView {
 
-    void initPageView();
+    void initView();
 
-    void initPageViewListener();
+    void initListener();
 }

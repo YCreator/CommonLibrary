@@ -118,11 +118,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         if (getActionBarToolbar() == null) {
             return;
         }
-        mActionBarToolbar.setNavigationIcon(setBackIcon() == 0 ? R.drawable.abc_ic_ab_back_mtrl_am_alpha : setBackIcon());
+        mActionBarToolbar.setNavigationIcon(setBackIcon() == 0 ? R.drawable.ic_arrow_back_white_18dp : setBackIcon());
         mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onSupportNavigateUp();
             }
         });
         String title = getIntent().getStringExtra(EXTRA_TITLE);

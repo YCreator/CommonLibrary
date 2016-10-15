@@ -138,4 +138,29 @@ public class PixelUtil {
         }
         return statusHeight;
     }
+
+    public static int getDensityDpi(Context context) {
+        DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
+        return dm.densityDpi;
+    }
+
+    public static float getDensity(Context context) {
+        DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
+        return dm.density;
+    }
+
+    /**
+     * 获取屏幕尺寸
+     * @param context
+     * @return
+     */
+    public static double getPixSize(Context context) {
+        int densityDpi = getDensityDpi(context);
+        Point point = getScreenMetrics(context);
+        double s_w = point.x / densityDpi;
+        double s_h = point.y / densityDpi;
+        double s = Math.sqrt(Math.pow(s_h, 2) + Math.pow(s_w, 2));
+        TLog.i("s", s+"_cun");
+        return s;
+    }
 }

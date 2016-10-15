@@ -46,6 +46,10 @@ public class ExtremelyPage {
         btnFunction.setVisibility(View.INVISIBLE);
     }
 
+    public void bindDefaultParentView() {
+        bindParentViewById(R.id.content_view);
+    }
+
     public void bindParentViewById(@IdRes int layoutId) {
         View view = ((Activity)mContext).getWindow().getDecorView().findViewById(layoutId);
         ViewParent viewParent = view.getParent();
@@ -54,8 +58,8 @@ public class ExtremelyPage {
         }
     }
 
-    public void beanFragmentView(View view) {
-        if (view instanceof  FrameLayout) {
+    public void bindFragmentView(View view) {
+        if (view instanceof FrameLayout) {
             frameLayout = (FrameLayout) view;
         }
     }

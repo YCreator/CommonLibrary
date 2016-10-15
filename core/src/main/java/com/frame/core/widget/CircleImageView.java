@@ -19,6 +19,9 @@ import android.widget.ImageView;
 
 import com.frame.core.R;
 
+/**
+ * 圆形ImageView
+ */
 public class CircleImageView extends ImageView {
 
     private static final ScaleType SCALE_TYPE = ScaleType.FIT_XY;

@@ -1,5 +1,6 @@
 package com.frame.core.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -130,6 +131,7 @@ public class AppHelper {
      * @param context
      * @return
      */
+    @SuppressLint("HardwareIds")
     public static String getDeviceId(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getDeviceId();

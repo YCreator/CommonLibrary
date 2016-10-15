@@ -21,8 +21,8 @@ public abstract class BaseMvpPresenter<T extends BaseMvpView> implements BasePre
 
     @Override
     public void initPage() {
-        getView().initPageView();
-        getView().initPageViewListener();
+        getView().initView();
+        getView().initListener();
     }
 
     public Context getContext() {

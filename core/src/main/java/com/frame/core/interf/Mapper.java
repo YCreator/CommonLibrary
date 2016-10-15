@@ -12,6 +12,10 @@ public interface Mapper<T, K> {
 
     T transformEntity(K obj) throws Exception;
 
+    K transformBean(T obj) throws Exception;
+
     Collection<T> transformEntityCollection(Collection<K> obj) throws Exception;
+
+    Collection<K> transformBeanCollection(Collection<T> obj) throws Exception;
 
 }

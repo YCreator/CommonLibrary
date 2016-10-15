@@ -2,13 +2,15 @@ package com.frame.core.util;
 
 import android.util.Log;
 
+import com.frame.core.BaseApplication;
+
 /**
  * 日志打印工具
  * Created by Administrator on 2015/12/2.
  */
 public class TLog {
-    public static boolean DEBUG = true;
-    public static final String LOG_TAG = "SIMICO";
+    public static boolean DEBUG = BaseApplication.DEBUG;
+    private static final String LOG_TAG = "SIMICO";
 
     public static void analytics(String paramString) {
         if (DEBUG)
