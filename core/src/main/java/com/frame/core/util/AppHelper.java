@@ -77,7 +77,7 @@ public class AppHelper {
         //PackageManager.GET_UNINSTALLED_PACKAGES
         List<PackageInfo> list = manager.getInstalledPackages(0);
         for (PackageInfo info : list) {
-            if (info.packageName.endsWith(packageName)) {
+            if (info.packageName.equalsIgnoreCase(packageName)) {
                 return true;
             }
         }

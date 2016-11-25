@@ -80,6 +80,10 @@ public class ExtremelyPage {
         btnFunction.setVisibility(View.VISIBLE);
     }
 
+    public void showButtonFunction(boolean isShow) {
+        btnFunction.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    }
+
     public void show() {
         if (frameLayout != null) {
             frameLayout.addView(mView);

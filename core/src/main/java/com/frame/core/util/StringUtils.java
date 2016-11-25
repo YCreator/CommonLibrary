@@ -91,6 +91,10 @@ public class StringUtils {
 
     }
 
+    public static String formatDate(long time, String format) {
+        return formatDate(new Date(time), format);
+    }
+
     /**
      * 将一个java.util.Date对象转换成特定格式的字符串
      *

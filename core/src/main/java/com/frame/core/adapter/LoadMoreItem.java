@@ -1,7 +1,9 @@
 package com.frame.core.adapter;
 
+import android.support.annotation.ColorInt;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.frame.core.R;
@@ -17,9 +19,15 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
 
     private View itemView;
     private TextView tv;
+    private ProgressBar bar;
     private int gloaH;
+    private @ColorInt int color = 0x00000000;
 
     private boolean isCanLoading = true;
+
+    public void setBackgroudColor(@ColorInt int color) {
+        this.color = color;
+    }
 
     public void setCanLoading(boolean canLoading) {
         isCanLoading = canLoading;
@@ -39,12 +47,14 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
         gloaH = PixelUtil.getScreenH();
         this.itemView = itemView ;
         tv = (TextView) itemView.findViewById(R.id.loading_tv);
+        bar = (ProgressBar) itemView.findViewById(R.id.loading_progress);
         setIndexLoadMoreState(isCanLoading);
     }
 
     @Override
     public void onSetViews() {
         tv.setVisibility(View.VISIBLE);
+        itemView.setBackgroundColor(color);
     }
 
     @Override
@@ -95,22 +105,26 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
     public void loadingMore() {
         if (itemView != null) {
             tv.setText("加载中...");
+            bar.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void completeLoading() {
         tv.setText("上拉加载");
+        bar.setVisibility(View.GONE);
     }
 
     @Override
     public void noDataToLoad() {
         tv.setText("--加载完毕--");
+        bar.setVisibility(View.GONE);
     }
 
     @Override
     public void nothing() {
-        tv.setText("--没有数据--");
+        //tv.setText("--没有数据--");
+        bar.setVisibility(View.GONE);
     }
 
 }

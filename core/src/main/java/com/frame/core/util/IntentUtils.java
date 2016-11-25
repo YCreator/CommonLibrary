@@ -1,10 +1,13 @@
 package com.frame.core.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 
 /**
  * 跳转工具
@@ -69,6 +72,16 @@ public class IntentUtils {
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
+    }
+
+    public static void intentTakePhone(Context context, String phoneNum) {
+        if (StringUtils.isMobileNO(phoneNum)){
+            Intent it2 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNum));
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            context.startActivity(it2);
+        }
     }
 
 }

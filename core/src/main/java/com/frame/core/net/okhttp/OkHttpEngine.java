@@ -59,9 +59,9 @@ public final class OkHttpEngine implements Engine {
 
     private OkHttpClient initOkHttpConfig() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(15, TimeUnit.SECONDS);
-        builder.readTimeout(10, TimeUnit.SECONDS);
-        builder.writeTimeout(10, TimeUnit.SECONDS);
+        builder.connectTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(30, TimeUnit.SECONDS);
+        builder.writeTimeout(30, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
         builder.cookieJar(BaseApplication.getCookiesManager());
         if (BaseApplication.DEBUG) {
@@ -74,10 +74,6 @@ public final class OkHttpEngine implements Engine {
 
     public OkHttpClient getOkHttpClient() {
         return mOkHttpClient;
-    }
-
-    public String getAbsoluteApiUrl(String methodName) {
-        return String.format(API_URL, methodName);
     }
 
     public void get(String url) {
@@ -217,9 +213,9 @@ public final class OkHttpEngine implements Engine {
     }
 
     // respoonse.body().string()只能调用一次，调用完后会自动关闭流
-    public String postHttp(String method, RequestBody body) throws IOException {
+    public String postHttp(String url, RequestBody body) throws IOException {
         Request request = new Request.Builder()
-                .url(getAbsoluteApiUrl(method))
+                .url(url)
                 .post(body)
                 .build();
         Response response = mOkHttpClient.newCall(request).execute();

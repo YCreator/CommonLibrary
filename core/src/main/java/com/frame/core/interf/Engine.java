@@ -9,8 +9,6 @@ import java.util.Map;
  */
 public interface Engine {
 
-    String API_URL = "http://api.59iwh.com/%s";
-
     String METHOD_GET = "GET";
 
     String METHOD_POST = "POST";

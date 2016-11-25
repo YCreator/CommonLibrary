@@ -4,8 +4,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <!--<color name="theme_color">#fff26f9b</color> &lt;!&ndash;  主色调 &ndash;&gt;-->
-    <color name="theme_color">#3abb57</color> <!--  主色调 -->
+    <color name="theme_color">#fff26f9b</color> <!--  主色调 -->
+
     <color name="accent">#00796b</color>
     <color name="accentLight">#009688</color>
     <color name="primaryLight">#7DD4B7</color>

@@ -27,8 +27,8 @@ import java.util.Map;
 public class HttpEngine implements Engine {
 
     private static final String TAG = HttpEngine.class.getSimpleName();
-    private final static int TIMEOUT = 10000;
-    private final static int TIMEOUT_SOCKET = 15000;
+    private final static int TIMEOUT = 20000;
+    private final static int TIMEOUT_SOCKET = 20000;
 
     private static HttpEngine httpEngine = null;
     private static CookieManager manager = new CookieManager();
@@ -91,16 +91,12 @@ public class HttpEngine implements Engine {
         }
     }
 
-    public String getAbsoluteApiUrl(String methodName) {
-        return String.format(API_URL, methodName);
-    }
-
-    private HttpURLConnection getConnection(String api) {
+    private HttpURLConnection getConnection(String strUrl) {
         HttpURLConnection connection = null;
         // 初始化connection
         try {
             // 根据地址创建URL对象
-            URL url = new URL(api);
+            URL url = new URL(strUrl);
             // 根据URL对象打开链接
             connection = (HttpURLConnection) url.openConnection();
             // 设置请求的方式

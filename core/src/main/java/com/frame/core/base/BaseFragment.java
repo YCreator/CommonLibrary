@@ -159,6 +159,9 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
      */
     protected void onPageFirstVisible() {
         TLog.i(TAG,"onPageFirstVisible====>"+position);
+        if (getUserVisibleHint()) {
+            onPageStart();
+        }
     }
 
     /**

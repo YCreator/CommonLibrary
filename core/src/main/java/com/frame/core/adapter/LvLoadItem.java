@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.frame.core.R;
@@ -19,6 +20,7 @@ public class LvLoadItem implements FootLoading {
 
     private View itemView;
     private TextView tv;
+    private ProgressBar bar;
 
     private boolean isCanLoading = true;
     private int gloaH;
@@ -29,7 +31,8 @@ public class LvLoadItem implements FootLoading {
         gloaH = PixelUtil.getScreenH();
         params = new AbsListView.LayoutParams(PixelUtil.getScreenW(),gloaH / 12);
         itemView.setLayoutParams(params);
-        tv = (TextView) itemView.findViewById(com.frame.core.R.id.loading_tv);
+        tv = (TextView) itemView.findViewById(R.id.loading_tv);
+        bar = (ProgressBar) itemView.findViewById(R.id.loading_progress);
     }
 
     public View getItemView() {
@@ -94,6 +97,7 @@ public class LvLoadItem implements FootLoading {
     @Override
     public void loadingMore() {
         if (itemView != null) {
+            bar.setVisibility(View.VISIBLE);
             tv.setText("加载中...");
         }
     }
@@ -101,19 +105,23 @@ public class LvLoadItem implements FootLoading {
     @Override
     public void completeLoading() {
         tv.setText("上拉加载");
+        bar.setVisibility(View.GONE);
     }
 
     @Override
     public void noDataToLoad() {
         tv.setText("--加载完毕--");
+        bar.setVisibility(View.GONE);
     }
 
     @Override
     public void nothing() {
-        nothing("--没有数据--");
+        nothing("");
+        bar.setVisibility(View.GONE);
     }
 
     public void nothing(String msg) {
         tv.setText(msg);
+        bar.setVisibility(View.GONE);
     }
 }

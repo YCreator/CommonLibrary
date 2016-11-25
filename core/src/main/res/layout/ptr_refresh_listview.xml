@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-    android:id="@id/ptr_pull_to_refresh"
+    android:id="@id/ptr_pull_lv_to_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     cube_ptr:ptr_duration_to_close="200"
@@ -15,6 +15,7 @@
         android:id="@id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:listSelector="@null"
         android:dividerHeight="0.5px"
         android:scrollingCache="false" />
 </in.srain.cube.views.ptr.PtrClassicFrameLayout>

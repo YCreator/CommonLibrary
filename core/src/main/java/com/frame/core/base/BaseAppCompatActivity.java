@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -182,11 +183,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         //setStatusStyle(R.color.theme_color);
     }
 
-    protected void setStatusStyle(int colorId) {
+    protected void setStatusStyle(@ColorRes int colorId) {
         //沉淀式状态栏
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
-          /*  //透明状态栏
+           /* //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             //透明导航栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);*/
@@ -267,6 +268,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         intent.setFlags(flags);
         if (bundle != null) intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public void showLoadingDialog() {
+
     }
 
     /**
@@ -376,6 +381,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             }
         }
         return handler;
+    }
+
+    public void backgroundAlpha(Float bgAlpha) {
+        WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        this.getWindow().setAttributes(lp);
     }
 
 }
