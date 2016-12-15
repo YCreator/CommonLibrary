@@ -27,7 +27,7 @@ public class BaseApplication extends Application {
     static ThreadPoolExecutor executor;
     static String deviceId;
     public static int MODEL;
-    public static final boolean DEBUG = false;       //控制开发和生产模式
+    public static final boolean DEBUG = true;       //控制开发和生产模式
 
     @Override
     public void onCreate() {

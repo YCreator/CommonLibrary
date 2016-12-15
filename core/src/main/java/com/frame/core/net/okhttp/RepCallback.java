@@ -23,7 +23,7 @@ public final class RepCallback implements Callback {
     private static final String TAG = RepCallback.class.getSimpleName();
 
     private static CustomHandler handler;
-    public static final String ERROR_MSG_1 = "网络请求失败";
+    public static final String ERROR_MSG_1 = "服务器繁忙";
     public static final String ERROR_MSG_2 = "数据异常";
     public static final String ERROR_MSG_3 = "网络连接中断";
     public static final int ERROR_CODE_0 = 0; //服务器返回的错误类型

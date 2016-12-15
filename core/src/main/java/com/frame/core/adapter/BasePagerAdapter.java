@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Queue;
 
 /**
- * @author Jack Tony
+ * Created by admin
  * @date 2015/11/21
  *
  * 如果调用{@link #notifyDataSetChanged()}来更新，

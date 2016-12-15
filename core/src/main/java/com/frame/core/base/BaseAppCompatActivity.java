@@ -167,6 +167,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @Override
     public boolean onSupportNavigateUp() {
+        onBeforeFinish();
         finish();
         return super.onSupportNavigateUp();
     }
@@ -181,6 +182,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     protected void onBeforeSetContentLayout() {
         //setStatusStyle(R.color.theme_color);
+    }
+
+    protected void onBeforeFinish() {
+
     }
 
     protected void setStatusStyle(@ColorRes int colorId) {
