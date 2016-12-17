@@ -33,7 +33,7 @@ public class HttpEngine implements Engine {
     private static HttpEngine httpEngine = null;
     private static CookieManager manager = new CookieManager();
 
-    public HttpEngine() {
+    private HttpEngine() {
     }
 
     public static HttpEngine getInstance() {

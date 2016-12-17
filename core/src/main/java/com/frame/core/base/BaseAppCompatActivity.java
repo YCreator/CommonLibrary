@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
  * onPause()
  * onStop()
  * onDestroy()
- * Created by Administrator on 2015/12/18.
+ * Created by yzd on 2015/12/18.
  */
 public abstract class BaseAppCompatActivity extends AppCompatActivity implements IBaseView {
 

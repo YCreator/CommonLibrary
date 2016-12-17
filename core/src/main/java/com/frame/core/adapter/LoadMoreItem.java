@@ -13,7 +13,7 @@ import com.frame.core.util.PixelUtil;
 
 
 /**
- * Created by Administrator on 2016/1/3.
+ * Created by yzd on 2016/1/3.
  */
 public class LoadMoreItem implements AdapterItem, FootLoading {
 

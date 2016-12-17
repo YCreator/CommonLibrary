@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
  * onDestroy()              | Destroyed
  * onDetach()               |
  * ----------------------------------
- * Created by Administrator on 2015/12/2.
+ * Created by yzd on 2015/12/2.
  */
 public abstract class BaseFragment extends Fragment implements IBaseView {
 

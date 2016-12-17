@@ -1,4 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'me.tatarka.retrolambda'
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
 
 android {
     compileSdkVersion 24
@@ -15,6 +20,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -35,4 +45,6 @@ dependencies {
     compile 'com.squareup:otto:1.3.8'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
+    compile 'io.reactivex:rxandroid:1.1.0' // RxAndroid
+    compile 'io.reactivex:rxjava:1.1.0' // 推荐同时加载RxJava
 }

@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/1/11.
+ * Created by yzd on 2016/1/11.
  */
 public abstract class JsonEntity {
 
@@ -51,7 +51,7 @@ public abstract class JsonEntity {
         return gson.fromJson(json, objectType);
     }
 
-    static ParameterizedType type (final Class raw, final Type... args) {
+    private static ParameterizedType type (final Class raw, final Type... args) {
         return new ParameterizedType() {
             @Override
             public Type[] getActualTypeArguments() {

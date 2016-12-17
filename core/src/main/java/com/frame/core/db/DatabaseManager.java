@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by Administrator on 2015/7/28.
+ * Created by yzd on 2015/7/28.
  */
 public class DatabaseManager {
 
