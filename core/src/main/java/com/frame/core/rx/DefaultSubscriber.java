@@ -20,8 +20,17 @@ public abstract class DefaultSubscriber<T> extends rx.Subscriber<T> {
         if (e instanceof ResponseException) {
             ResponseException exception = (ResponseException) e;
             TLog.i("sub_error_code", exception.getErrorCode()+"");
-
+            onError(exception.getErrorCode(), exception.getMessage());
         }
         TLog.i("sub_error", e.getMessage());
     }
+
+    @Override
+    public void onNext(T t) {
+        onSuccess(t);
+    }
+
+    public abstract void onSuccess(T t);
+
+    public abstract void onError(int errorCode, String message);
 }

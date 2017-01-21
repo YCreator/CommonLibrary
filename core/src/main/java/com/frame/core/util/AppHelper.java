@@ -11,6 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 
+import com.frame.core.BaseApplication;
+
 import java.util.List;
 
 public class AppHelper {
@@ -25,6 +27,18 @@ public class AppHelper {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             return null;
+        }
+    }
+
+    /**
+     * 获取应用包名
+     * @return
+     */
+    public static String getPackageId() {
+        try {
+            return BaseApplication.get_context().getPackageName();
+        } catch (Exception e) {
+            return "";
         }
     }
 
