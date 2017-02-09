@@ -1,9 +1,13 @@
 package com.frame.core.util;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by yzd on 2016/7/8.
@@ -56,6 +60,33 @@ public class FileUtil {
             System.out.println("复制单个文件操作出错");
             e.printStackTrace();
 
+        }
+
+    }
+
+    public static String txtReader(File txtFile) {
+        try {
+            InputStreamReader isr = new InputStreamReader(new FileInputStream(txtFile), "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder str = new StringBuilder();
+            String mimeTypeLine = null ;
+            while ((mimeTypeLine = br.readLine()) != null) {
+                str.append(mimeTypeLine);
+            }
+            return str.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static void txtWriter(File file, String txt) {
+        try {
+            FileOutputStream writerStream = new FileOutputStream(file);
+            BufferedWriter oWriter = new BufferedWriter(new OutputStreamWriter(writerStream, "UTF-8"));
+            oWriter.write(txt);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

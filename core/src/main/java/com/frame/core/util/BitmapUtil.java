@@ -12,6 +12,11 @@ import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -84,6 +89,7 @@ public class BitmapUtil {
 
     /**
      * 保存图片
+     *
      * @param context
      * @param bitmap
      * @param format
@@ -105,12 +111,13 @@ public class BitmapUtil {
             return false;
         }
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE
-                , Uri.parse("file://"+file.getAbsolutePath())));
+                , Uri.parse("file://" + file.getAbsolutePath())));
         return true;
     }
 
     /**
      * 根据一个网络连接(String)获取bitmap图像
+     *
      * @param imageUri
      */
     public static Bitmap getbitmap(String imageUri) {
@@ -136,7 +143,8 @@ public class BitmapUtil {
 
     /**
      * 图片压缩
-     * @param bitmap 图片
+     *
+     * @param bitmap   图片
      * @param wantSize 期望的图片大小
      * @return
      */
@@ -246,37 +254,44 @@ public class BitmapUtil {
     }
 
     /**
-     * 得到本地或者网络上的bitmap url - 网络或者本地图片的绝对路径,比如:
+     * 模糊图片的具体方法
      *
-     * A.网络路径: url=&quot;http://blog.foreverlove.us/girl2.png&quot; ;
-     *
-     * B.本地路径:url=&quot;file://mnt/sdcard/photo/image.png&quot;;
-     *
-     * C.支持的图片格式 ,png, jpg,bmp,gif等等
-     *
-     * @param url
-     * @return
+     * @param context 上下文对象
+     * @param image   需要模糊的图片
+     * @return 模糊处理后的图片
      */
-    /*public static Bitmap GetLocalOrNetBitmap(String url)
-    {
-        Bitmap bitmap = null;
-        InputStream in = null;
-        BufferedOutputStream out = null;
-        try {
-            in = new BufferedInputStream(new URL(url).openStream(), Constant.IO_BUFFER_SIZE);
-            final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-            out = new BufferedOutputStream(dataStream, Constant.IO_BUFFER_SIZE);
-            copy(in, out);
-            out.flush();
-            byte[] data = dataStream.toByteArray();
-            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-            data = null;
-            return bitmap;
+    public static Bitmap blurBitmap(Context context, Bitmap image, float blurRadius, float scale) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            // 计算图片缩小后的长宽
+            int width = Math.round(image.getWidth() * scale);
+            int height = Math.round(image.getHeight() * scale);
+            // 将缩小后的图片做为预渲染的图片
+            Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+            // 创建一张渲染后的输出图片
+            Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
+            // 创建RenderScript内核对象
+            RenderScript rs = RenderScript.create(context);
+
+            // 创建一个模糊效果的RenderScript的工具对象
+            ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+            // 由于RenderScript并没有使用VM来分配内存,所以需要使用Allocation类来创建和分配内存空间
+            // 创建Allocation对象的时候其实内存是空的,需要使用copyTo()将数据填充进去
+            Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
+            Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
+
+            // 设置渲染的模糊程度, 25f是最大模糊度
+            blurScript.setRadius(blurRadius);
+            // 设置blurScript对象的输入内存
+            blurScript.setInput(tmpIn);
+            // 将输出数据保存到输出内存中
+            blurScript.forEach(tmpOut);
+
+            // 将数据填充到Allocation中
+            tmpOut.copyTo(outputBitmap);
+
+            return outputBitmap;
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }*/
+
+        return image;
+    }
 }
