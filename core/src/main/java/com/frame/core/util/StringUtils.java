@@ -171,6 +171,15 @@ public class StringUtils {
         }
     }
 
+    public static boolean isNumber(String value) {
+        try {
+            long i = Long.parseLong(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public static boolean isFloat(String value) {
         try {
             float i = Float.parseFloat(value);

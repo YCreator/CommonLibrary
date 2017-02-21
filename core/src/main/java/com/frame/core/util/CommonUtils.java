@@ -29,6 +29,17 @@ public class CommonUtils {
         }
     }
 
+    public static boolean isFastDoubleClick(int timeMillis) {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        if (timeD >= 0 && timeD <= timeMillis) {
+            return true;
+        } else {
+            lastClickTime = time;
+            return false;
+        }
+    }
+
     /**
      * 隐藏软键盘
      *

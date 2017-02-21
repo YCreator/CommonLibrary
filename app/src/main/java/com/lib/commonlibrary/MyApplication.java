@@ -14,9 +14,9 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         ShareHelper.getInstance()
-                .setSina("1998847084", "22e2df16b773588f445f5ec02bf3cddf")
+                .setSina("2635404820", "ec743121ef7d06c707e0a01f69e615cc")
                 .setQQ("1104741678", "3sFFig9X22svZsXo")
                 .setDebug(true)
-                .init(this, "551cb168fd98c5845300070d");
+                .init(this, "587c8ddc734be4160b001c6d");
     }
 }

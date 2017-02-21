@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         UMImage image = new UMImage(this, R.drawable.umeng_socialize_qq);
         image.setThumb(new UMImage(this, R.mipmap.ic_launcher));
         ShareEntity entity = new ShareEntity("test", "https://www.baidu.com", "hello world", image);
-        ShareHelper.getInstance().share(this, entity, SHARE_MEDIA.QQ);
+        ShareHelper.getInstance().share(this, entity, SHARE_MEDIA.SINA);
     }
 
     @Override

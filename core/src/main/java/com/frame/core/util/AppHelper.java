@@ -134,9 +134,12 @@ public class AppHelper {
      */
     public static boolean requestPermission(Activity context, String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(context, new String[]{permission},
-                    requestCode);
-            ActivityCompat.shouldShowRequestPermissionRationale(context, permission);
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {
+
+            } else {
+                ActivityCompat.requestPermissions(context, new String[]{permission}, requestCode);
+            }
             return false;
         }
         return true;
