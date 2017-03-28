@@ -175,7 +175,7 @@ public class StringUtils {
         try {
             long i = Long.parseLong(value);
             return true;
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return false;
         }
     }

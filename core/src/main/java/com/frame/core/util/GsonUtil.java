@@ -340,4 +340,12 @@ public class GsonUtil {
         return reTag;
     }
 
+    /**
+     *
+     * @return
+     *//*
+    public static Gson getCustomGson() {
+        return new GsonBuilder().serializeNulls().create();
+    }*/
+
 }

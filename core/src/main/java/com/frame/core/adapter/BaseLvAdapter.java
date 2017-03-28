@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 
 import com.frame.core.interf.AdapterItem;
 import com.frame.core.interf.IAdapter;
-import com.frame.core.util.TLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +60,6 @@ public abstract class BaseLvAdapter<T> extends BaseAdapter implements IAdapter<T
             mInflater = LayoutInflater.from(parent.getContext());
         }
         AdapterItem<T> item;
-        TLog.i(mData.get(position).toString()+"_"+position+"_"+(mData.get(position) instanceof String));
         if (convertView == null) {
             item = onCreateItem(getItemViewType(position));
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);

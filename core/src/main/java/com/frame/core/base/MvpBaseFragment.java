@@ -54,6 +54,12 @@ public abstract class MvpBaseFragment<T extends BasePresenter> extends BaseFragm
         presenter.pause();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
+    }
+
     /**
      * 返回主持人
      */

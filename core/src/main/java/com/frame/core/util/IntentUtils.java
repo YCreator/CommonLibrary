@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 
 /**
@@ -14,6 +15,20 @@ import android.support.v4.app.ActivityCompat;
  * Created by yzd on 2016/5/23.
  */
 public class IntentUtils {
+
+
+    /**
+     * 打开手机照相机
+     * @param activity
+     * @param uri
+     * @param requestCode
+     */
+    public static void intentCapture(Activity activity, Uri uri, int requestCode) {
+        Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 调用android自带的照相机
+        takeIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+        activity.startActivityForResult(takeIntent, requestCode);
+    }
 
     /**
      * 跳转到手机相册
@@ -30,7 +45,8 @@ public class IntentUtils {
         } else {
             Intent intent = new Intent();
             intent.setType("image/*");
-            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            //ACTION_OPEN_DOCUMENT
+            intent.setAction(Intent.ACTION_PICK);
             activity.startActivityForResult(intent, type2);
         }
     }

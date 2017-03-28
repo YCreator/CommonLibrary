@@ -1,12 +1,12 @@
 package com.lib.paylib;
 
+import android.app.Activity;
 import android.content.Context;
 
-import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.lib.paylib.alipay.AlipayCallback;
 
 /**
+ * 支付工具
  * Created by yzd on 2017/2/10 0010.
  */
 
@@ -16,7 +16,8 @@ public class PayHelper {
 
     private String wxKey;
 
-    private PayHelper() {}
+    private PayHelper() {
+    }
 
     public static PayHelper getInstance() {
         if (helper == null) {
@@ -27,6 +28,7 @@ public class PayHelper {
 
     /**
      * 初始化
+     *
      * @param wxKey
      */
     public void init(String wxKey) {
@@ -34,16 +36,15 @@ public class PayHelper {
     }
 
     //微信支付
-    public void weichatPay(Context context, WpayEntity entity) {
-        IWXAPI api = WXAPIFactory.createWXAPI(context, wxKey);
-        PayReq request = new PayReq();
-        request.appId = entity.getAppId();
-        request.partnerId = entity.getPartnerId();
-        request.prepayId = entity.getPrepayId();
-        request.packageValue = entity.getPackageValue();
-        request.nonceStr = entity.getNonceStr();
-        request.timeStamp = entity.getTimeStamp();
-        request.sign = entity.getSign();
-        api.sendReq(request);
+    public void weichatPay(Context context, WpayEntity entity) throws Exception {
+        if (wxKey == null || "".equals(wxKey)) {
+            throw new Exception("微信appkey未初始化");
+        }
+        Wxpay.weichatPay(context, wxKey, entity);
     }
+
+    public void aliPay(final Activity activity, final String payInfo, AlipayCallback callback) {
+        Alipay.aliPay(activity, payInfo, callback);
+    }
+
 }

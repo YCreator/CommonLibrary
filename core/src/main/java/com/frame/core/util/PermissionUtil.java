@@ -109,11 +109,15 @@ public class PermissionUtil {
     }
 
     public static void checkReadCallLog(Activity activity, int requestCode) {
-        AppHelper.requestPermission(activity, Manifest.permission.READ_CALL_LOG, requestCode);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            AppHelper.requestPermission(activity, Manifest.permission.READ_CALL_LOG, requestCode);
+        }
     }
 
     public static void checkWriteCallLog(Activity activity, int requestCode) {
-        AppHelper.requestPermission(activity, Manifest.permission.WRITE_CALL_LOG, requestCode);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            AppHelper.requestPermission(activity, Manifest.permission.WRITE_CALL_LOG, requestCode);
+        }
     }
 
     public static void checkAddVoiceMail(Activity activity, int requestCode) {
@@ -155,7 +159,9 @@ public class PermissionUtil {
     }
 
     public static void checkReadExternalStorage(Activity activity, int requestcode) {
-        AppHelper.requestPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE, requestcode);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            AppHelper.requestPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE, requestcode);
+        }
     }
 
     public static void checkWriteExternalStorage(Activity activity, int requestCode) {

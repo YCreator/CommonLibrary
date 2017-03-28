@@ -45,6 +45,7 @@ public class StackManager {
         if (activity != null) {
             activity.finish();
             activityStack.remove(activity);
+            TLog.e("remove");
         }
     }
 
@@ -89,11 +90,18 @@ public class StackManager {
      */
     @SuppressWarnings("rawtypes")
     public void popOtherActivity(@NonNull Class cls) {
-        for (Activity activity : activityStack) {
-            if (null == activity || activity.getClass().equals(cls)) {
+        while(true) {
+            Activity a1 = currentActivity();
+            Activity a2 = lastActivity();
+            if (a1 != null && !a1.getClass().equals(cls)) {
+                popActivity(a1);
                 continue;
             }
-            popActivity(activity);
+            if (a2 != null && !a2.getClass().equals(cls)) {
+                popActivity(a2);
+                continue;
+            }
+            break;
         }
     }
 

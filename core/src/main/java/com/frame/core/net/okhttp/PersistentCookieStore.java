@@ -88,17 +88,20 @@ public class PersistentCookieStore {
 
     public void add(String host, String token, String coo) {
         Cookie cookie = decodeCookie(coo);
-        TLog.i(cookie.toString());
-        TLog.i(cookie.persistent()+"");
-        if (!cookies.containsKey(host)) {
-            cookies.put(host, new ConcurrentHashMap<String, Cookie>());
+        if (cookie != null) {
+            TLog.i(cookie.toString());
+            TLog.i(cookie.persistent()+"");
+            if (!cookies.containsKey(host)) {
+                cookies.put(host, new ConcurrentHashMap<String, Cookie>());
+            }
+            cookies.get(host).put(token, cookie);
+            //讲cookies持久化到本地
+            SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
+            prefsWriter.putString(host, token);
+            prefsWriter.putString(token, encodeCookie(new SerializableOkHttpCookies(cookie)));
+            prefsWriter.apply();
         }
-        cookies.get(host).put(token, cookie);
-        //讲cookies持久化到本地
-        SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
-        prefsWriter.putString(host, token);
-        prefsWriter.putString(token, encodeCookie(new SerializableOkHttpCookies(cookie)));
-        prefsWriter.apply();
+
     }
 
     public List<Cookie> get(HttpUrl url) {
