@@ -2,6 +2,7 @@ package com.frame.core.base;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.frame.core.interf.IBaseView;
+import com.frame.core.rx.Lifeful;
 import com.frame.core.util.TLog;
 
 import java.lang.reflect.Field;
@@ -44,7 +46,7 @@ import butterknife.ButterKnife;
  * ----------------------------------
  * Created by yzd on 2015/12/2.
  */
-public abstract class BaseFragment extends Fragment implements IBaseView {
+public abstract class BaseFragment extends Fragment implements IBaseView, Lifeful {
 
     public static final String TAG = BaseFragment.class.getSimpleName();
 
@@ -220,5 +222,20 @@ public abstract class BaseFragment extends Fragment implements IBaseView {
 
     public BaseAppCompatActivity getBaseActivity() {
         return mContext != null ? mContext : (BaseAppCompatActivity) this.getContext();
+    }
+
+    @Override
+    public boolean isAlive() {
+        return activityIsAlive();
+    }
+
+    public boolean activityIsAlive() {
+        Activity currentActivity = getActivity();
+        if (currentActivity == null) return false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return !(currentActivity.isDestroyed() || currentActivity.isFinishing());
+        } else {
+            return !currentActivity.isFinishing();
+        }
     }
 }

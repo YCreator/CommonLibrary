@@ -1,27 +1,5 @@
 <resources>
 
-    <!-- Base application theme. -->
-
-    <style name="AppTheme" parent="AppBaseTheme" >
-        <item name="colorAccent">@color/theme_color</item>
-        <item name="android:windowAnimationStyle">@style/AppAnimation</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="actionModeBackground">@color/theme_color</item>
-        <item name="android:fitsSystemWindows">true</item>
-    </style>
-
-    <!--使用toolbar，首先设置主题样式要为NoActionBar主题-->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- toolbar（actionbar）颜色 -->
-        <item name="colorPrimary">@color/theme_color</item>
-        <!-- 状态栏颜色 -->
-        <item name="colorPrimaryDark">@color/theme_color</item>
-        <!-- 窗口的背景颜色 -->
-        <item name="android:windowBackground">@android:color/white</item>
-        <!-- SearchView -->
-        <item name="searchViewStyle">@style/MySearchViewStyle</item>
-    </style>
-
     <style name="AppAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/activity_open_enter</item>
         <item name="android:activityOpenExitAnimation">@anim/activity_open_exit</item>

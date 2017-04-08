@@ -4,20 +4,22 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 /**
  * 文字自动滚动TextView
  * Created by yzd on 2016/10/8.
  */
 
-public class AutoScrollTextView extends TextView {
+public class AutoScrollTextView extends AppCompatTextView {
 
     public final static String TAG = AutoScrollTextView.class.getSimpleName();
 
@@ -32,6 +34,7 @@ public class AutoScrollTextView extends TextView {
     private Paint paint = null;//绘图样式
     private String text = "";//文本内容
     private int color = 0xff000000;
+    private boolean isFirstFinished = false;
 
     public AutoScrollTextView(Context context) {
         super(context);
@@ -60,8 +63,10 @@ public class AutoScrollTextView extends TextView {
             }
         }
         step = textLength;
-        temp_view_plus_text_length = viewWidth + textLength;
-        temp_view_plus_two_text_length = viewWidth + textLength * 2;
+        //temp_view_plus_text_length = viewWidth + textLength;
+        temp_view_plus_text_length = textLength;
+        //temp_view_plus_two_text_length = viewWidth + textLength * 2;
+        temp_view_plus_two_text_length = textLength * 2;
         y = getTextSize() + getPaddingTop();
     }
 
@@ -89,7 +94,7 @@ public class AutoScrollTextView extends TextView {
         isStarting = ss.isStarting;
     }
 
-    public static class SavedState extends BaseSavedState {
+    private static class SavedState extends BaseSavedState {
         boolean isStarting = false;
         float step = 0.0f;
 
@@ -129,10 +134,20 @@ public class AutoScrollTextView extends TextView {
     }
 
     public void startScroll() {
-        isStarting = true;
-        invalidate();
+        if (textLength >= viewWidth) {
+            isStarting = true;
+            invalidate();
+        }
     }
 
+    public void startScrollDelayed(long delayMillis) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startScroll();
+            }
+        }, delayMillis);
+    }
 
     public void stopScroll() {
         isStarting = false;
@@ -154,9 +169,19 @@ public class AutoScrollTextView extends TextView {
             return;
         }
         step += speed;//speed为文字滚动速度。
-        if (step > temp_view_plus_two_text_length)
+        if (step > temp_view_plus_two_text_length) {
+            if (!isFirstFinished) {
+                temp_view_plus_text_length += viewWidth;
+                temp_view_plus_two_text_length += viewWidth;
+                isFirstFinished = true;
+            }
             step = textLength;
+        }
         invalidate();
+    }
+
+    public boolean isStartingScroll() {
+        return isStarting;
     }
 
 }

@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -31,6 +32,7 @@ import android.widget.ImageView;
 
 import com.frame.core.R;
 import com.frame.core.interf.IBaseView;
+import com.frame.core.rx.Lifeful;
 import com.frame.core.util.MyPreferences;
 import com.frame.core.util.StackManager;
 import com.frame.core.util.TLog;
@@ -49,7 +51,7 @@ import butterknife.ButterKnife;
  * onDestroy()
  * Created by yzd on 2015/12/18.
  */
-public abstract class BaseAppCompatActivity extends AppCompatActivity implements IBaseView {
+public abstract class BaseAppCompatActivity extends AppCompatActivity implements IBaseView, Lifeful {
 
     public static final String TAG = BaseAppCompatActivity.class.getSimpleName();
 
@@ -72,6 +74,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //setStatusStyle(getThemeColorId());
         super.onCreate(savedInstanceState);
         onBeforeSetContentLayout();
         StackManager.getStackManager().pushActivity(this);
@@ -99,8 +102,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         isDestroyed = true;
+        super.onDestroy();
         ButterKnife.unbind(this);
         StackManager.getStackManager().popActivity(this);
     }
@@ -119,6 +122,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         if (getActionBarToolbar() == null) {
             return;
         }
+        mActionBarToolbar.setBackgroundColor(getToolbarColor());
         mActionBarToolbar.setNavigationIcon(setBackIcon() == 0 ? R.drawable.ic_arrow_back_white_18dp : setBackIcon());
         mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +169,14 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         return 0;
     }
 
+    @ColorInt
+    protected int getToolbarColor() {
+        return this.getResources().getColor(getThemeColorId());
+    }
+
+    @ColorRes
+    protected abstract int getThemeColorId();
+
     @Override
     public boolean onSupportNavigateUp() {
         onBeforeFinish();
@@ -191,11 +203,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     protected void setStatusStyle(@ColorRes int colorId) {
         //沉淀式状态栏
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-           /* //透明状态栏
+            //setTranslucentStatus(true);
+            //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             //透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);*/
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintResource(colorId);
@@ -395,4 +407,17 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         this.getWindow().setAttributes(lp);
     }
 
+    @Override
+    public boolean isAlive() {
+        return activityIsAlive();
+    }
+
+    public boolean activityIsAlive() {
+        if (getBaseContext() == null) return false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return !(this.isDestroyed() || this.isFinishing());
+        } else {
+            return !this.isFinishing();
+        }
+    }
 }
