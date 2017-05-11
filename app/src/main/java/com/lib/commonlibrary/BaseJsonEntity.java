@@ -1,4 +1,5 @@
-package com.genye.data.entity;
+package com.lib.commonlibrary;
+
 
 import com.frame.core.entity.JsonEntity;
 

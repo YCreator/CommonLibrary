@@ -1,8 +1,13 @@
-package com.genye.domain;
+package com.lib.commonlibrary;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
-public class GoodsBeanEntity implements Serializable {
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+public class GoodsBean implements Serializable {
 
     /**
      *
@@ -133,5 +138,33 @@ public class GoodsBeanEntity implements Serializable {
 
     public void setGoodsStatus(int goodsStatus) {
         this.goodsStatus = goodsStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "GoodsBean{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", price='" + price + '\'' +
+                ", shopName='" + shopName + '\'' +
+                ", picUrl='" + picUrl + '\'' +
+                ", category='" + category + '\'' +
+                ", service1=" + service1 +
+                ", service2=" + service2 +
+                ", service3=" + service3 +
+                ", service4=" + service4 +
+                ", isSupplyOfGoods=" + isSupplyOfGoods +
+                ", goodsStatus=" + goodsStatus +
+                ", address='" + address + '\'' +
+                ", mobile='" + mobile + '\'' +
+                '}';
+    }
+
+    public static void getGoods(Map<String, String> params, JsonDataObserver<List<GoodsBean>> observer, NetworkConsumer consumer) {
+        RetroFactory.getInstance().getGoods(params)
+                .doOnSubscribe(consumer)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 }

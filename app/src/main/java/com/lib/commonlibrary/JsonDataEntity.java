@@ -1,11 +1,9 @@
-package com.genye.data.entity;
-
-import com.frame.core.entity.JsonEntity;
+package com.lib.commonlibrary;
 
 /**
  * Created by Administrator on 2016/1/11.
  */
-public class JsonDataEntity<T> extends BaseJsonEntity implements JsonEntity.Data<T> {
+public class JsonDataEntity<T> extends BaseJsonEntity  {
 
     private T data;
 
@@ -13,7 +11,6 @@ public class JsonDataEntity<T> extends BaseJsonEntity implements JsonEntity.Data
         super(error, msg);
     }
 
-    @Override
     public T getData() {
         return data;
     }
