@@ -27,7 +27,7 @@ public class BaseApplication extends Application {
     static ThreadPoolExecutor executor;
     static String deviceId;
     public static int MODEL;
-    public static final boolean DEBUG = true;       //控制开发和生产模式
+    public static boolean DEBUG = true;       //控制开发和生产模式
     public static final int PRO = 0;    //生产
     public static final int DEV = 1;    //开发
 

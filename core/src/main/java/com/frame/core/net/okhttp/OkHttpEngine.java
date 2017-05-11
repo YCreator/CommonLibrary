@@ -7,12 +7,14 @@ import com.frame.core.BaseApplication;
 import com.frame.core.interf.Engine;
 import com.frame.core.util.TLog;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Cookie;
@@ -63,6 +65,8 @@ public final class OkHttpEngine implements Engine {
         builder.readTimeout(30, TimeUnit.SECONDS);
         builder.writeTimeout(30, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
+        File cacheDir = new File(BaseApplication.get_context().getCacheDir(), "HttpResponseCache");
+        builder.cache(new Cache(cacheDir, 10 * 1024 * 1024));
         builder.cookieJar(BaseApplication.getCookiesManager());
         if (BaseApplication.DEBUG) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -76,7 +80,13 @@ public final class OkHttpEngine implements Engine {
         return mOkHttpClient;
     }
 
-    public void get(String url) {
+    public String get(String url) throws Exception {
+        Request request = new Request.Builder().url(url).get().build();
+        Response response = mOkHttpClient.newCall(request).execute();
+        if (response.code() == 200) {
+           return response.body().string();
+        }
+        return "";
     }
 
     public void getAsync(String url, Callback responseCallback) {

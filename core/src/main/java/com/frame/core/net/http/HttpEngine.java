@@ -3,9 +3,11 @@ package com.frame.core.net.http;
 import com.frame.core.interf.Engine;
 import com.frame.core.util.TLog;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
@@ -44,6 +46,29 @@ public class HttpEngine implements Engine {
     }
 
     @Override
+    public String get(String url) throws Exception {
+        HttpURLConnection connection = getConnection(url, METHOD_GET);
+        connection.connect();
+        TLog.i("httpEngine", connection.toString());
+        TLog.i("httpEngine", connection.getResponseCode()+"");
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            // 获取响应的输入流对象
+            InputStream is = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            final String result = new String(reader.readLine().getBytes());
+            // 释放资源
+            reader.close();
+            is.close();
+            connection.disconnect();
+            TLog.i(TAG, result);
+            return result;
+        } else {
+            connection.disconnect();
+            return null;
+        }
+    }
+
+    @Override
     public String post(String method, Map<String, String> paramsMap) throws IOException {
         String data = joinParams(paramsMap);
         return postHttp(method, data);
@@ -56,7 +81,7 @@ public class HttpEngine implements Engine {
     }
 
     public String postHttp(String url, String params) throws IOException {
-        HttpURLConnection connection = getConnection(url);
+        HttpURLConnection connection = getConnection(url, METHOD_POST);
         connection.setRequestProperty("Content-Length", String.valueOf(params.getBytes().length));
         connection.connect();
         OutputStream os = connection.getOutputStream();
@@ -91,7 +116,7 @@ public class HttpEngine implements Engine {
         }
     }
 
-    private HttpURLConnection getConnection(String strUrl) {
+    private HttpURLConnection getConnection(String strUrl, String method) {
         HttpURLConnection connection = null;
         // 初始化connection
         try {
@@ -100,7 +125,7 @@ public class HttpEngine implements Engine {
             // 根据URL对象打开链接
             connection = (HttpURLConnection) url.openConnection();
             // 设置请求的方式
-            connection.setRequestMethod(METHOD_POST);
+            connection.setRequestMethod(method);
             // 发送POST请求必须设置允许输入，默认为true
             connection.setDoInput(true);
             // 发送POST请求必须设置允许输出

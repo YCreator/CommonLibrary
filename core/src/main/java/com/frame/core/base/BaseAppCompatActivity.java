@@ -57,8 +57,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     public static final String EXTRA_TITLE = "actionbar_title";
 
-    private static Class<? extends BaseAppCompatActivity> mainClazz;
-
     private Toolbar mActionBarToolbar;
 
     // 统一的加载对话框
@@ -275,8 +273,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     public void launchActivity(Class<? extends Activity> cls, @Nullable Bundle bundle) {
         Intent intent = new Intent(this, cls);
-        if (bundle != null)
+        if (bundle != null) {
             intent.putExtras(bundle);
+        }
         startActivity(intent);
     }
 
@@ -338,15 +337,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
      */
     public boolean isDestroyed() {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && super.isDestroyed()) || isDestroyed;
-    }
-
-    /**
-     * 设置主页
-     *
-     * @param clazz
-     */
-    public static void initMainClass(Class<? extends BaseAppCompatActivity> clazz) {
-        mainClazz = clazz;
     }
 
     /**

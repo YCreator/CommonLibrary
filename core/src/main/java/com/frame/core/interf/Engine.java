@@ -19,6 +19,8 @@ public interface Engine {
 
     String CONTENT_TYPE_VALUE_JSON = "application/json; charset=utf-8";
 
+    String get(String url) throws Exception;
+
     String post(String method, Map<String, String> paramsMap) throws IOException;
 
     String post(String method, String[] paramKeys, String[] paramValues) throws IOException;

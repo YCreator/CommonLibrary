@@ -37,7 +37,6 @@ public final class RepCallback implements Callback {
     private Mapper mapper;
     private Class clazz;
     private Class<? extends JsonEntity> templateClazz;
-    private Lifeful lifeful;
 
     private RepCallback() {
         obj = new SparseArray<>();
@@ -51,6 +50,11 @@ public final class RepCallback implements Callback {
             public void onFailure(int errorCode, String msg) {
 
             }
+
+            @Override
+            public Lifeful lifeful() {
+                return null;
+            }
         };
     }
 
@@ -62,13 +66,12 @@ public final class RepCallback implements Callback {
     }
 
     private RepCallback(@NonNull OkCallbackListener httpData, @NonNull Mapper mapper
-            , Class clazz, @NonNull Class<? extends JsonEntity> templateClazz, Lifeful lifeful) {
+            , Class clazz, @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
         this.mapper = mapper;
         this.clazz = clazz;
         this.templateClazz = templateClazz;
-        this.lifeful = lifeful;
     }
 
     @SuppressWarnings("unchecked")
@@ -94,39 +97,26 @@ public final class RepCallback implements Callback {
         throw new Exception();
     }
 
-    private void sendResToMain(final boolean isSuccess) {
-        Runnable runnable = new Runnable() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public void run() {
-                if (isSuccess) {
-                    if (httpData != null) {
-                        httpData.onSuccess(obj.get(0), obj.get(1).toString());
-                    } else {
-                        BusProvider.getInstance().post(new SuccessRep(obj));
-                    }
+    @SuppressWarnings("unchecked")
+    private void sendResToMain(boolean isSuccess) {
+        Runnable runnable = () -> {
+            if (isSuccess) {
+                if (httpData != null) {
+                    httpData.onSuccess(obj.get(0), obj.get(1).toString());
                 } else {
-                    if (httpData != null) {
-                        httpData.onFailure(ERROR_CODE_0, obj.get(0).toString());
-                    } else {
-                        BusProvider.getInstance().post(new ErrorRep(ERROR_CODE_0, obj.get(0).toString()));
-                    }
+                    BusProvider.getInstance().post(new SuccessRep(obj));
+                }
+            } else {
+                if (httpData != null) {
+                    httpData.onFailure(ERROR_CODE_0, obj.get(0).toString());
+                } else {
+                    BusProvider.getInstance().post(new ErrorRep(ERROR_CODE_0, obj.get(0).toString()));
                 }
             }
         };
 
-        if (lifeful != null) {
-            getHandler().post(new LifefulRunnable(new Runnable() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public void run() {
-                    if (isSuccess) {
-                        httpData.onSuccess(obj.get(0), obj.get(1).toString());
-                    } else {
-                        httpData.onFailure(ERROR_CODE_0, obj.get(0).toString());
-                    }
-                }
-            }, lifeful));
+        if (httpData != null && httpData.lifeful() != null) {
+            getHandler().post(new LifefulRunnable(runnable, httpData.lifeful()));
         } else {
             getHandler().post(runnable);
         }
@@ -176,9 +166,11 @@ public final class RepCallback implements Callback {
 
     public interface OkCallbackListener<T> {
 
-        void onSuccess(T data, String resBody);
+        void onSuccess(T data, String resBody); //成功返回
 
-        void onFailure(int errorCode, String msg);
+        void onFailure(int errorCode, String msg); //反馈失败
+
+        Lifeful lifeful();  //生命监控
     }
 
     public static final class Builder {
@@ -187,7 +179,6 @@ public final class RepCallback implements Callback {
         private Mapper mapper;                  //数据交接
         private Class clazz;                    //实体模型
         private Class<? extends JsonEntity> templateClazz;         //解析模板
-        private Lifeful lifeful;
 
         public Builder setListener(OkCallbackListener httpData) {
             this.httpData = httpData;
@@ -209,14 +200,9 @@ public final class RepCallback implements Callback {
             return this;
         }
 
-        public Builder setLifeful(Lifeful lifeful) {
-            this.lifeful = lifeful;
-            return this;
-        }
-
         public RepCallback build() {
             if (mapper != null && clazz != null && templateClazz != null) {
-                return new RepCallback(httpData, mapper, clazz, templateClazz, lifeful);
+                return new RepCallback(httpData, mapper, clazz, templateClazz);
             } else if (templateClazz != null) {
                 return new RepCallback(httpData, templateClazz);
             } else {

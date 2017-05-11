@@ -14,6 +14,10 @@ public class ToastUtil {
 
     private static Toast toast;
 
+    private ToastUtil() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
     //Toast显示（短时间）
     public static void showShort(Context context, String text) {
         if (toast == null) {

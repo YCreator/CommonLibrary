@@ -17,6 +17,10 @@ import java.util.List;
 
 public class AppHelper {
 
+    private AppHelper() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
     /**
      * 获取包信息
      *

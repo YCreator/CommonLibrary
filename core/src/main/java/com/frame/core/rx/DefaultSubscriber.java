@@ -3,17 +3,15 @@ package com.frame.core.rx;
 import com.frame.core.exception.ResponseException;
 import com.frame.core.util.TLog;
 
+import org.reactivestreams.Subscriber;
+
 /**
  *
  * Created by yzd on 2016/12/17 0017.
  */
 
-public abstract class DefaultSubscriber<T> extends rx.Subscriber<T> {
+public abstract class DefaultSubscriber<T> implements Subscriber<T> {
 
-    @Override
-    public void onCompleted() {
-
-    }
 
     @Override
     public void onError(Throwable e) {
