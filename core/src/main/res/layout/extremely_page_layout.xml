@@ -3,30 +3,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@id/tv_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_small"
-        android:textColor="@color/text_gray"
-        android:layout_centerInParent="true"
-        android:text="网络不给类，肿么办" />
-
-    <ImageView
-        android:id="@id/iv_tips"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dimen_xlarge"
-        android:layout_above="@id/tv_tips"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@id/btn_function"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tv_tips"
-        android:layout_marginTop="@dimen/dimen_xlarge"/>
+        <ImageView
+            android:id="@id/iv_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_tips"
+            android:layout_marginBottom="@dimen/dimen_xlarge"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@id/tv_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="网络不给类，肿么办"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/text_small" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_tips" />
+
+        <Button
+            android:id="@id/btn_function"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="@dimen/dimen_xlarge" />
+    </LinearLayout>
+
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,7 +73,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //setStatusStyle(getThemeColorId());
+        //setStatusStyle(Color.TRANSPARENT);
         super.onCreate(savedInstanceState);
         onBeforeSetContentLayout();
         StackManager.getStackManager().pushActivity(this);
@@ -89,7 +90,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
      * 初始化
      */
     protected void init() {
-
     }
 
     /**
@@ -191,30 +191,56 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     }
 
     protected void onBeforeSetContentLayout() {
-        //setStatusStyle(R.color.theme_color);
+       // setStatusStyle(Color.TRANSPARENT);
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }*/
     }
 
     protected void onBeforeFinish() {
 
     }
 
-    protected void setStatusStyle(@ColorRes int colorId) {
+    protected void setStatusStyle(@ColorInt int color) {
         //沉淀式状态栏
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            //setTranslucentStatus(true);
+            setTranslucentStatus(true);
             //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+           // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             //透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+          //  getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(colorId);
+            tintManager.setStatusBarTintColor(color);
             //  this.mainContent.setFitsSystemWindows(true);
             //  SystemBarTintManager.SystemBarConfig localSystemBarConfig = tintManager.getConfig();
             // this.mainContent.setPadding(0, localSystemBarConfig.getPixelInsetTop(true), 0, localSystemBarConfig.getPixelInsetBottom());
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //设置透明状态栏,这样才能让 ContentView 向上
+            /*getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(color);
+            ViewGroup mContentView = (ViewGroup) this.findViewById(Window.ID_ANDROID_CONTENT);
+            View mChildView = mContentView.getChildAt(0);
+            if (mChildView != null) {
+                //注意不是设置 ContentView 的 FitsSystemWindows, 而是设置 ContentView 的第一个子 View . 使其不为系统 View 预留空间.
+                ViewCompat.setFitsSystemWindows(mChildView, false);
+            }*/
+            getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
     }
-
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void setTranslucentStatus(boolean on) {

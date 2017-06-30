@@ -13,6 +13,8 @@ import com.frame.core.interf.IAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 /**
  *
  * Created by yzd on 2016/6/23.
@@ -78,6 +80,7 @@ public abstract class CommPagerAdapter<T> extends BasePagerAdapter<View> impleme
         }
         AdapterItem item = onCreateItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
+        ButterKnife.bind(item, view);
         view.setTag(R.id.viewPage, item);
         item.initItemViews(view);
         item.onSetViews();

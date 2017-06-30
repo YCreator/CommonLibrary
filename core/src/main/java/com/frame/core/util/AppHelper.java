@@ -7,6 +7,8 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
@@ -52,6 +54,7 @@ public class AppHelper {
      * param packageName 指定包名
      * return 是否运行
      */
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public static boolean isRunning(Context context, String packageName) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> infos = am.getRunningAppProcesses();
@@ -147,6 +150,10 @@ public class AppHelper {
             return false;
         }
         return true;
+    }
+
+    public static boolean checkPermission(Activity context, String permission) {
+        return ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED;
     }
 
     /**

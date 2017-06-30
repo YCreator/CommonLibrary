@@ -65,4 +65,40 @@ public class StorageUtils {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
+    public static File getOwnFilesDirectory(Context context, String cacheDir) {
+        File appCacheDir;
+        if (isSDcardExist()) {
+            appCacheDir = context.getExternalFilesDir(cacheDir);
+        } else {
+            appCacheDir = new File(context.getFilesDir(),cacheDir);
+        }
+        if (appCacheDir == null) {
+            if (isSDcardExist()) {
+                appCacheDir = new File(Environment.getExternalStorageDirectory(), cacheDir);
+            } else {
+                appCacheDir = new File(Environment.getRootDirectory(), cacheDir);
+            }
+        }
+        if (!appCacheDir.exists()) {
+            appCacheDir.mkdirs();
+        }
+        return appCacheDir;
+    }
+
+    public static File getOwnDataDirectory(Context context, String cacheDir) {
+        File appCacheDir = null;
+        if (isSDcardExist()) {
+            appCacheDir = new File(context.getExternalCacheDir(),cacheDir);
+            if (!appCacheDir.exists()) {
+                appCacheDir.mkdirs();
+            }
+        } else {
+            appCacheDir = new File(context.getCacheDir(),cacheDir);
+            if (!appCacheDir.exists()) {
+                appCacheDir.mkdirs();
+            }
+        }
+        return appCacheDir;
+    }
+
 }

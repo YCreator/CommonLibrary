@@ -2,6 +2,7 @@ package com.frame.core.base;
 
 import android.content.Context;
 
+import com.frame.core.BaseApplication;
 import com.frame.core.interf.presenter.BasePresenter;
 import com.frame.core.interf.view.BaseMvpView;
 import com.frame.core.rx.Lifeful;
@@ -16,11 +17,22 @@ public abstract class BaseMvpPresenter<T extends BaseMvpView> implements BasePre
     private T view;
     private Lifeful lifeful;
 
+    public BaseMvpPresenter(T view) {
+        this.view = view;
+    }
+
+    @Deprecated
     public BaseMvpPresenter(Context mContext, T view) {
         this.mContext = mContext;
         this.view = view;
     }
 
+    public BaseMvpPresenter(T view, Lifeful lifeful) {
+        this.view = view;
+        this.lifeful = lifeful;
+    }
+
+    @Deprecated
     public BaseMvpPresenter(Context mContext, T view, Lifeful lifeful) {
         this.mContext = mContext;
         this.view = view;
@@ -33,12 +45,13 @@ public abstract class BaseMvpPresenter<T extends BaseMvpView> implements BasePre
         getView().initListener();
     }
 
+    @Deprecated
     public Context getContext() {
         return mContext;
     }
 
     public Context getApplicationContext() {
-        return mContext.getApplicationContext();
+        return BaseApplication.get_context();
     }
 
     public T getView() {

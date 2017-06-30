@@ -71,10 +71,12 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
         this.isCanLoading = isCanLoadMore;
         if (itemView != null) {
             if (isCanLoadMore) {
+                itemView.setVisibility(View.VISIBLE);
                 ViewGroup.LayoutParams params = itemView.getLayoutParams();
                 params.height = gloaH / 12;
                 completeLoading();
             } else {
+                itemView.setVisibility(View.GONE);
                 ViewGroup.LayoutParams params = itemView.getLayoutParams();
                 params.height = gloaH;
                 nothing();

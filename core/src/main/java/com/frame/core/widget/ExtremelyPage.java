@@ -22,6 +22,7 @@ public class ExtremelyPage {
 
     private ImageView ivTips;
     private TextView tvTips;
+    private TextView tvSubtitle;
     private Button btnFunction;
 
     private View mView;
@@ -39,11 +40,13 @@ public class ExtremelyPage {
     private void initView() {
         ivTips = (ImageView) mView.findViewById(R.id.iv_tips);
         tvTips = (TextView) mView.findViewById(R.id.tv_tips);
+        tvSubtitle = (TextView) mView.findViewById(R.id.tv_subtitle);
         btnFunction = (Button) mView.findViewById(R.id.btn_function);
 
         ivTips.setVisibility(View.INVISIBLE);
         tvTips.setVisibility(View.INVISIBLE);
         btnFunction.setVisibility(View.INVISIBLE);
+        tvSubtitle.setVisibility(View.GONE);
     }
 
     public void bindDefaultParentView() {
@@ -82,6 +85,31 @@ public class ExtremelyPage {
 
     public void showButtonFunction(boolean isShow) {
         btnFunction.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    }
+
+    public void setTextViewSubtitle(String subtitle) {
+        tvSubtitle.setText(subtitle);
+        tvSubtitle.setVisibility(View.VISIBLE);
+    }
+
+    public TextView getMessgeView() {
+        return tvTips;
+    }
+
+    public ImageView getImageView() {
+        return ivTips;
+    }
+
+    public TextView getTvSubtitle() {
+        return tvSubtitle;
+    }
+
+    public Button getButton() {
+        return btnFunction;
+    }
+
+    public View getContentView() {
+        return mView;
     }
 
     public void show() {

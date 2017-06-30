@@ -43,4 +43,8 @@
     <dimen name="button_size">48dp</dimen>
     <dimen name="button_height_size">32dp</dimen>
     <dimen name="divide_size">5dp</dimen>
+
+    <dimen name="header_size">120dp</dimen>
+
+    <dimen name="item_image_size">120dp</dimen>
 </resources>

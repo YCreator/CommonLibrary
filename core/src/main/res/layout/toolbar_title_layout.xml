@@ -7,6 +7,7 @@
     android:layout_height="@dimen/button_size"
     android:minHeight="@dimen/button_size"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    style="@style/NoSpaceActionBarTheme"
     app:layout_scrollFlags="scroll|enterAlways|snap"
     app:titleTextAppearance="@style/Toolbar.TitleText" >
 
@@ -14,7 +15,7 @@
         android:id="@id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal"
+        android:textSize="@dimen/text_large"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:textColor="@android:color/white" />

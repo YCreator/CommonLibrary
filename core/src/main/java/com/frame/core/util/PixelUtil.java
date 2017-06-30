@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 
 import com.frame.core.BaseApplication;
 
@@ -22,9 +23,9 @@ public class PixelUtil {
      */
     public static int dip2px(Context context, float dipValue) {
 
-		/*return (int) TypedValue.applyDimension(1, dipValue
-                , context.getApplicationContext().getResources().getDisplayMetrics());*/
-        return (int) (dipValue * (context.getResources().getDisplayMetrics().densityDpi / 160) + 0.5f);
+		return (int) TypedValue.applyDimension(1, dipValue
+                , context.getApplicationContext().getResources().getDisplayMetrics());
+        //return (int) (dipValue * (context.getResources().getDisplayMetrics().densityDpi / 160) + 0.5f);
     }
 
     /**
@@ -34,10 +35,10 @@ public class PixelUtil {
      * return
      */
     public static int px2dip(Context context, float pxValue) {
-		/*return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, pxValue,
-				context.getApplicationContext().getResources().getDisplayMetrics());*/
-        return (int) (pxValue * 160 / context.getApplicationContext()
-                .getResources().getDisplayMetrics().density + 0.5f);
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, pxValue,
+				context.getApplicationContext().getResources().getDisplayMetrics());
+        /*return (int) (pxValue * 160 / context.getApplicationContext()
+                .getResources().getDisplayMetrics().density + 0.5f);*/
 
     }
 

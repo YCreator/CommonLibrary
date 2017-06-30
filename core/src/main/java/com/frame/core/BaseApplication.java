@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.blankj.utilcode.util.Utils;
 import com.frame.core.db.DatabaseManager;
 import com.frame.core.net.okhttp.CookiesManager;
 import com.frame.core.util.AppHelper;
@@ -33,6 +34,7 @@ public class BaseApplication extends Application {
 
     @Override
     public void onCreate() {
+        Utils.init(this);
         super.onCreate();
         _context = this.getApplicationContext();
         _resource = _context.getResources();

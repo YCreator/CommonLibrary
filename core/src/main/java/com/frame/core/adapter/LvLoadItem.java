@@ -40,7 +40,7 @@ public class LvLoadItem implements FootLoading {
     }
 
     public void bindListviewFoot(ListView listView) {
-        listView.addFooterView(itemView);
+        listView.addFooterView(itemView, null, false);
     }
 
     public void setBackground(@ColorInt  int colorInt) {
