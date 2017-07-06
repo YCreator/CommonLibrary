@@ -38,7 +38,7 @@
     </declare-styleable>
 
     <declare-styleable name="DRecyclerView">
-        <attr name="spanCount"/>
+        <attr name="spanCount" format="integer"/>
         <attr name="android:overScrollMode"/>
     </declare-styleable>
 

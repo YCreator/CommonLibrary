@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GsonUtil {
+public final class GsonUtil {
 
     private static final Logger log = Logger.getLogger("GsonUtil");
     public static final String EMPTY = "";

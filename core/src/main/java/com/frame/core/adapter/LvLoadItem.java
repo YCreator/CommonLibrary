@@ -55,6 +55,14 @@ public class LvLoadItem implements FootLoading {
         return isCanLoading;
     }
 
+    public void setText(String text) {
+        tv.setText(text);
+    }
+
+    public void setVisiableBar(boolean visiable) {
+        bar.setVisibility(visiable ? View.VISIBLE : View.GONE);
+    }
+
     /**
      * 第一页加载数据完成时调用的方法
      * @param isCanLoadMore

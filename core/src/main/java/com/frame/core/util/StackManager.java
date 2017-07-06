@@ -90,7 +90,7 @@ public class StackManager {
      */
     @SuppressWarnings("rawtypes")
     public void popOtherActivity(@NonNull Class cls) {
-        while(true) {
+        while (true) {
             Activity a1 = currentActivity();
             Activity a2 = lastActivity();
             if (a1 != null && !a1.getClass().equals(cls)) {
@@ -114,6 +114,20 @@ public class StackManager {
             if (activity == null) return;
             popActivity(activity);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Activity> T getActivtiy(@NonNull Class<T> cls) {
+        try {
+            for (Activity activity : activityStack) {
+                if (activity != null && activity.getClass().equals(cls)) {
+                    return (T) activity;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

@@ -58,6 +58,8 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
 
     protected int position;
 
+    protected boolean mIsVisibleToUser = false;
+
     protected BaseAppCompatActivity mContext;
 
     public void setPosition(int position) {
@@ -67,6 +69,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        mIsVisibleToUser = isVisibleToUser;
         TLog.i(TAG,"setUserVisibleHint====>"+isVisibleToUser+"====>"+position);
         if (isActivityCreated) {
             if (isVisibleToUser) {
@@ -161,7 +164,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
      */
     protected void onPageFirstVisible() {
         TLog.i(TAG,"onPageFirstVisible====>"+position);
-        if (getUserVisibleHint()) {
+        if (getUserVisibleHint() || mIsVisibleToUser) {
             onPageStart();
         }
     }
