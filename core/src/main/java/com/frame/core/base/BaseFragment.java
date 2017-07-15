@@ -121,7 +121,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
                 isFirstVisible = false;
                 onPageFirstVisible();
             }
-       // }
+        //}
         process(savedInstanceState);
     }
 

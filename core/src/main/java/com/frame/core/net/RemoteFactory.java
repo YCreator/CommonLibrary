@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * Created by yzd on 2016/5/20.
  */
-public class RemoteFactory {
+public final class RemoteFactory {
 
     private static RemoteFactory factory;
     private Map<String, Object> remoteMap;

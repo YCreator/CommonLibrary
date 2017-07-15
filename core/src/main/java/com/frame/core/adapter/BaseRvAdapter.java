@@ -158,4 +158,5 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter implements I
             notifyItemRangeChanged(toPosition, getItemCount() - toPosition);
         }
     }
+
 }

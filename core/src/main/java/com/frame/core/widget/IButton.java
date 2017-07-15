@@ -1,15 +1,15 @@
 package com.frame.core.widget;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 
 /**
  * 防快速点击的按钮
  * Created by yzd on 2017/2/7 0007.
  */
-public class IButton extends Button {
+public class IButton extends AppCompatButton {
 
     private long lastClickTime;
     private int delay = 1000;
@@ -37,6 +37,7 @@ public class IButton extends Button {
 
     /**
      * 设置延迟时间
+     *
      * @param delay
      */
     public void setDelay(int delay) {

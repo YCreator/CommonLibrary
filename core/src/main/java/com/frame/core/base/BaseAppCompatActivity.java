@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -37,6 +36,7 @@ import com.frame.core.rx.Lifeful;
 import com.frame.core.util.MyPreferences;
 import com.frame.core.util.StackManager;
 import com.frame.core.util.TLog;
+import com.jaeger.library.StatusBarUtil;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import butterknife.ButterKnife;
@@ -73,17 +73,66 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //setStatusStyle(Color.TRANSPARENT);
         super.onCreate(savedInstanceState);
         onBeforeSetContentLayout();
         StackManager.getStackManager().pushActivity(this);
         setContentView(initPageLayoutID());
         ButterKnife.bind(this);
         initActionBar();
+        setStatusBar();
         init();
         initPageView();
         initPageViewListener();
         process(savedInstanceState);
+    }
+
+    /**
+     * 返回主布局id
+     */
+    @LayoutRes
+    protected abstract int initPageLayoutID();
+
+    /**
+     * 初始化toolbar
+     */
+    @SuppressLint("PrivateResource")
+    protected void initActionBar() {
+        if (getActionBarToolbar() == null) {
+            return;
+        }
+        mActionBarToolbar.setBackgroundColor(getToolbarColor());
+        String title = getIntent().getStringExtra(EXTRA_TITLE);
+        if (mActionBarToolbar != null && !TextUtils.isEmpty(title) && getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+        if (hasBackActionbar() && getSupportActionBar() != null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBarToolbar.setNavigationIcon(setBackIcon() == 0 ? R.drawable.ic_arrow_back_white_18dp : setBackIcon());
+            mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onSupportNavigateUp();
+                }
+            });
+        }
+    }
+
+    protected Toolbar getActionBarToolbar() {
+        if (mActionBarToolbar == null) {
+            mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
+            if (mActionBarToolbar != null) {
+                setSupportActionBar(mActionBarToolbar);
+            }
+        }
+        return mActionBarToolbar;
+    }
+
+    /**
+     * 设置状态栏样式
+     */
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getToolbarColor());
     }
 
     /**
@@ -107,59 +156,17 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     }
 
     /**
-     * 返回主布局id
-     */
-    @LayoutRes
-    protected abstract int initPageLayoutID();
-
-    /**
-     * 初始化toolbar
-     */
-    @SuppressLint("PrivateResource")
-    protected void initActionBar() {
-        if (getActionBarToolbar() == null) {
-            return;
-        }
-        mActionBarToolbar.setBackgroundColor(getToolbarColor());
-        mActionBarToolbar.setNavigationIcon(setBackIcon() == 0 ? R.drawable.ic_arrow_back_white_18dp : setBackIcon());
-        mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSupportNavigateUp();
-            }
-        });
-        String title = getIntent().getStringExtra(EXTRA_TITLE);
-        if (mActionBarToolbar != null && !TextUtils.isEmpty(title) && getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
-        }
-
-        if (hasBackActionbar() && getSupportActionBar() != null) {
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    protected Toolbar getActionBarToolbar() {
-        if (mActionBarToolbar == null) {
-            mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
-            if (mActionBarToolbar != null) {
-                setSupportActionBar(mActionBarToolbar);
-            }
-        }
-        return mActionBarToolbar;
-    }
-
-    /**
      * 设置actionbar返回键
      *
      * @return
      */
     protected boolean hasBackActionbar() {
-        return false;
+        return true;
     }
 
     /**
      * 设置返回键图标
+     *
      * @return
      */
     @DrawableRes
@@ -169,11 +176,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @ColorInt
     protected int getToolbarColor() {
-        return this.getResources().getColor(getThemeColorId());
+        return this.getResources().getColor(R.color.colorPrimary);
     }
-
-    @ColorRes
-    protected abstract int getThemeColorId();
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -191,7 +195,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     }
 
     protected void onBeforeSetContentLayout() {
-       // setStatusStyle(Color.TRANSPARENT);
+        // setStatusStyle(Color.TRANSPARENT);
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -210,9 +214,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
             //透明状态栏
-           // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             //透明导航栏
-          //  getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            //  getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintColor(color);

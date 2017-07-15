@@ -6,10 +6,12 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.frame.core.R;
@@ -27,7 +29,7 @@ public class ExtremelyPage {
 
     private View mView;
     private Context mContext;
-    private FrameLayout frameLayout;
+    private ViewGroup frameLayout;
 
     private boolean shown;
 
@@ -64,6 +66,10 @@ public class ExtremelyPage {
     public void bindFragmentView(View view) {
         if (view instanceof FrameLayout) {
             frameLayout = (FrameLayout) view;
+        } else if (view.getParent() instanceof FrameLayout) {
+            frameLayout = (FrameLayout) view.getParent();
+        } else if (view instanceof RelativeLayout) {
+            frameLayout = (RelativeLayout) view;
         }
     }
 
