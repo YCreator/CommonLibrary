@@ -17,6 +17,8 @@ public class GsonFactory {
                 .registerTypeAdapter(double.class, new DoubleDefaultAdapter())
                 .registerTypeAdapter(Long.class, new LongDefaultAdapter())
                 .registerTypeAdapter(long.class, new LongDefaultAdapter())
+                .registerTypeAdapter(Boolean.class, new BooleanDefaultAdapter())
+                .registerTypeAdapter(boolean.class, new BooleanDefaultAdapter())
                 .create();
     }
 }

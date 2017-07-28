@@ -2,9 +2,11 @@ package com.frame.core.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -19,11 +21,20 @@ public class NetWorkUtil {
     public static boolean isNetWorkAvailable(Context context) {
         ConnectivityManager connectivity = getConnectManager(context.getApplicationContext());
         if (connectivity != null) {
-            NetworkInfo[] infos = connectivity.getAllNetworkInfo();
-            if (infos != null) {
-                for (NetworkInfo info : infos) {
-                    if (info.getState() == NetworkInfo.State.CONNECTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Network[] networks = connectivity.getAllNetworks();
+                for (Network network : networks) {
+                    if (connectivity.getNetworkInfo(network).isConnected()) {
                         return true;
+                    }
+                }
+            } else {
+                NetworkInfo[] infos = connectivity.getAllNetworkInfo();
+                if (infos != null) {
+                    for (NetworkInfo info : infos) {
+                        if (info.getState() == NetworkInfo.State.CONNECTED) {
+                            return true;
+                        }
                     }
                 }
             }

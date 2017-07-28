@@ -570,7 +570,7 @@ public final class ImageTools {
         intent.putExtra("outputX", outputX);
         intent.putExtra("outputY", outputY);
         intent.putExtra("outputFormat", "JPEG");
-        intent.putExtra("scale", true);
+        intent.putExtra("scale", false);
         intent.putExtra("scaleUpIfNeeded", true);
         intent.putExtra("noFaceDetection", true);
         intent.putExtra("return-data", false);
