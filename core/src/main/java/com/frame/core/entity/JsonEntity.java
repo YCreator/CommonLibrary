@@ -1,6 +1,6 @@
 package com.frame.core.entity;
 
-import com.google.gson.Gson;
+import com.frame.core.gson.GsonFactory;
 import com.google.gson.JsonSyntaxException;
 
 import java.lang.reflect.ParameterizedType;
@@ -21,7 +21,7 @@ public abstract class JsonEntity {
     public abstract String getMessage();
 
     public static JsonEntity fromJson(String json, Class<? extends JsonEntity> conClazz) throws JsonSyntaxException {
-        return new Gson().fromJson(json, conClazz);
+        return GsonFactory.getGson().fromJson(json, conClazz);
     }
 
     /**
@@ -31,9 +31,8 @@ public abstract class JsonEntity {
      * @return
      */
     public String toJson(Class<?> clazz, Class conClazz) {
-        Gson gson = new Gson();
         Type objectType = type(conClazz, clazz);
-        return gson.toJson(this, objectType);
+        return GsonFactory.getGson().toJson(this, objectType);
     }
 
     /**
@@ -46,9 +45,8 @@ public abstract class JsonEntity {
      * @throws JsonSyntaxException
      */
     public static <T> T fromJson(String json, Class clazz, Class conClazz) throws JsonSyntaxException {
-        Gson gson = new Gson();
         Type objectType = type(conClazz, clazz);
-        return gson.fromJson(json, objectType);
+        return GsonFactory.getGson().fromJson(json, objectType);
     }
 
     private static ParameterizedType type (final Class raw, final Type... args) {

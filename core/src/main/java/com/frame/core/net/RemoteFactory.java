@@ -18,12 +18,10 @@ import java.util.Map;
 public final class RemoteFactory {
 
     private static RemoteFactory factory;
-    private Map<String, Object> remoteMap;
-    private Context mContext;
+    private final Map<String, Object> remoteMap;
 
     private RemoteFactory() {
         this.remoteMap = new HashMap<>();
-        this.mContext = BaseApplication.get_context();
     }
 
     public static RemoteFactory getInstance() {
@@ -31,6 +29,23 @@ public final class RemoteFactory {
             factory = new RemoteFactory();
         }
         return factory;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T achieveObj(Class<T> implClazz) throws InstanceFactoryException {
+        String simpleName = implClazz.getSimpleName();
+        if (remoteMap.containsKey(simpleName)) {
+            return (T) remoteMap.get(simpleName);
+        }
+        try {
+            T t = implClazz.newInstance();
+            remoteMap.put(simpleName, t);
+            return t;
+        } catch (InstantiationException e) {
+            throw new InstanceFactoryException("需被实例化的类不符合要求");
+        } catch (IllegalAccessException e) {
+            throw new InstanceFactoryException("需被实例化的类构造函数不可访问");
+        }
     }
 
     /**
@@ -51,7 +66,7 @@ public final class RemoteFactory {
         try {
             Constructor<T> c = implClazz.getDeclaredConstructor(Context.class);
             c.setAccessible(true);
-            T t = c.newInstance(mContext);
+            T t = c.newInstance(BaseApplication.get_context());
             remoteMap.put(simpleName, t);
             return t;
         } catch (InstantiationException e) {

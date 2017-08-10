@@ -108,7 +108,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onSupportNavigateUp();
+                    finishPage();
                 }
             });
         }
@@ -180,6 +180,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         onBeforeFinish();
         finish();
         return super.onSupportNavigateUp();
+    }
+
+    public void finishPage() {
+        onBeforeFinish();
+        finish();
     }
 
     protected void onBeforeSetContentLayout() {
@@ -288,7 +293,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            onSupportNavigateUp();
+            finishPage();
         }
         return false;
     }

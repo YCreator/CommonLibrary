@@ -9,6 +9,8 @@ import com.google.gson.GsonBuilder;
 
 public class GsonFactory {
 
+    private static Gson mGson;
+
     public static Gson buildGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(Integer.class, new IntegerDefaultAdapter())
@@ -20,5 +22,12 @@ public class GsonFactory {
                 .registerTypeAdapter(Boolean.class, new BooleanDefaultAdapter())
                 .registerTypeAdapter(boolean.class, new BooleanDefaultAdapter())
                 .create();
+    }
+
+    public static Gson getGson() {
+        if (mGson == null) {
+            mGson = buildGson();
+        }
+        return mGson;
     }
 }
