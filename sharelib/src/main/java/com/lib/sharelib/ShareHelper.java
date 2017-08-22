@@ -14,6 +14,7 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.utils.Log;
 
 import java.io.File;
@@ -46,7 +47,7 @@ public final class ShareHelper {
     }
 
     public ShareHelper setSina(String id, String secret) {
-        PlatformConfig.setSinaWeibo(id, secret);
+        PlatformConfig.setSinaWeibo(id, secret, "http://sns.whalecloud.com");
         return this;
     }
 
@@ -88,18 +89,41 @@ public final class ShareHelper {
      * @param entity
      * @param platform
      */
-    public void share(Activity activity, ShareEntity entity, SHARE_MEDIA platform) {
+    /*public void share(Activity activity, ShareEntity entity, SHARE_MEDIA platform) {
         new ShareAction(activity)
                 .setPlatform(platform)
                 .withText(entity.getText())
-                .withTitle(entity.getTitle())
+                .withSubject(entity.getTitle())
                 .withTargetUrl(entity.getTargetUrl())
                 .withMedia(entity.getImage())
+                .setCallback(umShareListener)
+                .share();
+    }*/
+    /**
+     * 友盟分享链接
+     *
+     * @param activity
+     * @param entity
+     * @param platform
+     */
+    public void shareWeb(Activity activity, ShareEntity entity, SHARE_MEDIA platform) {
+        UMWeb web = new UMWeb(entity.getTargetUrl());
+        web.setTitle(entity.getTitle());
+        web.setDescription(entity.getText());
+        web.setThumb(entity.getImage());
+        new ShareAction(activity)
+                .withMedia(web)
+                .setPlatform(platform)
                 .setCallback(umShareListener)
                 .share();
     }
 
     private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
         @Override
         public void onResult(SHARE_MEDIA platform) {
             Log.d("plat", "platform" + platform);

@@ -73,10 +73,10 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
         TLog.i(TAG,"setUserVisibleHint====>"+isVisibleToUser+"====>"+position);
         if (isActivityCreated) {
             if (isVisibleToUser) {
-               /* if (isFirstVisible) {
+                if (isFirstVisible) {
                     isFirstVisible = false;
                     onPageFirstVisible();
-                }*/
+                }
                 onPageStart();
             } else {
                 onPageEnd();
@@ -116,12 +116,13 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
         TLog.i(TAG,"onActivityCreated====>"+position+"_"+getUserVisibleHint());
         super.onActivityCreated(savedInstanceState);
         isActivityCreated = true;
-       // if (getUserVisibleHint()) {
+        if (getUserVisibleHint() || mIsVisibleToUser) {
             if (isFirstVisible) {
                 isFirstVisible = false;
                 onPageFirstVisible();
+                onPageStart();
             }
-        //}
+        }
         process(savedInstanceState);
     }
 
@@ -164,9 +165,6 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
      */
     protected void onPageFirstVisible() {
         TLog.i(TAG,"onPageFirstVisible====>"+position);
-        if (getUserVisibleHint() || mIsVisibleToUser) {
-            onPageStart();
-        }
     }
 
     /**

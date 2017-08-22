@@ -71,4 +71,17 @@ public class WpayEntity implements Serializable {
     public void setSign(String sign) {
         this.sign = sign;
     }
+
+    @Override
+    public String toString() {
+        return "WpayEntity{" +
+                "appId='" + appId + '\'' +
+                ", partnerId='" + partnerId + '\'' +
+                ", prepayId='" + prepayId + '\'' +
+                ", packageValue='" + packageValue + '\'' +
+                ", nonceStr='" + nonceStr + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", sign='" + sign + '\'' +
+                '}';
+    }
 }

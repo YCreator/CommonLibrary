@@ -74,7 +74,7 @@ public class AuthHelper {
         });
     }
 
-    interface TaobaoLoginCallback {
+    public interface TaobaoLoginCallback {
 
         void onSuccess(Session session);
 
