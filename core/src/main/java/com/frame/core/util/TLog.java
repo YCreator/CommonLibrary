@@ -17,6 +17,11 @@ public class TLog {
             Log.d(LOG_TAG, paramString);
     }
 
+    public static void analytics(String paramString1, String paramString) {
+        if (DEBUG)
+            Log.d(paramString1, paramString);
+    }
+
     public static void e(String paramString) {
         if (DEBUG)
             Log.e(LOG_TAG, paramString);

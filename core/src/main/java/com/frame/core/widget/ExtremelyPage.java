@@ -52,7 +52,7 @@ public class ExtremelyPage {
     }
 
     public void bindDefaultParentView() {
-        bindParentViewById(R.id.content_view);
+        bindParentViewById(android.R.id.content);
     }
 
     public void bindParentViewById(@IdRes int layoutId) {
@@ -60,6 +60,8 @@ public class ExtremelyPage {
         ViewParent viewParent = view.getParent();
         if (viewParent instanceof FrameLayout) {
             frameLayout = (FrameLayout) viewParent;
+        } else if (viewParent instanceof ViewGroup) {
+            frameLayout = (ViewGroup) viewParent;
         }
     }
 

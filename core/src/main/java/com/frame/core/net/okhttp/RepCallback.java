@@ -10,6 +10,7 @@ import com.frame.core.interf.Mapper;
 import com.frame.core.rx.Lifeful;
 import com.frame.core.rx.LifefulRunnable;
 import com.frame.core.util.BusProvider;
+import com.frame.core.util.TLog;
 
 import java.io.IOException;
 
@@ -138,6 +139,7 @@ public final class RepCallback implements Callback {
             try {
                 isSuccess = analyzeJson(entityBody);
             } catch (Exception e) {
+                TLog.analytics("okHttp", e.getMessage());
                 isSuccess = false;
                 obj.put(0, ERROR_MSG_2);
                 e.printStackTrace();
