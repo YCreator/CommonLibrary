@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/com.frame.core"
     android:id="@id/toolbar"
     android:layout_width="match_parent"
+    android:background="#2b2b2b"
     android:layout_height="@dimen/button_size"
     android:minHeight="@dimen/button_size"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
