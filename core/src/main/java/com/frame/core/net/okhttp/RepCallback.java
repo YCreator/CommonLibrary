@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
 import com.frame.core.entity.JsonEntity;
+import com.frame.core.exception.ResponseException;
 import com.frame.core.interf.Mapper;
 import com.frame.core.rx.Lifeful;
 import com.frame.core.rx.LifefulRunnable;
@@ -30,9 +31,9 @@ public final class RepCallback implements Callback {
     public static final String ERROR_MSG_1 = "服务器繁忙";
     public static final String ERROR_MSG_2 = "数据异常";
     public static final String ERROR_MSG_3 = "网络连接中断";
-    public static final int ERROR_CODE_0 = 0; //服务器返回的错误类型
-    public static final int ERROR_CODE_1 = 1; //网络异常返回的错误类型
-    public static final int ERROR_CODE_2 = 2; //其他异常返回的错误类型
+    public static final int ERROR_CODE_0 = 0; //服务器返回的错误类型(网络状态200时返回服务器自定义的错误)
+    public static final int ERROR_CODE_1 = 1; //网络异常返回的错误类型(网络状态不等于200时返回异常)
+    public static final int ERROR_CODE_2 = 2; //其他异常返回的错误类型(网络状态200时数据结构解析异常)
     private final SparseArray<Object> obj;
     private OkCallbackListener httpData;
     private Mapper mapper;
@@ -89,13 +90,14 @@ public final class RepCallback implements Callback {
             } else if (data.isSuccess() && data instanceof JsonEntity.Data) {
                 obj.put(0, mapper.transformEntity(((JsonEntity.Data) data).getData()));
             } else if (data.isSuccess() && clazz != null) {
-                throw new Exception("模板中未实现相应的接口");
+                throw new ResponseException(ERROR_CODE_2, "模板中未实现相应的接口");
             } else if (!data.isSuccess()) {
                 obj.put(0, data.getMessage());
+                obj.put(2, ERROR_CODE_0);
             }
             return data.isSuccess();
         }
-        throw new Exception();
+        throw new ResponseException(ERROR_CODE_2, "数据异常");
     }
 
     @SuppressWarnings("unchecked")
@@ -109,9 +111,9 @@ public final class RepCallback implements Callback {
                 }
             } else {
                 if (httpData != null) {
-                    httpData.onFailure(ERROR_CODE_0, obj.get(0).toString());
+                    httpData.onFailure(obj.get(2) != null ? (int) obj.get(2) : ERROR_CODE_2, obj.get(0).toString());
                 } else {
-                    BusProvider.getInstance().post(new ErrorRep(ERROR_CODE_0, obj.get(0).toString()));
+                    BusProvider.getInstance().post(new ErrorRep(obj.get(2) != null ? (int) obj.get(2) : ERROR_CODE_2, obj.get(0).toString()));
                 }
             }
         };
@@ -126,6 +128,7 @@ public final class RepCallback implements Callback {
     @Override
     public void onFailure(Call call, IOException e) {
         obj.put(0, ERROR_MSG_1);
+        obj.put(2, ERROR_CODE_1);
         sendResToMain(false);
         e.printStackTrace();
     }
@@ -135,18 +138,25 @@ public final class RepCallback implements Callback {
         boolean isSuccess;
         if (response.isSuccessful()) {
             String entityBody = response.body().string();
-            obj.put(1, entityBody);
             try {
                 isSuccess = analyzeJson(entityBody);
+                obj.put(1, entityBody);
+            } catch (ResponseException e) {
+                TLog.analytics("okHttp", e.getMessage());
+                isSuccess = false;
+                obj.put(0, e.getMessage());
+                obj.put(2, e.getErrorCode());
             } catch (Exception e) {
                 TLog.analytics("okHttp", e.getMessage());
                 isSuccess = false;
                 obj.put(0, ERROR_MSG_2);
+                obj.put(2, ERROR_CODE_2);
                 e.printStackTrace();
             }
         } else {
             isSuccess = false;
             obj.put(0, ERROR_MSG_1);
+            obj.put(2, ERROR_CODE_1);
         }
         sendResToMain(isSuccess);
     }
