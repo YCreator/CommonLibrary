@@ -18,4 +18,5 @@ public interface Mapper<T, K> {
 
     Collection<K> transformBeanCollection(Collection<T> obj) throws Exception;
 
+    Class<K> getEntityClass();
 }

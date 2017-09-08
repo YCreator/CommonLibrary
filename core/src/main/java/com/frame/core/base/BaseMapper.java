@@ -39,4 +39,10 @@ public abstract class BaseMapper<T, K> implements Mapper<T, K> {
     public K transformBean(T obj) throws Exception {
         return null;
     }
+
+    /*@Override
+    public Class<K> getEntityClass() {
+        return null;
+    }*/
+
 }

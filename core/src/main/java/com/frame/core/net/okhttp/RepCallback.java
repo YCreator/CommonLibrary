@@ -6,11 +6,13 @@ import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
 import com.frame.core.entity.JsonEntity;
+import com.frame.core.exception.InstanceFactoryException;
 import com.frame.core.exception.ResponseException;
 import com.frame.core.interf.Mapper;
 import com.frame.core.rx.Lifeful;
 import com.frame.core.rx.LifefulRunnable;
 import com.frame.core.util.BusProvider;
+import com.frame.core.util.MapperFactory;
 import com.frame.core.util.TLog;
 
 import java.io.IOException;
@@ -67,12 +69,25 @@ public final class RepCallback implements Callback {
         this.templateClazz = templateClazz;
     }
 
+    private RepCallback(@NonNull OkCallbackListener httpData, @NonNull Class<? extends Mapper> mapperClazz, Class clazz
+            , @NonNull Class<? extends JsonEntity> templateClazz) {
+        obj = new SparseArray<>();
+        this.httpData = httpData;
+        try {
+            this.mapper = MapperFactory.getInstance().achieveObj(mapperClazz);
+            this.clazz = clazz != null ? clazz : this.mapper.getEntityClass();
+        } catch (InstanceFactoryException e) {
+            e.printStackTrace();
+        }
+        this.templateClazz = templateClazz;
+    }
+
     private RepCallback(@NonNull OkCallbackListener httpData, @NonNull Mapper mapper
             , Class clazz, @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
         this.mapper = mapper;
-        this.clazz = clazz;
+        this.clazz = clazz != null ? clazz : mapper.getEntityClass();
         this.templateClazz = templateClazz;
     }
 
@@ -190,6 +205,7 @@ public final class RepCallback implements Callback {
         private OkCallbackListener httpData;    //回调监听
         private Mapper mapper;                  //数据交接
         private Class clazz;                    //实体模型
+        private Class<? extends Mapper> mapperClazz;                //映射类
         private Class<? extends JsonEntity> templateClazz;         //解析模板
 
         public Builder setListener(OkCallbackListener httpData) {
@@ -207,14 +223,21 @@ public final class RepCallback implements Callback {
             return this;
         }
 
+        public Builder setMapperClass(Class<? extends Mapper> mapperClazz) {
+            this.mapperClazz = mapperClazz;
+            return this;
+        }
+
         public Builder setTempletClass(Class<? extends JsonEntity> templateClazz) {
             this.templateClazz = templateClazz;
             return this;
         }
 
         public RepCallback build() {
-            if (mapper != null && clazz != null && templateClazz != null) {
+            if (mapper != null && templateClazz != null) {
                 return new RepCallback(httpData, mapper, clazz, templateClazz);
+            } else if (mapperClazz != null && templateClazz != null) {
+                return new RepCallback(httpData, mapperClazz, clazz, templateClazz);
             } else if (templateClazz != null) {
                 return new RepCallback(httpData, templateClazz);
             } else {
