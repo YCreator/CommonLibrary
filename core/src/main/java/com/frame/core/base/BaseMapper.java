@@ -40,9 +40,9 @@ public abstract class BaseMapper<T, K> implements Mapper<T, K> {
         return null;
     }
 
-    /*@Override
+    @Override
     public Class<K> getEntityClass() {
         return null;
-    }*/
+    }
 
 }
