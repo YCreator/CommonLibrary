@@ -10,24 +10,20 @@ import com.frame.core.exception.InstanceFactoryException;
 import com.frame.core.exception.ResponseException;
 import com.frame.core.interf.Mapper;
 import com.frame.core.rx.Lifeful;
-import com.frame.core.rx.LifefulRunnable;
 import com.frame.core.util.BusProvider;
 import com.frame.core.util.MapperFactory;
 import com.frame.core.util.TLog;
 
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
- * 远程服务器数据回调
- * Created by Administrator on 2015/10/16.
+ * Created by yzd on 2017/9/14 0014.
  */
-public final class RepCallback implements Callback {
 
-    private static final String TAG = RepCallback.class.getSimpleName();
+public class RespCallback implements Callback<ResponseBody> {
 
     private static CustomHandler handler;
     public static final String ERROR_MSG_1 = "服务器繁忙";
@@ -37,14 +33,14 @@ public final class RepCallback implements Callback {
     public static final int ERROR_CODE_1 = 1; //网络异常返回的错误类型(网络状态不等于200时返回异常)
     public static final int ERROR_CODE_2 = 2; //其他异常返回的错误类型(网络状态200时数据结构解析异常)
     private final SparseArray<Object> obj;
-    private OkCallbackListener httpData;
+    private CallbackListener httpData;
     private Mapper mapper;
     private Class clazz;
     private Class<? extends JsonEntity> templateClazz;
 
-    private RepCallback() {
+    private RespCallback() {
         obj = new SparseArray<>();
-        httpData = new OkCallbackListener() {
+        httpData = new CallbackListener() {
             @Override
             public void onSuccess(Object data, String resBody) {
 
@@ -62,14 +58,14 @@ public final class RepCallback implements Callback {
         };
     }
 
-    private RepCallback(@NonNull OkCallbackListener httpData
+    private RespCallback(@NonNull CallbackListener httpData
             , @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
         this.templateClazz = templateClazz;
     }
 
-    private RepCallback(@NonNull OkCallbackListener httpData, @NonNull Class<? extends Mapper> mapperClazz, Class clazz
+    private RespCallback(@NonNull CallbackListener httpData, @NonNull Class<? extends Mapper> mapperClazz, Class clazz
             , @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
@@ -82,13 +78,49 @@ public final class RepCallback implements Callback {
         this.templateClazz = templateClazz;
     }
 
-    private RepCallback(@NonNull OkCallbackListener httpData, @NonNull Mapper mapper
+    private RespCallback(@NonNull CallbackListener httpData, @NonNull Mapper mapper
             , Class clazz, @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
         this.mapper = mapper;
         this.clazz = clazz != null ? clazz : mapper.getEntityClass();
         this.templateClazz = templateClazz;
+    }
+
+    @Override
+    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        boolean isSuccess;
+        if (response.isSuccessful()) {
+            try {
+                String entityBody = response.body().string();
+                isSuccess = analyzeJson(entityBody);
+                obj.put(1, entityBody);
+            } catch (ResponseException e) {
+                TLog.analytics("okHttp", e.getMessage());
+                isSuccess = false;
+                obj.put(0, e.getMessage());
+                obj.put(2, e.getErrorCode());
+            } catch (Exception e) {
+                TLog.analytics("okHttp", e.getMessage());
+                isSuccess = false;
+                obj.put(0, ERROR_MSG_2);
+                obj.put(2, ERROR_CODE_2);
+                e.printStackTrace();
+            }
+        } else {
+            isSuccess = false;
+            obj.put(0, ERROR_MSG_1);
+            obj.put(2, ERROR_CODE_1);
+        }
+        sendResToMain(isSuccess);
+    }
+
+    @Override
+    public void onFailure(Call<ResponseBody> call, Throwable t) {
+        obj.put(0, ERROR_MSG_1);
+        obj.put(2, ERROR_CODE_1);
+        sendResToMain(false);
+        t.printStackTrace();
     }
 
     @SuppressWarnings("unchecked")
@@ -120,6 +152,7 @@ public final class RepCallback implements Callback {
         Runnable runnable = () -> {
             if (isSuccess) {
                 if (httpData != null) {
+                    TLog.i("time", Looper.myLooper() != Looper.getMainLooper());
                     httpData.onSuccess(obj.get(0), obj.get(1).toString());
                 } else {
                     BusProvider.getInstance().post(new SuccessRep(obj));
@@ -132,49 +165,13 @@ public final class RepCallback implements Callback {
                 }
             }
         };
-
-        if (httpData != null && httpData.lifeful() != null) {
+        TLog.i("time", Looper.myLooper() != Looper.getMainLooper());
+        runnable.run();
+        /*if (httpData != null && httpData.lifeful() != null) {
             getHandler().post(new LifefulRunnable(runnable, httpData.lifeful()));
         } else {
             getHandler().post(runnable);
-        }
-    }
-
-    @Override
-    public void onFailure(Call call, IOException e) {
-        obj.put(0, ERROR_MSG_1);
-        obj.put(2, ERROR_CODE_1);
-        sendResToMain(false);
-        e.printStackTrace();
-    }
-
-    @Override
-    public void onResponse(Call call, Response response) throws IOException {
-        TLog.i("time", Looper.myLooper() != Looper.getMainLooper());
-        boolean isSuccess;
-        if (response.isSuccessful()) {
-            String entityBody = response.body().string();
-            try {
-                isSuccess = analyzeJson(entityBody);
-                obj.put(1, entityBody);
-            } catch (ResponseException e) {
-                TLog.analytics("okHttp", e.getMessage());
-                isSuccess = false;
-                obj.put(0, e.getMessage());
-                obj.put(2, e.getErrorCode());
-            } catch (Exception e) {
-                TLog.analytics("okHttp", e.getMessage());
-                isSuccess = false;
-                obj.put(0, ERROR_MSG_2);
-                obj.put(2, ERROR_CODE_2);
-                e.printStackTrace();
-            }
-        } else {
-            isSuccess = false;
-            obj.put(0, ERROR_MSG_1);
-            obj.put(2, ERROR_CODE_1);
-        }
-        sendResToMain(isSuccess);
+        }*/
     }
 
     private static class CustomHandler extends Handler {
@@ -184,7 +181,7 @@ public final class RepCallback implements Callback {
     }
 
     private static Handler getHandler() {
-        synchronized (RepCallback.class) {
+        synchronized (RespCallback.class) {
             if (handler == null) {
                 handler = new CustomHandler();
             }
@@ -192,7 +189,7 @@ public final class RepCallback implements Callback {
         }
     }
 
-    public interface OkCallbackListener<T> {
+    public interface CallbackListener<T> {
 
         void onSuccess(T data, String resBody); //成功返回
 
@@ -203,13 +200,13 @@ public final class RepCallback implements Callback {
 
     public static final class Builder {
 
-        private OkCallbackListener httpData;    //回调监听
+        private CallbackListener httpData;    //回调监听
         private Mapper mapper;                  //数据交接
         private Class clazz;                    //实体模型
         private Class<? extends Mapper> mapperClazz;                //映射类
         private Class<? extends JsonEntity> templateClazz;         //解析模板
 
-        public Builder setListener(OkCallbackListener httpData) {
+        public Builder setListener(CallbackListener httpData) {
             this.httpData = httpData;
             return this;
         }
@@ -234,19 +231,16 @@ public final class RepCallback implements Callback {
             return this;
         }
 
-        public RepCallback build() {
+        public RespCallback build() {
             if (mapper != null && templateClazz != null) {
-                return new RepCallback(httpData, mapper, clazz, templateClazz);
+                return new RespCallback(httpData, mapper, clazz, templateClazz);
             } else if (mapperClazz != null && templateClazz != null) {
-                return new RepCallback(httpData, mapperClazz, clazz, templateClazz);
+                return new RespCallback(httpData, mapperClazz, clazz, templateClazz);
             } else if (templateClazz != null) {
-                return new RepCallback(httpData, templateClazz);
+                return new RespCallback(httpData, templateClazz);
             } else {
-                return new RepCallback();
+                return new RespCallback();
             }
         }
     }
-
 }
-
-
