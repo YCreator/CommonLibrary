@@ -10,20 +10,24 @@ import com.frame.core.exception.InstanceFactoryException;
 import com.frame.core.exception.ResponseException;
 import com.frame.core.interf.Mapper;
 import com.frame.core.rx.Lifeful;
+import com.frame.core.rx.LifefulRunnable;
 import com.frame.core.util.BusProvider;
 import com.frame.core.util.MapperFactory;
 import com.frame.core.util.TLog;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
- * Created by yzd on 2017/9/14 0014.
+ * 远程服务器数据回调
+ * Created by Administrator on 2015/10/16.
  */
+public final class RespCallback implements Callback {
 
-public class RespCallback implements Callback<ResponseBody> {
+    private static final String TAG = RepCallback.class.getSimpleName();
 
     private static CustomHandler handler;
     public static final String ERROR_MSG_1 = "服务器繁忙";
@@ -33,16 +37,16 @@ public class RespCallback implements Callback<ResponseBody> {
     public static final int ERROR_CODE_1 = 1; //网络异常返回的错误类型(网络状态不等于200时返回异常)
     public static final int ERROR_CODE_2 = 2; //其他异常返回的错误类型(网络状态200时数据结构解析异常)
     private final SparseArray<Object> obj;
-    private CallbackListener httpData;
+    private OkCallbackListener httpData;
     private Mapper mapper;
     private Class clazz;
     private Class<? extends JsonEntity> templateClazz;
 
     private RespCallback() {
         obj = new SparseArray<>();
-        httpData = new CallbackListener() {
+        httpData = new OkCallbackListener() {
             @Override
-            public void onSuccess(Object data, String resBody) {
+            public void onSuccess(Object data, JsonEntity resBody) {
 
             }
 
@@ -58,14 +62,14 @@ public class RespCallback implements Callback<ResponseBody> {
         };
     }
 
-    private RespCallback(@NonNull CallbackListener httpData
+    private RespCallback(@NonNull OkCallbackListener httpData
             , @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
         this.templateClazz = templateClazz;
     }
 
-    private RespCallback(@NonNull CallbackListener httpData, @NonNull Class<? extends Mapper> mapperClazz, Class clazz
+    private RespCallback(@NonNull OkCallbackListener httpData, @NonNull Class<? extends Mapper> mapperClazz, Class clazz
             , @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
@@ -78,7 +82,7 @@ public class RespCallback implements Callback<ResponseBody> {
         this.templateClazz = templateClazz;
     }
 
-    private RespCallback(@NonNull CallbackListener httpData, @NonNull Mapper mapper
+    private RespCallback(@NonNull OkCallbackListener httpData, @NonNull Mapper mapper
             , Class clazz, @NonNull Class<? extends JsonEntity> templateClazz) {
         obj = new SparseArray<>();
         this.httpData = httpData;
@@ -87,14 +91,74 @@ public class RespCallback implements Callback<ResponseBody> {
         this.templateClazz = templateClazz;
     }
 
+    @SuppressWarnings("unchecked")
+    private boolean analyzeJson(String body) throws Exception {
+        JsonEntity data;
+        if (clazz != null) {
+            data = JsonEntity.fromJson(body, clazz, templateClazz);
+        } else {
+            data = JsonEntity.fromJson(body, templateClazz);
+        }
+        if (data != null) {
+            if (data.isSuccess() && data instanceof JsonEntity.ArrayData) {
+                obj.put(0, mapper.transformEntityCollection(((JsonEntity.ArrayData) data).getArrayData()));
+                obj.put(1, data);
+            } else if (data.isSuccess() && data instanceof JsonEntity.Data) {
+                obj.put(0, mapper.transformEntity(((JsonEntity.Data) data).getData()));
+                obj.put(1, data);
+            } else if (data.isSuccess() && clazz != null) {
+                throw new ResponseException(ERROR_CODE_2, "模板中未实现相应的接口");
+            } else if (!data.isSuccess()) {
+                obj.put(0, data.getMessage());
+                obj.put(2, ERROR_CODE_0);
+            }
+            return data.isSuccess();
+        }
+        throw new ResponseException(ERROR_CODE_2, "数据异常");
+    }
+
+    @SuppressWarnings("unchecked")
+    private void sendResToMain(boolean isSuccess) {
+        Runnable runnable = () -> {
+            if (isSuccess) {
+                if (httpData != null) {
+                    httpData.onSuccess(obj.get(0), (JsonEntity) obj.get(1));
+                } else {
+                    BusProvider.getInstance().post(new SuccessRep(obj));
+                }
+            } else {
+                if (httpData != null) {
+                    httpData.onFailure(obj.get(2) != null ? (int) obj.get(2) : ERROR_CODE_2, obj.get(0).toString());
+                } else {
+                    BusProvider.getInstance().post(new ErrorRep(obj.get(2) != null ? (int) obj.get(2) : ERROR_CODE_2, obj.get(0).toString()));
+                }
+            }
+        };
+
+        if (httpData != null && httpData.lifeful() != null) {
+            getHandler().post(new LifefulRunnable(runnable, httpData.lifeful()));
+        } else {
+            getHandler().post(runnable);
+        }
+    }
+
     @Override
-    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+    public void onFailure(Call call, IOException e) {
+        obj.put(0, ERROR_MSG_1);
+        obj.put(2, ERROR_CODE_1);
+        sendResToMain(false);
+        e.printStackTrace();
+    }
+
+    @Override
+    public void onResponse(Call call, Response response) throws IOException {
+        TLog.i("time", Looper.myLooper() != Looper.getMainLooper());
         boolean isSuccess;
         if (response.isSuccessful()) {
+            String entityBody = response.body().string();
             try {
-                String entityBody = response.body().string();
                 isSuccess = analyzeJson(entityBody);
-                obj.put(1, entityBody);
+               // obj.put(1, entityBody);
             } catch (ResponseException e) {
                 TLog.analytics("okHttp", e.getMessage());
                 isSuccess = false;
@@ -115,65 +179,6 @@ public class RespCallback implements Callback<ResponseBody> {
         sendResToMain(isSuccess);
     }
 
-    @Override
-    public void onFailure(Call<ResponseBody> call, Throwable t) {
-        obj.put(0, ERROR_MSG_1);
-        obj.put(2, ERROR_CODE_1);
-        sendResToMain(false);
-        t.printStackTrace();
-    }
-
-    @SuppressWarnings("unchecked")
-    private boolean analyzeJson(String body) throws Exception {
-        JsonEntity data;
-        if (clazz != null) {
-            data = JsonEntity.fromJson(body, clazz, templateClazz);
-        } else {
-            data = JsonEntity.fromJson(body, templateClazz);
-        }
-        if (data != null) {
-            if (data.isSuccess() && data instanceof JsonEntity.ArrayData) {
-                obj.put(0, mapper.transformEntityCollection(((JsonEntity.ArrayData) data).getArrayData()));
-            } else if (data.isSuccess() && data instanceof JsonEntity.Data) {
-                obj.put(0, mapper.transformEntity(((JsonEntity.Data) data).getData()));
-            } else if (data.isSuccess() && clazz != null) {
-                throw new ResponseException(ERROR_CODE_2, "模板中未实现相应的接口");
-            } else if (!data.isSuccess()) {
-                obj.put(0, data.getMessage());
-                obj.put(2, ERROR_CODE_0);
-            }
-            return data.isSuccess();
-        }
-        throw new ResponseException(ERROR_CODE_2, "数据异常");
-    }
-
-    @SuppressWarnings("unchecked")
-    private void sendResToMain(boolean isSuccess) {
-        Runnable runnable = () -> {
-            if (isSuccess) {
-                if (httpData != null) {
-                    TLog.i("time", Looper.myLooper() != Looper.getMainLooper());
-                    httpData.onSuccess(obj.get(0), obj.get(1).toString());
-                } else {
-                    BusProvider.getInstance().post(new SuccessRep(obj));
-                }
-            } else {
-                if (httpData != null) {
-                    httpData.onFailure(obj.get(2) != null ? (int) obj.get(2) : ERROR_CODE_2, obj.get(0).toString());
-                } else {
-                    BusProvider.getInstance().post(new ErrorRep(obj.get(2) != null ? (int) obj.get(2) : ERROR_CODE_2, obj.get(0).toString()));
-                }
-            }
-        };
-        TLog.i("time", Looper.myLooper() != Looper.getMainLooper());
-        runnable.run();
-        /*if (httpData != null && httpData.lifeful() != null) {
-            getHandler().post(new LifefulRunnable(runnable, httpData.lifeful()));
-        } else {
-            getHandler().post(runnable);
-        }*/
-    }
-
     private static class CustomHandler extends Handler {
         private CustomHandler() {
             super(Looper.getMainLooper());
@@ -181,7 +186,7 @@ public class RespCallback implements Callback<ResponseBody> {
     }
 
     private static Handler getHandler() {
-        synchronized (RespCallback.class) {
+        synchronized (RepCallback.class) {
             if (handler == null) {
                 handler = new CustomHandler();
             }
@@ -189,24 +194,41 @@ public class RespCallback implements Callback<ResponseBody> {
         }
     }
 
-    public interface CallbackListener<T> {
+    public interface OkCallbackListener<T, E extends JsonEntity> {
 
-        void onSuccess(T data, String resBody); //成功返回
+        void onSuccess(T data, E resBody); //成功返回
 
         void onFailure(int errorCode, String msg); //反馈失败
 
         Lifeful lifeful();  //生命监控
     }
 
+    public abstract class BaseOkCallbackListener<T, E extends JsonEntity> implements RespCallback.OkCallbackListener<T, E> {
+
+        Lifeful lifeful; //生命监控
+
+        public BaseOkCallbackListener() {
+        }
+
+        public BaseOkCallbackListener(Lifeful lifeful) {
+            this.lifeful = lifeful;
+        }
+
+        @Override
+        public Lifeful lifeful() {
+            return lifeful;
+        }
+    }
+
     public static final class Builder {
 
-        private CallbackListener httpData;    //回调监听
+        private OkCallbackListener httpData;    //回调监听
         private Mapper mapper;                  //数据交接
         private Class clazz;                    //实体模型
         private Class<? extends Mapper> mapperClazz;                //映射类
         private Class<? extends JsonEntity> templateClazz;         //解析模板
 
-        public Builder setListener(CallbackListener httpData) {
+        public Builder setListener(OkCallbackListener httpData) {
             this.httpData = httpData;
             return this;
         }
@@ -243,4 +265,7 @@ public class RespCallback implements Callback<ResponseBody> {
             }
         }
     }
+
 }
+
+

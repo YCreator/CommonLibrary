@@ -108,4 +108,5 @@ public class BaseApplication extends Application {
     public static AssetManager get_asset() {
         return _asset;
     }
+
 }

@@ -33,6 +33,8 @@ public class DoubleDefaultAdapter implements JsonSerializer<Double>, JsonDeseria
 
     @Override
     public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
+        if (src == src.longValue())
+            return new JsonPrimitive(src.longValue());
         return new JsonPrimitive(src);
     }
 }

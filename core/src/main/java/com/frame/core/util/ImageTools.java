@@ -556,6 +556,20 @@ public final class ImageTools {
     }
 
     // 截取图片 兼容大小图片裁剪,大图片不返回bitmap,而是返回uri来获取截取的图片,配置如下
+    public static void cropImage(Uri uri, int requestCode, Activity activity) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("outputFormat", "JPEG");
+        intent.putExtra("scale", false);
+        intent.putExtra("scaleUpIfNeeded", true);
+        intent.putExtra("noFaceDetection", true);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    // 截取图片 兼容大小图片裁剪,大图片不返回bitmap,而是返回uri来获取截取的图片,配置如下
     @SuppressLint("SdCardPath")
     public static void cropImage(Uri uri, int outputX, int outputY, int requestCode, Activity activity) {
 	/*	File temp = new File(FileTools.instance().getChileFile(Constants.TEMP),"temp.jpg");

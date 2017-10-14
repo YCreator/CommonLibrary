@@ -21,8 +21,8 @@ public class ToastUtil {
     //Toast显示（短时间）
     public static void showShort(Context context, String text) {
         if (toast == null) {
-            toast = new Toast(context);
-            LayoutInflater inflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            toast = new Toast(context.getApplicationContext());
+            LayoutInflater inflate = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflate.inflate(R.layout.toast_layout, null);
             toast.setView(view);
         }
@@ -34,8 +34,8 @@ public class ToastUtil {
     //Toast显示（长时间）
     public static void showLong(Context context, String text) {
         if (toast == null) {
-            toast = new Toast(context);
-            LayoutInflater inflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            toast = new Toast(context.getApplicationContext());
+            LayoutInflater inflate = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflate.inflate(R.layout.toast_layout, null);
             toast.setView(view);
         }

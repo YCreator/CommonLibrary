@@ -17,6 +17,10 @@ import com.frame.core.BaseApplication;
  * 单位转换
  */
 public class PixelUtil {
+
+    private static int SCREEN_W;
+    private static int SCREEN_H;
+
     /**
      * dip转px
      * param context
@@ -87,7 +91,11 @@ public class PixelUtil {
      * @return
      */
     public static int getScreenW() {
-        return BaseApplication.get_resource().getDisplayMetrics().widthPixels;
+        if (SCREEN_W > 0) {
+            return SCREEN_W;
+        }
+        SCREEN_W = BaseApplication.get_resource().getDisplayMetrics().widthPixels;
+        return SCREEN_W;
     }
 
     /**
@@ -96,7 +104,11 @@ public class PixelUtil {
      * @return
      */
     public static int getScreenH() {
-        return BaseApplication.get_resource().getDisplayMetrics().heightPixels;
+        if (SCREEN_H > 0) {
+            return SCREEN_H;
+        }
+        SCREEN_H = BaseApplication.get_resource().getDisplayMetrics().heightPixels;
+        return SCREEN_H;
     }
 
     /**

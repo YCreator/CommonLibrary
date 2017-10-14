@@ -20,6 +20,10 @@ public abstract class JsonEntity {
 
     public abstract String getMessage();
 
+    public abstract int getCode();
+
+    public abstract void setCode(int code);
+
     public static JsonEntity fromJson(String json, Class<? extends JsonEntity> conClazz) throws JsonSyntaxException {
         return GsonFactory.getGson().fromJson(json, conClazz);
     }

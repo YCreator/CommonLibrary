@@ -8,17 +8,12 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by yzd on 2017/9/15 0015.
+ * Created by yzd on 2017/9/18 0018.
+ *
  */
 @Documented
 @Target(PARAMETER)
 @Retention(RUNTIME)
-public @interface Field {
-
-    String value();
-
-    /**
-     * Specifies whether the {@linkplain #value() name} and value are already URL encoded.
-     */
+public @interface DQueryMap {
     boolean encoded() default false;
 }

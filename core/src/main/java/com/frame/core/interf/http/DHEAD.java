@@ -8,13 +8,12 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by yzd on 2017/9/15 0015.
+ * Created by yzd on 2017/10/13 0013.
  */
-
 @Documented
 @Target(METHOD)
 @Retention(RUNTIME)
-public @interface POST {
+public @interface DHEAD {
 
     String value() default "";
 }

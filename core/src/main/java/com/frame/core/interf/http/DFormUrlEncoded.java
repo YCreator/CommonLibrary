@@ -8,11 +8,11 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by yzd on 2017/9/15 0015.
+ * Created by yzd on 2017/9/18 0018.
  */
+
 @Documented
 @Target(METHOD)
 @Retention(RUNTIME)
-public @interface GET {
-    String value() default "";
+public @interface DFormUrlEncoded {
 }

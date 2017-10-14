@@ -1,17 +1,11 @@
 package com.frame.core.net;
 
-import com.frame.core.interf.http.Field;
-import com.frame.core.interf.http.FieldMap;
-import com.frame.core.net.okhttp.OkHttpEngine;
-
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,10 +22,10 @@ public final class RequestHelper {
 
     final HttpUrl mBaseUrl;
     final OkHttpClient okHttpClient;
-    final Converter.Factory converterFactory;
-    final Map<Method, MethodService> serviceMethodCache = new ConcurrentHashMap<>();
+    final DConverter.Factory converterFactory;
+    final Map<Method, DServiceMethod> serviceMethodCache = new ConcurrentHashMap<>();
 
-    private RequestHelper(HttpUrl mBaseUrl, OkHttpClient okHttpClient, Converter.Factory converterFactory) {
+    private RequestHelper(HttpUrl mBaseUrl, OkHttpClient okHttpClient, DConverter.Factory converterFactory) {
         this.mBaseUrl = mBaseUrl;
         this.okHttpClient = okHttpClient;
         this.converterFactory = converterFactory;
@@ -49,20 +43,20 @@ public final class RequestHelper {
                 , new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        MethodService methodService = loadServiceMethod(method);
-                        Request request = methodService.toRequest(args);
+                        DServiceMethod dServiceMethod = loadServiceMethod(method);
+                        Request request = dServiceMethod.toRequest(args);
                         return okHttpClient.newCall(request);
                     }
                 });
     }
 
-    private MethodService loadServiceMethod(Method method) {
-        MethodService result = serviceMethodCache.get(method);
+    private DServiceMethod loadServiceMethod(Method method) {
+        DServiceMethod result = serviceMethodCache.get(method);
         if (result != null) return result;
         synchronized (serviceMethodCache) {
             result = serviceMethodCache.get(method);
             if (result == null) {
-                result = new MethodService.Builder(method, this).build();
+                result = new DServiceMethod.Builder(method, this).build();
                 serviceMethodCache.put(method, result);
             }
         }
@@ -84,30 +78,10 @@ public final class RequestHelper {
                 .build();
     }
 
-    @SuppressWarnings("unchecked")
-    private RequestBody createRequestBody(Annotation[][] annotations, Object[] args) {
-        FormBody.Builder body = new FormBody.Builder();
-        if (annotations.length > 0) {
-            for (int i = 0; i < annotations.length; i++) {
-                Annotation[] annotations1 = annotations[i];
-                for (Annotation annotation : annotations1) {
-                    if (annotation instanceof Field) {
-                        Field field = (Field) annotation;
-                        body.add(field.value(), args[i].toString());
-                    } else if (annotation instanceof FieldMap) {
-                        Map<String, String> params = (Map<String, String>) args[i];
-                        return OkHttpEngine.getInstance().joinParams(params);
-                    }
-                }
-            }
-        }
-        return body.build();
-    }
-
     public static final class Builder {
         private HttpUrl mBaseUrl;
         private OkHttpClient okHttpClient;
-        private Converter.Factory converterFactory;
+        private DConverter.Factory converterFactory;
 
         public Builder client(OkHttpClient client) {
             this.okHttpClient = client;
@@ -120,7 +94,7 @@ public final class RequestHelper {
         }
 
         public RequestHelper build() {
-            return new RequestHelper(mBaseUrl, okHttpClient, new BuiltConverters());
+            return new RequestHelper(mBaseUrl, okHttpClient, new DBuiltConverters());
         }
     }
 }

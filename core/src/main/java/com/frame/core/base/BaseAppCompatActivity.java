@@ -114,6 +114,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * 获取toolbar对象
+     * @return
+     */
     protected Toolbar getActionBarToolbar() {
         if (mActionBarToolbar == null) {
             mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -170,6 +174,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         return 0;
     }
 
+    /**
+     * 设置toolbar背景颜色
+     * @return
+     */
     @ColorInt
     protected int getToolbarColor() {
         return this.getResources().getColor(R.color.colorPrimary);
@@ -182,18 +190,33 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         return super.onSupportNavigateUp();
     }
 
+    /**
+     * 结束页面
+     */
     public void finishPage() {
         onBeforeFinish();
         finish();
     }
 
+    /**
+     * 初始化布局前回调
+     */
     protected void onBeforeSetContentLayout() {
     }
 
+    /**
+     * 结束页面前回调
+     */
     protected void onBeforeFinish() {
 
     }
 
+    /**
+     * 添加fragment并记录fragment状态
+     * @param containerId
+     * @param fragment
+     * @param tag
+     */
     protected void addFragmentAndAddBackStack(@IdRes int containerId, BaseFragment fragment, String tag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -202,6 +225,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         ft.commitAllowingStateLoss();
     }
 
+    /**
+     * 替换fragment
+     * @param containerId
+     * @param fragment
+     * @param tag
+     */
     protected void replaceFragment(@IdRes int containerId, BaseFragment fragment, String tag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -209,6 +238,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         ft.commitAllowingStateLoss();
     }
 
+    /**
+     * 替换fragment并记录fragment状态
+     * @param containerId
+     * @param fragment
+     * @param tag
+     */
     protected void replaceFragmentAndAddBackStack(@IdRes int containerId, BaseFragment fragment, String tag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -217,6 +252,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         ft.commitAllowingStateLoss();
     }
 
+    /**
+     * 切换fragment
+     * @param id
+     * @param from
+     * @param to
+     * @param tag
+     */
     protected void switchFragment(int id, Fragment from, Fragment to, String tag) {
         FragmentTransaction transation = getSupportFragmentManager().beginTransaction();
         TLog.i("switchFragment", to.isAdded() + "");
@@ -236,6 +278,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         launchActivity(cls, null);
     }
 
+    /**
+     * 带参数启动activity
+     * @param cls
+     * @param bundle
+     */
     public void launchActivity(Class<? extends Activity> cls, @Nullable Bundle bundle) {
         Intent intent = new Intent(this, cls);
         if (bundle != null) {
@@ -244,6 +291,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    /**
+     * 带参数并设置flag启动activity
+     * @param cls
+     * @param bundle
+     */
     public void launchActivity(Class<? extends Activity> cls, @Nullable Bundle bundle, int flags) {
         Intent intent = new Intent(this, cls);
         intent.setFlags(flags);
@@ -251,6 +303,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    /**
+     * 带有回调结果启动activity
+     * @param cls
+     * @param requestCode
+     * @param bundle
+     */
     public void launchActivityForResult(Class<? extends Activity> cls, int requestCode, @Nullable Bundle bundle) {
         Intent intent = new Intent(this, cls);
         if (bundle != null) {
@@ -363,6 +421,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         return handler;
     }
 
+    /**
+     * 设置遮罩层灰度
+     * @param bgAlpha
+     */
     public void backgroundAlpha(Float bgAlpha) {
         WindowManager.LayoutParams lp = this.getWindow().getAttributes();
         lp.alpha = bgAlpha;
