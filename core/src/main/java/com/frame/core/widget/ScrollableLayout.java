@@ -36,7 +36,6 @@ import android.widget.LinearLayout;
 import android.widget.Scroller;
 
 /**
- * Created by cpoopc(303727604@qq.com) on 2015-02-10.
  */
 public class ScrollableLayout extends LinearLayout {
 

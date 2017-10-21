@@ -11,31 +11,37 @@ import java.util.Random;
  */
 public class CommonUtils {
 
-    private static long lastClickTime;
-
     /**
      * 在1秒内
      * 防止按钮被连续点击
      * 是否为快速重复点击
      */
-    public static boolean isFastDoubleClick() {
+    public static boolean isFastDoubleClick(View view) {
+        if (view == null) return true;
+        long lastClickTime = view.getTag(-1) == null
+                || !StringUtils.isNumber(String.valueOf(view.getTag(-1)))
+                ? 0 : (long) view.getTag(-1);
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
         if (timeD >= 0 && timeD <= 1000) {
             return true;
         } else {
-            lastClickTime = time;
+            view.setTag(-1, time);
             return false;
         }
     }
 
-    public static boolean isFastDoubleClick(int timeMillis) {
+    public static boolean isFastDoubleClick(int timeMillis, View view) {
+        if (view == null) return true;
+        long lastClickTime = view.getTag(-1) == null
+                || !StringUtils.isNumber(String.valueOf(view.getTag(-1)))
+                ? 0 : (long) view.getTag(-1);
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
         if (timeD >= 0 && timeD <= timeMillis) {
             return true;
         } else {
-            lastClickTime = time;
+            view.setTag(-1, time);
             return false;
         }
     }

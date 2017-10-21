@@ -34,7 +34,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public final class OkHttpEngine implements Engine {
 
     private static OkHttpEngine okHttpEngine;
-    private final OkHttpClient mOkHttpClient;
+    private OkHttpClient mOkHttpClient;
     private static CookiesManager mCookiesManager;
 
     public static void setCookieStore(CookiesManager cookiesManager) {
@@ -74,6 +74,10 @@ public final class OkHttpEngine implements Engine {
             builder.addInterceptor(interceptor);
         }
         return builder.build();
+    }
+
+    public void setHttpClient(OkHttpClient client) {
+        this.mOkHttpClient = client;
     }
 
     public OkHttpClient getOkHttpClient() {
@@ -269,7 +273,7 @@ public final class OkHttpEngine implements Engine {
         body.add(String.format("%s[]", key), strVal);
     }
 
-    private String cookieHeader(List<Cookie> cookies) {
+    public String cookieHeader(List<Cookie> cookies) {
         StringBuilder cookieHeader = new StringBuilder();
         for (int i = 0, size = cookies.size(); i < size; i++) {
             if (i > 0) {

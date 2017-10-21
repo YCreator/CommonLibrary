@@ -45,4 +45,8 @@ public abstract class BaseMapper<T, K> implements Mapper<T, K> {
         return null;
     }
 
+    @Override
+    public Class<T> getBeanClass() {
+        return null;
+    }
 }

@@ -93,6 +93,7 @@ public final class RepCallback implements Callback {
 
     @SuppressWarnings("unchecked")
     private boolean analyzeJson(String body) throws Exception {
+        TLog.i("body", body);
         JsonEntity data;
         if (clazz != null) {
             data = JsonEntity.fromJson(body, clazz, templateClazz);
