@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,11 @@ public class ExtremelyPage {
         tvSubtitle.setVisibility(View.VISIBLE);
     }
 
+    public void setTextViewSubtitle(SpannableStringBuilder subtitle) {
+        tvSubtitle.setText(subtitle);
+        tvSubtitle.setVisibility(View.VISIBLE);
+    }
+
     public TextView getMessgeView() {
         return tvTips;
     }
@@ -136,5 +142,16 @@ public class ExtremelyPage {
 
     public boolean isShown() {
         return shown;
+    }
+
+    public void showMatchParent() {
+        if (frameLayout != null) {
+
+            ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
+
+            mView.setLayoutParams(new RelativeLayout.LayoutParams(layoutParams.width,layoutParams.height));
+            frameLayout.addView(mView);
+            shown = true;
+        }
     }
 }

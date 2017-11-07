@@ -11,6 +11,8 @@ import java.util.Random;
  */
 public class CommonUtils {
 
+
+
     /**
      * 在1秒内
      * 防止按钮被连续点击

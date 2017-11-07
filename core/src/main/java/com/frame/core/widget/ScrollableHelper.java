@@ -36,7 +36,6 @@ import android.widget.ScrollView;
 import com.frame.core.util.TLog;
 
 /**
- * Created by cpoopc(303727604@qq.com) on 2015-02-10.
  */
 public class ScrollableHelper {
 
