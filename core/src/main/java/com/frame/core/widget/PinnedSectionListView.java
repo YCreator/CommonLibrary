@@ -355,7 +355,7 @@ public class PinnedSectionListView extends ListView {
 	public void setAdapter(ListAdapter adapter) {
 
 	    // assert adapter in debug mode
-		if (BaseApplication.DEBUG && adapter != null) {
+		if (BaseApplication.isDebug() && adapter != null) {
 			if (!(adapter instanceof PinnedSectionListAdapter))
 				throw new IllegalArgumentException("Does your adapter implement PinnedSectionListAdapter?");
 			if (adapter.getViewTypeCount() < 2)

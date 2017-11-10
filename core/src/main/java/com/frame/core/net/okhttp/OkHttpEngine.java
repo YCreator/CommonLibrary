@@ -68,7 +68,7 @@ public final class OkHttpEngine implements Engine {
         File cacheDir = new File(BaseApplication.get_context().getCacheDir(), "HttpResponseCache");
         builder.cache(new Cache(cacheDir, 10 * 1024 * 1024));
         builder.cookieJar(BaseApplication.getCookiesManager());
-        if (BaseApplication.DEBUG) {
+        if (BaseApplication.isDebug()) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptor);

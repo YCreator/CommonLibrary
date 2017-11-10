@@ -9,7 +9,7 @@ import com.frame.core.BaseApplication;
  * Created by Administrator on 2015/12/2.
  */
 public class TLog {
-    public static boolean DEBUG = BaseApplication.DEBUG;
+    public static boolean DEBUG = BaseApplication.isDebug();
     private static final String LOG_TAG = "SIMICO";
 
     public static void analytics(String paramString) {

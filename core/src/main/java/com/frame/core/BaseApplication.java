@@ -58,6 +58,7 @@ public class BaseApplication extends Application {
 
     /**
      * cookie管理器
+     *
      * @return
      */
     public static CookiesManager getCookiesManager() {
@@ -69,6 +70,7 @@ public class BaseApplication extends Application {
 
     /**
      * 数据库初始化
+     *
      * @param helper
      */
     public void initDatabase(SQLiteOpenHelper helper) {
@@ -77,6 +79,7 @@ public class BaseApplication extends Application {
 
     /**
      * 获取设备id
+     *
      * @return
      */
     public static String getDeviceId() {
@@ -88,6 +91,7 @@ public class BaseApplication extends Application {
 
     /**
      * 应用内通用一个线程池
+     *
      * @return
      */
     public static ThreadPoolExecutor getExecutor() {
@@ -107,6 +111,11 @@ public class BaseApplication extends Application {
 
     public static AssetManager get_asset() {
         return _asset;
+    }
+
+    public static boolean isDebug() {
+        //return BuildConfig.DEBUG;
+        return true;
     }
 
 }
