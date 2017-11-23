@@ -21,9 +21,12 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
     private TextView tv;
     private ProgressBar bar;
     private int gloaH;
-    private @ColorInt int color = 0x00000000;
+    private
+    @ColorInt
+    int color = 0x00000000;
 
     private boolean isCanLoading = true;
+    private boolean isLoading = false;
 
     public void setBackgroudColor(@ColorInt int color) {
         this.color = color;
@@ -45,7 +48,7 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
     @Override
     public void initItemViews(View itemView) {
         gloaH = PixelUtil.getScreenH();
-        this.itemView = itemView ;
+        this.itemView = itemView;
         tv = (TextView) itemView.findViewById(R.id.loading_tv);
         bar = (ProgressBar) itemView.findViewById(R.id.loading_progress);
         setIndexLoadMoreState(isCanLoading);
@@ -64,10 +67,12 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
 
     /**
      * 第一页加载数据完成时调用的方法
+     *
      * @param isCanLoadMore
      */
     @Override
     public void setIndexLoadMoreState(boolean isCanLoadMore) {
+        this.isLoading = false;
         this.isCanLoading = isCanLoadMore;
         if (itemView != null) {
             if (isCanLoadMore) {
@@ -86,10 +91,12 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
 
     /**
      * 上拉加载完成调用的方法
+     *
      * @param isCanLoadMore
      */
     @Override
     public void setLoadMoreState(boolean isCanLoadMore) {
+        this.isLoading = false;
         this.isCanLoading = isCanLoadMore;
         if (itemView != null) {
             if (isCanLoadMore) {
@@ -105,6 +112,7 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
      */
     @Override
     public void loadingMore() {
+        isLoading = true;
         if (itemView != null) {
             tv.setText("加载中...");
             bar.setVisibility(View.VISIBLE);
@@ -127,6 +135,10 @@ public class LoadMoreItem implements AdapterItem, FootLoading {
     public void nothing() {
         //tv.setText("--没有数据--");
         bar.setVisibility(View.GONE);
+    }
+
+    public boolean isLoading() {
+        return isLoading;
     }
 
 }

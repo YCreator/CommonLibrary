@@ -69,6 +69,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        TLog.i("Activity", "onCreate");
         super.onCreate(savedInstanceState);
         onBeforeSetContentLayout();
         StackManager.getStackManager().pushActivity(this);
@@ -149,8 +150,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @Override
     protected void onDestroy() {
+        TLog.i("Activity", "onDestroy");
         isDestroyed = true;
         super.onDestroy();
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
+            mLoadingDialog = null;
+        }
         ButterKnife.unbind(this);
         StackManager.getStackManager().popActivity(this);
     }
@@ -445,4 +451,17 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             return !this.isFinishing();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TLog.i("Activity", "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        TLog.i("Activity", "onPause");
+    }
+
 }

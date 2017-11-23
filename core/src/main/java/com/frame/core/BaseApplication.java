@@ -86,6 +86,7 @@ public class BaseApplication extends Application {
         if (deviceId == null) {
             deviceId = AppHelper.getDeviceId(get_context());
         }
+        if (deviceId == null) deviceId = "";
         return deviceId;
     }
 
@@ -115,7 +116,7 @@ public class BaseApplication extends Application {
 
     public static boolean isDebug() {
         //return BuildConfig.DEBUG;
-        return false;
+        return true;
     }
 
 }

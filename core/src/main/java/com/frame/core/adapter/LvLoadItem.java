@@ -23,13 +23,14 @@ public class LvLoadItem implements FootLoading {
     private ProgressBar bar;
 
     private boolean isCanLoading = true;
+    private boolean isLoading = false;
     private int gloaH;
     private AbsListView.LayoutParams params;
 
     public LvLoadItem(Context context) {
         itemView = LayoutInflater.from(context).inflate(R.layout.loading_more, null);
         gloaH = PixelUtil.getScreenH();
-        params = new AbsListView.LayoutParams(PixelUtil.getScreenW(),gloaH / 12);
+        params = new AbsListView.LayoutParams(PixelUtil.getScreenW(), gloaH / 12);
         itemView.setLayoutParams(params);
         tv = (TextView) itemView.findViewById(R.id.loading_tv);
         bar = (ProgressBar) itemView.findViewById(R.id.loading_progress);
@@ -43,7 +44,7 @@ public class LvLoadItem implements FootLoading {
         listView.addFooterView(itemView, null, false);
     }
 
-    public void setBackground(@ColorInt  int colorInt) {
+    public void setBackground(@ColorInt int colorInt) {
         itemView.setBackgroundColor(colorInt);
     }
 
@@ -65,10 +66,12 @@ public class LvLoadItem implements FootLoading {
 
     /**
      * 第一页加载数据完成时调用的方法
+     *
      * @param isCanLoadMore
      */
     @Override
     public void setIndexLoadMoreState(boolean isCanLoadMore) {
+        isLoading = false;
         this.isCanLoading = isCanLoadMore;
         if (itemView != null) {
             if (isCanLoadMore) {
@@ -85,10 +88,12 @@ public class LvLoadItem implements FootLoading {
 
     /**
      * 上拉加载完成调用的方法
+     *
      * @param isCanLoadMore
      */
     @Override
     public void setLoadMoreState(boolean isCanLoadMore) {
+        isLoading = false;
         this.isCanLoading = isCanLoadMore;
         if (itemView != null) {
             if (isCanLoadMore) {
@@ -104,6 +109,7 @@ public class LvLoadItem implements FootLoading {
      */
     @Override
     public void loadingMore() {
+        isLoading = true;
         if (itemView != null) {
             bar.setVisibility(View.VISIBLE);
             tv.setText("加载中...");
@@ -131,5 +137,9 @@ public class LvLoadItem implements FootLoading {
     public void nothing(String msg) {
         tv.setText(msg);
         bar.setVisibility(View.GONE);
+    }
+
+    public boolean isLoading() {
+        return isLoading;
     }
 }

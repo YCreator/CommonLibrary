@@ -109,7 +109,7 @@ public final class RepCallback implements Callback {
                 throw new ResponseException(ERROR_CODE_2, "模板中未实现相应的接口");
             } else if (!data.isSuccess()) {
                 obj.put(0, data.getMessage());
-                obj.put(2, ERROR_CODE_0);
+                obj.put(2, data.getCode());
             }
             return data.isSuccess();
         }

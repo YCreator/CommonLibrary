@@ -33,6 +33,8 @@ public class TLog {
     }
 
     public static void i(String paramString1, String paramString2) {
+       if (paramString1 == null)  paramString1 = "";
+       if (paramString2 == null) paramString2 = "";
         if (DEBUG)
             Log.i(paramString1, paramString2);
     }
