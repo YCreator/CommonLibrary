@@ -9,6 +9,7 @@ import com.frame.core.entity.JsonEntity;
 import com.frame.core.exception.InstanceFactoryException;
 import com.frame.core.exception.ResponseException;
 import com.frame.core.interf.Mapper;
+import com.frame.core.net.ICallback;
 import com.frame.core.rx.Lifeful;
 import com.frame.core.rx.LifefulRunnable;
 import com.frame.core.util.BusProvider;
@@ -193,7 +194,7 @@ public final class RepCallback implements Callback {
         }
     }
 
-    public interface OkCallbackListener<T> {
+    public interface OkCallbackListener<T> extends ICallback<T> {
 
         void onSuccess(T data, String resBody); //成功返回
 
@@ -204,13 +205,13 @@ public final class RepCallback implements Callback {
 
     public static final class Builder {
 
-        private OkCallbackListener httpData;    //回调监听
+        private ICallback httpData;    //回调监听
         private Mapper mapper;                  //数据交接
         private Class clazz;                    //实体模型
         private Class<? extends Mapper> mapperClazz;                //映射类
         private Class<? extends JsonEntity> templateClazz;         //解析模板
 
-        public Builder setListener(OkCallbackListener httpData) {
+        public Builder setListener(ICallback httpData) {
             this.httpData = httpData;
             return this;
         }
@@ -236,15 +237,20 @@ public final class RepCallback implements Callback {
         }
 
         public RepCallback build() {
-            if (mapper != null && templateClazz != null) {
-                return new RepCallback(httpData, mapper, clazz, templateClazz);
-            } else if (mapperClazz != null && templateClazz != null) {
-                return new RepCallback(httpData, mapperClazz, clazz, templateClazz);
-            } else if (templateClazz != null) {
-                return new RepCallback(httpData, templateClazz);
+            if (httpData != null && httpData instanceof OkCallbackListener) {
+                if (mapper != null && templateClazz != null) {
+                    return new RepCallback((OkCallbackListener) httpData, mapper, clazz, templateClazz);
+                } else if (mapperClazz != null && templateClazz != null) {
+                    return new RepCallback((OkCallbackListener) httpData, mapperClazz, clazz, templateClazz);
+                } else if (templateClazz != null) {
+                    return new RepCallback((OkCallbackListener) httpData, templateClazz);
+                } else {
+                    return new RepCallback();
+                }
             } else {
                 return new RepCallback();
             }
+
         }
     }
 

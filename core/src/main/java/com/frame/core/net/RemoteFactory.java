@@ -33,7 +33,7 @@ public final class RemoteFactory {
 
     @SuppressWarnings("unchecked")
     public <T> T achieveObj(Class<T> implClazz) throws InstanceFactoryException {
-        String simpleName = implClazz.getSimpleName();
+        String simpleName = implClazz.getName();
         if (remoteMap.containsKey(simpleName)) {
             return (T) remoteMap.get(simpleName);
         }

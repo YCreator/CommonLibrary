@@ -14,22 +14,22 @@ public class TLog {
 
     public static void analytics(String paramString) {
         if (DEBUG)
-            Log.d(LOG_TAG, paramString);
+            Log.d(LOG_TAG, StringUtils.isEmpty(paramString) ? "param is empty" : paramString);
     }
 
     public static void analytics(String paramString1, String paramString) {
         if (DEBUG)
-            Log.d(paramString1, paramString);
+            Log.d(paramString1, StringUtils.isEmpty(paramString) ? "param is empty" : paramString);
     }
 
     public static void e(String paramString) {
         if (DEBUG)
-            Log.e(LOG_TAG, paramString);
+            Log.e(LOG_TAG, StringUtils.isEmpty(paramString) ? "param is empty" : paramString);
     }
 
     public static void i(String paramString) {
         if (DEBUG)
-            Log.i(LOG_TAG, paramString);
+            Log.i(LOG_TAG, StringUtils.isEmpty(paramString) ? "param is empty" : paramString);
     }
 
     public static void i(String paramString1, String paramString2) {
@@ -51,11 +51,11 @@ public class TLog {
 
     public static void v(String paramString) {
         if (DEBUG)
-            Log.v(LOG_TAG, paramString);
+            Log.v(LOG_TAG, StringUtils.isEmpty(paramString) ? "param is empty" : paramString);
     }
 
     public static void w(String paramString) {
         if (DEBUG)
-            Log.w(LOG_TAG, paramString);
+            Log.w(LOG_TAG, StringUtils.isEmpty(paramString) ? "param is empty" : paramString);
     }
 }

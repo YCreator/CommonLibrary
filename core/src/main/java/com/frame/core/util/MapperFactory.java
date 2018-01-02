@@ -29,7 +29,7 @@ public final class MapperFactory {
 
     @SuppressWarnings("unchecked")
     public <T extends Mapper> T achieveObj(Class<? extends Mapper> implClazz) throws InstanceFactoryException {
-        String simpleName = implClazz.getSimpleName();
+        String simpleName = implClazz.getName();
         if (mMap.containsKey(simpleName)) {
             return (T) mMap.get(simpleName);
         }
