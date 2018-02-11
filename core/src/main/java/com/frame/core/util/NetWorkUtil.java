@@ -16,6 +16,7 @@ import java.util.Enumeration;
 /**
  * 网络工具
  */
+@Deprecated
 public class NetWorkUtil {
 
     public static boolean isNetWorkAvailable(Context context) {

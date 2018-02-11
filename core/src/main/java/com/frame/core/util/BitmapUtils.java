@@ -149,7 +149,7 @@ public class BitmapUtils {
      * 图片压缩
      *
      * @param bitmap   图片
-     * @param wantSize 期望的图片大小
+     * @param wantSize 期望的图片大小  k
      * @return
      */
     public static byte[] zipBitmap(Bitmap bitmap, Bitmap.CompressFormat format, int wantSize) {

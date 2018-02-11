@@ -1,6 +1,7 @@
 package com.frame.core.net.http;
 
 import com.frame.core.interf.Engine;
+import com.frame.core.util.StringUtils;
 import com.frame.core.util.TLog;
 
 import java.io.BufferedReader;
@@ -19,8 +20,10 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * HttpURLConnection引擎
@@ -78,6 +81,98 @@ public class HttpEngine implements Engine {
     public String post(String method, String[] paramKeys, String[] paramValues) throws IOException {
         String data = joinParams(paramKeys, paramValues);
         return postHttp(method, data);
+    }
+
+    public HttpURLConnection getConnection(String method, String url, String params, Map<String, String> header) throws IOException {
+        HttpURLConnection connection = getConnection(url, method);
+        Set<String> keys =  header.keySet();
+        for (String key : keys) {
+            connection.setRequestProperty(key, header.get(key));
+        }
+        connection.setRequestProperty("Content-Length", String.valueOf(params.getBytes().length));
+        connection.connect();
+        OutputStream os = connection.getOutputStream();
+        os.write(params.getBytes());
+        os.flush();
+        return connection;
+    }
+
+    public String getEntityBody(HttpURLConnection conn) throws IOException {
+        // 获取响应的输入流对象
+        InputStream is = conn.getInputStream();
+        // 创建字节输出流对象
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // 定义读取的长度
+        int len = 0;
+        // 定义缓冲区
+        byte buffer[] = new byte[1024];
+        // 按照缓冲区的大小，循环读取
+        while ((len = is.read(buffer)) != -1) {
+            // 根据读取的长度写入到os对象中
+            baos.write(buffer, 0, len);
+        }
+        // 释放资源
+        is.close();
+        baos.close();
+        return  new String(baos.toByteArray());
+    }
+
+    public Map<String, String> getHeaders(HttpURLConnection conn) throws IOException {
+        Map<String, String> hs = new HashMap<>();
+        Map<String, List<String>> headers = conn.getHeaderFields();
+        Set<String> keys = headers.keySet();
+        for (String key : keys) {
+            List<String> values = headers.get(key);
+            for (String v : values) {
+                if (!StringUtils.isEmpty(v)) {
+                    hs.put(key, v);
+                }
+            }
+        }
+        return hs;
+    }
+
+    public String postHttp(Map<String, String> header, String url, String params) throws IOException {
+        HttpURLConnection connection = getConnection(url, METHOD_POST);
+        Set<String> keys =  header.keySet();
+        for (String key : keys) {
+            connection.setRequestProperty(key, header.get(key));
+        }
+        connection.setRequestProperty("Content-Length", String.valueOf(params.getBytes().length));
+        return request(connection, params);
+    }
+
+    public String request(HttpURLConnection conn, String params) throws IOException {
+        conn.connect();
+        OutputStream os = conn.getOutputStream();
+        os.write(params.getBytes());
+        os.flush();
+        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            // 获取响应的输入流对象
+            InputStream is = conn.getInputStream();
+            // 创建字节输出流对象
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // 定义读取的长度
+            int len = 0;
+            // 定义缓冲区
+            byte buffer[] = new byte[1024];
+            // 按照缓冲区的大小，循环读取
+            while ((len = is.read(buffer)) != -1) {
+                // 根据读取的长度写入到os对象中
+                baos.write(buffer, 0, len);
+            }
+            // 释放资源
+            is.close();
+            baos.close();
+            conn.disconnect();
+            // 返回字符串
+            final String result = new String(baos.toByteArray());
+            TLog.i(TAG, result);
+            return result;
+        } else {
+            conn.disconnect();
+            return null;
+        }
     }
 
     public String postHttp(String url, String params) throws IOException {

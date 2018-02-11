@@ -7,17 +7,21 @@ import android.content.Intent;
 import android.os.Process;
 import android.support.annotation.NonNull;
 
+import com.frame.core.base.AppManager;
+
 import java.util.Stack;
 
 /**
  * 管理所有Activity 当启动一个Activity时，就将其保存到Stack中， 退出时，从Stack中删除
  * Created by Administrator on 2015/7/3.
+ * 请使用AppManager
  */
+@Deprecated
 public class StackManager {
     /**
      * 保存所有Activity
      */
-    private volatile Stack<Activity> activityStack = new Stack<>();
+    //private volatile Stack<Activity> activityStack = new Stack<>();
 
     private static volatile StackManager instance;
 
@@ -44,7 +48,8 @@ public class StackManager {
     public void popActivity(Activity activity) {
         if (activity != null) {
             activity.finish();
-            activityStack.remove(activity);
+            AppManager.getAppManager().removeActivity(activity);
+           /*activityStack.remove(activity);*/
             TLog.e("remove");
         }
     }
@@ -55,7 +60,8 @@ public class StackManager {
      * @return Activity Activity
      */
     public Activity currentActivity() {
-        return activityStack.isEmpty() ? null : activityStack.lastElement();
+        return AppManager.getAppManager().currentActivity();
+        //return activityStack.isEmpty() ? null : activityStack.lastElement();
     }
 
     /**
@@ -65,6 +71,7 @@ public class StackManager {
      */
     public Activity lastActivity() {
         Activity activity = null;
+        Stack<Activity> activityStack = AppManager.getActivityStack();
         if (!activityStack.empty()) {
             activity = activityStack.firstElement();
         }
@@ -77,10 +84,11 @@ public class StackManager {
      * @param activity Activity
      */
     public void pushActivity(Activity activity) {
-        if (activityStack.size() > 6) {
+        AppManager.getAppManager().addActivity(activity);
+        /*if (activityStack.size() > 6) {
             popActivity(activityStack.get(1));
         }
-        activityStack.add(activity);
+        activityStack.add(activity);*/
     }
 
     /**
@@ -109,16 +117,18 @@ public class StackManager {
      * 退出栈中所有Activity
      */
     public void popAllActivitys() {
-        while (true) {
+        AppManager.getAppManager().finishAllActivity();
+        /*while (true) {
             Activity activity = currentActivity();
             if (activity == null) return;
             popActivity(activity);
-        }
+        }*/
     }
 
     @SuppressWarnings("unchecked")
     public <T extends Activity> T getActivtiy(@NonNull Class<T> cls) {
-        try {
+        return (T) AppManager.getActivity(cls);
+        /*try {
             for (Activity activity : activityStack) {
                 if (activity != null && activity.getClass().equals(cls)) {
                     return (T) activity;
@@ -127,7 +137,7 @@ public class StackManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return null;*/
     }
 
     /**

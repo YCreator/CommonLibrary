@@ -10,6 +10,8 @@ import com.frame.core.exception.InstanceFactoryException;
 import com.frame.core.exception.ResponseException;
 import com.frame.core.interf.Mapper;
 import com.frame.core.net.ICallback;
+import com.frame.core.net.Retrofit.ErrorRep;
+import com.frame.core.net.Retrofit.SuccessRep;
 import com.frame.core.rx.Lifeful;
 import com.frame.core.rx.LifefulRunnable;
 import com.frame.core.util.BusProvider;

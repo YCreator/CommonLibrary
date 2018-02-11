@@ -1,13 +1,12 @@
 package com.lib.commonlibrary;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.frame.core.rx.Lifeful;
-import com.frame.core.util.TLog;
+import com.frame.core.base.NewBaseActivity;
+import com.jcx.hnn.BR;
 import com.jcx.hnn.R;
+import com.jcx.hnn.databinding.ActivityMainBinding;
 import com.lib.sharelib.ShareEntity;
 import com.lib.sharelib.ShareHelper;
 import com.umeng.socialize.UMShareAPI;
@@ -15,16 +14,18 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.utils.Log;
 
-import java.util.HashMap;
-import java.util.List;
+public class MainActivity extends NewBaseActivity<ActivityMainBinding, MainViewModel> {
 
-public class MainActivity extends AppCompatActivity {
-
-    @Override
+   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        GoodsBean.getGoods(new HashMap<String, String>()
+        //setContentView(R.layout.activity_main);
+        ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        UserModel model = new UserModel();
+        model.setUsername("hello");
+        model.setPassword("123456");
+        binding.setVariable(BR.user, model);
+        *//*GoodsBean.getGoods(new HashMap<String, String>()
                 , new JsonDataObserver<List<GoodsBean>>() {
                     @Override
                     void onSuccess(List<GoodsBean> goodsBeen) {
@@ -42,7 +43,22 @@ public class MainActivity extends AppCompatActivity {
                     Lifeful lifeful() {
                         return null;
                     }
-                }, new NetworkConsumer());
+                }, new NetworkConsumer());*//*
+    }*/
+
+    @Override
+    public int initContentView() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public int initVariableId() {
+        return BR.user;
+    }
+
+    @Override
+    public MainViewModel initViewModel() {
+        return new MainViewModel();
     }
 
     public void share(View v) {

@@ -42,6 +42,16 @@ public class BaseJsonEntity extends JsonEntity {
         return msg == null ? "" : msg;
     }
 
+    @Override
+    public int getCode() {
+        return 0;
+    }
+
+    @Override
+    public void setCode(int code) {
+
+    }
+
     public boolean isFault() {
         return fault == 1;
     }

@@ -34,6 +34,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class Encryptor {
 
     private final static String HEX = "0123456789ABCDEF";
+    private final static String SALT = "Sy8e7eB/dvs+nSwPKB5qiUat9gejzKGWyD94U1TdqTLQWVnl/iNdUh0VjzJ84MdW1HRMrSBP/Pm0MZVx7DO+VDP7+zaJa3/+wq3GGYxDs00Hb6bKgWJFk8Q0qJhmUXVskKQz6HxrU4oI/sRMIP7GJQV/QfRnKJVJcoL5ZX6uLs0=";
 
     /**
      * SHA1加密工具
@@ -255,6 +256,15 @@ public class Encryptor {
      * AES加密
      */
     public static String encryptAES(String seed, String cleartext) throws Exception {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            /*if (StringUtils.isEmpty(salt)) {
+                salt = AesCbcWithIntegrity.saltString(AesCbcWithIntegrity.generateSalt());
+            }
+            TLog.i("salt", salt);*/
+            AesCbcWithIntegrity.SecretKeys key = AesCbcWithIntegrity.generateKeyFromPassword(seed, SALT);
+            AesCbcWithIntegrity.CipherTextIvMac civ = AesCbcWithIntegrity.encrypt(cleartext, key);
+            return civ.toString();
+        }
         byte[] rawKey = getRawKey(seed.getBytes());
         byte[] result = encrypt(rawKey, cleartext.getBytes());
         return toHex(result);
@@ -264,6 +274,15 @@ public class Encryptor {
      * AES解密
      */
     public static String decryptAES(String seed, String encrypted) throws Exception {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            /*if (StringUtils.isEmpty(salt)) {
+                salt = AesCbcWithIntegrity.saltString(AesCbcWithIntegrity.generateSalt());
+            }
+            TLog.i("salt", salt);*/
+            AesCbcWithIntegrity.CipherTextIvMac civ = new AesCbcWithIntegrity.CipherTextIvMac(encrypted);
+            AesCbcWithIntegrity.SecretKeys key = AesCbcWithIntegrity.generateKeyFromPassword(seed, SALT);
+            return AesCbcWithIntegrity.decryptString(civ, key);
+        }
         byte[] rawKey = getRawKey(seed.getBytes());
         byte[] enc = toByte(encrypted);
         byte[] result = decrypt(rawKey, enc);

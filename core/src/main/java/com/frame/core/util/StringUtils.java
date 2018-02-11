@@ -104,7 +104,8 @@ public class StringUtils {
     public static String formatDate(Date date, String format) {
         String result = "";
         if (date == null) return result;
-        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.SIMPLIFIED_CHINESE);
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         try {
             result = formatter.format(date.getTime());
             return result;

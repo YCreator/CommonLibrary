@@ -1,19 +1,22 @@
 package com.frame.core;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 
 import com.blankj.utilcode.util.Utils;
+import com.frame.core.base.AppManager;
 import com.frame.core.db.DatabaseManager;
 import com.frame.core.net.okhttp.CookiesManager;
 import com.frame.core.util.AppHelper;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * application基类
@@ -21,11 +24,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class BaseApplication extends Application {
 
-    static Context _context;
-    static Resources _resource;
-    static AssetManager _asset;
-    static CookiesManager cookiesManager;
-    static ThreadPoolExecutor executor;
+    @SuppressLint("StaticFieldLeak")
+    private static Context _context;
+    private static Resources _resource;
+    private static AssetManager _asset;
+    private static CookiesManager cookiesManager;
+    private static ExecutorService executor;
     public static String deviceId;
     public static int MODEL;
     public static boolean DEBUG = false;       //控制开发和生产模式
@@ -39,6 +43,8 @@ public class BaseApplication extends Application {
         _context = this.getApplicationContext();
         _resource = _context.getResources();
         _asset = _context.getAssets();
+        //注册监听每个activity的生命周期,便于堆栈式管理
+        registerActivityLifecycleCallbacks(mCallbacks);
     }
 
     @Override
@@ -95,9 +101,10 @@ public class BaseApplication extends Application {
      *
      * @return
      */
-    public static ThreadPoolExecutor getExecutor() {
+    public static ExecutorService getExecutor() {
         if (executor == null) {
-            executor = new ThreadPoolExecutor(3, 3, 200, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(20));
+           //executor = new ThreadPoolExecutor(3, 3, 200, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(50));
+           executor = Executors.newCachedThreadPool();
         }
         return executor;
     }
@@ -118,5 +125,42 @@ public class BaseApplication extends Application {
         //return BuildConfig.DEBUG;
         return true;
     }
+
+    private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            AppManager.getAppManager().addActivity(activity);
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+            AppManager.getAppManager().removeActivity(activity);
+        }
+    };
 
 }

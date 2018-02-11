@@ -31,7 +31,6 @@ import com.frame.core.R;
 import com.frame.core.interf.IBaseView;
 import com.frame.core.rx.Lifeful;
 import com.frame.core.util.MyPreferences;
-import com.frame.core.util.StackManager;
 import com.frame.core.util.TLog;
 import com.jaeger.library.StatusBarUtil;
 
@@ -72,7 +71,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         TLog.i("Activity", "onCreate");
         super.onCreate(savedInstanceState);
         onBeforeSetContentLayout();
-        StackManager.getStackManager().pushActivity(this);
+        //StackManager.getStackManager().pushActivity(this);
         setContentView(initPageLayoutID());
         ButterKnife.bind(this);
         initActionBar();
@@ -158,7 +157,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             mLoadingDialog = null;
         }
         ButterKnife.unbind(this);
-        StackManager.getStackManager().popActivity(this);
+        //StackManager.getStackManager().popActivity(this);
     }
 
     /**

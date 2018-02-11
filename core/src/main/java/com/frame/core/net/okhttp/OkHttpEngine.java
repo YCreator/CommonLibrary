@@ -61,9 +61,9 @@ public final class OkHttpEngine implements Engine {
 
     private OkHttpClient initOkHttpConfig() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(30, TimeUnit.SECONDS);
-        builder.readTimeout(30, TimeUnit.SECONDS);
-        builder.writeTimeout(30, TimeUnit.SECONDS);
+        builder.connectTimeout(60, TimeUnit.SECONDS);
+        builder.readTimeout(60, TimeUnit.SECONDS);
+        builder.writeTimeout(60, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
         File cacheDir = new File(BaseApplication.get_context().getCacheDir(), "HttpResponseCache");
         builder.cache(new Cache(cacheDir, 10 * 1024 * 1024));
