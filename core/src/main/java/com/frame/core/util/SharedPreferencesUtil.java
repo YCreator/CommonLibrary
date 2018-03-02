@@ -12,7 +12,7 @@ import java.util.Map;
 public final class SharedPreferencesUtil {
 
     private static String FILE_NAME = "file_name";
-    private final String MAK = "innoview";
+    private final String MAK = "3Wri9i2abNXlLhme"; // "innoview";
     private Context context;
     private static SharedPreferencesUtil instance;
 
@@ -61,8 +61,7 @@ public final class SharedPreferencesUtil {
     public void encryptSave(String key, String value) {
         try {
             SharedPreferences.Editor editor = getShare().edit();
-            TLog.i("encryptSave", Encryptor.encryptAES(MAK, value)+"_"+key+"_"+value+"_"+FILE_NAME);
-            editor.putString(key, Encryptor.encryptAES(MAK, value));
+            editor.putString(key, StringUtils.isEmpty(value) ? "" : Encryptor.encrypt(MAK, value));
             editor.apply();
         } catch (Exception e) {
             TLog.i("encryptSave", "error");
@@ -80,7 +79,7 @@ public final class SharedPreferencesUtil {
         try {
             String str = getShare().getString(key, "");
             TLog.i("decryptLoad", str+"_"+"_"+key+"_"+FILE_NAME);
-            return !"".equals(str) ? Encryptor.decryptAES(MAK, str) : "";
+            return !"".equals(str) ? Encryptor.decrypt(MAK, str) : "";
         } catch(Exception e) {
             TLog.i("decryptLoad", "error");
             return "";

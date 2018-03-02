@@ -54,7 +54,7 @@ public class AppManager {
      * 移除指定的Activity
      */
     public void removeActivity(Activity activity) {
-        if (activity != null) {
+        if (activity != null && activityStack.contains(activity)) {
             activityStack.remove(activity);
         }
     }
@@ -74,7 +74,9 @@ public class AppManager {
      * 获取当前Activity（堆栈中最后一个压入的）
      */
     public Activity currentActivity() {
-        return activityStack.lastElement();
+        if (activityStack != null && !activityStack.isEmpty())
+            return activityStack.lastElement();
+        return null;
     }
 
     /**

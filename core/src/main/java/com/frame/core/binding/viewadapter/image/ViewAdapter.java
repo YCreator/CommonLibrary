@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+/*import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;*/
+
 
 /**
  * Created by goldze on 2017/6/18.

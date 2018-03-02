@@ -32,7 +32,7 @@ public class BaseApplication extends Application {
     private static ExecutorService executor;
     public static String deviceId;
     public static int MODEL;
-    public static boolean DEBUG = false;       //控制开发和生产模式
+    public volatile static boolean DEBUG = false;       //控制开发和生产模式
     public static final int PRO = 0;    //生产
     public static final int DEV = 1;    //开发
 
@@ -41,6 +41,7 @@ public class BaseApplication extends Application {
         Utils.init(this);
         super.onCreate();
         _context = this.getApplicationContext();
+        DEBUG = AppHelper.isDebug();
         _resource = _context.getResources();
         _asset = _context.getAssets();
         //注册监听每个activity的生命周期,便于堆栈式管理
@@ -103,8 +104,8 @@ public class BaseApplication extends Application {
      */
     public static ExecutorService getExecutor() {
         if (executor == null) {
-           //executor = new ThreadPoolExecutor(3, 3, 200, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(50));
-           executor = Executors.newCachedThreadPool();
+            //executor = new ThreadPoolExecutor(3, 3, 200, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(50));
+            executor = Executors.newCachedThreadPool();
         }
         return executor;
     }
@@ -123,7 +124,7 @@ public class BaseApplication extends Application {
 
     public static boolean isDebug() {
         //return BuildConfig.DEBUG;
-        return true;
+        return DEBUG;
     }
 
     private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {

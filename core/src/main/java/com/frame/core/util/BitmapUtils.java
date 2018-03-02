@@ -40,6 +40,21 @@ import java.net.URL;
 public class BitmapUtils {
 
     /**
+     * 压缩显示bitmap，防止图片过大引起内存溢出
+     * @param is
+     * @return
+     */
+    public static Bitmap zipToShowBitmap(InputStream is) {
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inTempStorage = new byte[100 * 1024];
+        opts.inPreferredConfig = Bitmap.Config.RGB_565;
+        opts.inPurgeable = true;
+        opts.inSampleSize = 4;
+        opts.inInputShareable = true;
+        return BitmapFactory.decodeStream(is, null, opts);
+    }
+
+    /**
      * drawable 转 bitmap
      *
      * @param drawable

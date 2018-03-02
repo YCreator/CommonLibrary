@@ -1,5 +1,6 @@
 package com.frame.core.util;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -17,10 +18,24 @@ import com.frame.core.BaseApplication;
 
 import java.util.List;
 
-public class AppHelper {
+public final class AppHelper {
 
     private AppHelper() {
         throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    public static boolean isDebug() {
+        Context context = BaseApplication.get_context();
+        if (context == null) return false;
+        SharedPreferencesUtil shareUtil = SharedPreferencesUtil.getInstance(context, "total_app");
+        return shareUtil.loadBooleanSharedPreference("debug");
+    }
+
+    public static void setDebug(boolean isDebug) {
+        Context context = BaseApplication.get_context();
+        if (context == null) return;
+        SharedPreferencesUtil shareUtil = SharedPreferencesUtil.getInstance(context, "total_app");
+        shareUtil.saveSharedPreferences("debug", isDebug);
     }
 
     /**
@@ -38,6 +53,7 @@ public class AppHelper {
 
     /**
      * 获取应用包名
+     *
      * @return
      */
     public static String getPackageId() {
@@ -135,6 +151,7 @@ public class AppHelper {
 
     /**
      * 6.0权限申请
+     *
      * @param context
      * @param permission
      * @param requestCode
@@ -158,12 +175,24 @@ public class AppHelper {
 
     /**
      * 获取设备号
+     *
      * @param context
      * @return
      */
     @SuppressLint("HardwareIds")
     public static String getDeviceId(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return "";
+        }
+        if (telephonyManager == null) return "";
         return telephonyManager.getDeviceId();
     }
 

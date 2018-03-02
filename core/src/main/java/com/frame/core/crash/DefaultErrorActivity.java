@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.frame.core.R;
+import com.frame.core.util.AppHelper;
 
 
 public final class DefaultErrorActivity extends AppCompatActivity {
@@ -42,6 +43,10 @@ public final class DefaultErrorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!AppHelper.isDebug()) {
+            finish();
+            return;
+        }
 
         //This is needed to avoid a crash if the developer has not specified
         //an app-level theme that extends Theme.AppCompat
@@ -61,7 +66,7 @@ public final class DefaultErrorActivity extends AppCompatActivity {
 
         final CaocConfig config = CustomActivityOnCrash.getConfigFromIntent(getIntent());
 
-        if (config.isShowRestartButton() && config.getRestartActivityClass()!=null) {
+        if (config.isShowRestartButton() && config.getRestartActivityClass() != null) {
             restartButton.setText(R.string.customactivityoncrash_error_activity_restart_app);
             restartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
