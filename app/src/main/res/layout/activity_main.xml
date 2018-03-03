@@ -1,46 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="user"
             type="com.lib.commonlibrary.MainViewModel" />
+
+        <import type="com.jcx.hnn.R" />
     </data>
 
-    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activity_main"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.lib.commonlibrary.MainActivity">
+        android:orientation="vertical">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="share"
-            android:text="SINA分享" />
+            android:text="SINA分享"
+            bind:isThrottleFirst="true"
+            bind:onClickCommand="@{user.shareClick}" />
 
         <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            bind:placeholderRes="@{R.mipmap.ic_launcher}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:text="@{user.userModel.username}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:text="@{user.userModel.password}" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </layout>
 

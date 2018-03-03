@@ -108,7 +108,7 @@
     <attr name="url" format="string" />
     <attr name="onTouchCommand" format="reference" />
 
-    <!-- require BindingCommand {@link com.kelin.mvvmlight.command.BindingCommand } to deal with view click event. -->
+    <!-- require BindingCommand {@link com.frame.core.binding.command.BindingCommand } to deal with view click event. -->
     <attr name="onClickCommand" format="reference" />
     <attr name="onLongClickCommand" format="reference" />
     <!-- require BindingCommand<Boolean> {@link com.kelin.mvvmlight.command.BindingCommand } to deal with view focus change event.
@@ -127,7 +127,7 @@
         <attr name="onFocusChangeCommand" />
         <!-- require BindingCommand<MotionEvent> -->
         <attr name="onTouchCommand" />
-        <attr name="isThrottleFirst" />
+        <attr name="isThrottleFirst"/>
         <attr name="currentView" />
 
     </declare-styleable>

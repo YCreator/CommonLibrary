@@ -12,8 +12,8 @@ import java.util.Stack;
 
 public class AppManager {
 
-    private volatile static Stack<Activity> activityStack;
-    private volatile static Stack<Fragment> fragmentStack;
+    private volatile static Stack<Activity> activityStack = new Stack<>();
+    private volatile static Stack<Fragment> fragmentStack = new Stack<>();
     private volatile static AppManager instance;
 
     private AppManager() {
@@ -44,9 +44,6 @@ public class AppManager {
      * 添加Activity到堆栈
      */
     public void addActivity(Activity activity) {
-        if (activityStack == null) {
-            activityStack = new Stack<Activity>();
-        }
         activityStack.add(activity);
     }
 
@@ -54,7 +51,7 @@ public class AppManager {
      * 移除指定的Activity
      */
     public void removeActivity(Activity activity) {
-        if (activity != null && activityStack.contains(activity)) {
+        if (activityStack.contains(activity)) {
             activityStack.remove(activity);
         }
     }
@@ -64,17 +61,14 @@ public class AppManager {
      * 是否有activity
      */
     public boolean isActivity() {
-        if (activityStack != null) {
-            return !activityStack.isEmpty();
-        }
-        return false;
+        return !activityStack.isEmpty();
     }
 
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
      */
     public Activity currentActivity() {
-        if (activityStack != null && !activityStack.isEmpty())
+        if (!activityStack.isEmpty())
             return activityStack.lastElement();
         return null;
     }
@@ -128,12 +122,11 @@ public class AppManager {
      * @author kymjs
      */
     public static Activity getActivity(Class<?> cls) {
-        if (activityStack != null)
-            for (Activity activity : activityStack) {
-                if (activity.getClass().equals(cls)) {
-                    return activity;
-                }
+        for (Activity activity : activityStack) {
+            if (activity.getClass().equals(cls)) {
+                return activity;
             }
+        }
         return null;
     }
 
@@ -142,9 +135,6 @@ public class AppManager {
      * 添加Fragment到堆栈
      */
     public void addFragment(Fragment fragment) {
-        if (fragmentStack == null) {
-            fragmentStack = new Stack<Fragment>();
-        }
         fragmentStack.add(fragment);
     }
 
@@ -162,19 +152,15 @@ public class AppManager {
      * 是否有Fragment
      */
     public boolean isFragment() {
-        if (fragmentStack != null) {
-            return !fragmentStack.isEmpty();
-        }
-        return false;
+        return !fragmentStack.isEmpty();
     }
 
     /**
      * 获取当前Fragment（堆栈中最后一个压入的）
      */
     public Fragment currentFragment() {
-        if (fragmentStack != null) {
+        if (!fragmentStack.isEmpty())
             return fragmentStack.lastElement();
-        }
         return null;
     }
 

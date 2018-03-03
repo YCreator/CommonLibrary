@@ -1,17 +1,12 @@
 package com.lib.commonlibrary;
 
 import android.content.Intent;
-import android.view.View;
 
 import com.frame.core.base.NewBaseActivity;
 import com.jcx.hnn.BR;
 import com.jcx.hnn.R;
 import com.jcx.hnn.databinding.ActivityMainBinding;
-import com.lib.sharelib.ShareEntity;
-import com.lib.sharelib.ShareHelper;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.utils.Log;
 
 public class MainActivity extends NewBaseActivity<ActivityMainBinding, MainViewModel> {
@@ -58,14 +53,7 @@ public class MainActivity extends NewBaseActivity<ActivityMainBinding, MainViewM
 
     @Override
     public MainViewModel initViewModel() {
-        return new MainViewModel();
-    }
-
-    public void share(View v) {
-        UMImage image = new UMImage(this, R.drawable.umeng_socialize_qq);
-        image.setThumb(new UMImage(this, R.mipmap.ic_launcher));
-        ShareEntity entity = new ShareEntity("test", "https://www.baidu.com", "hello world", image);
-        ShareHelper.getInstance().shareWeb(this, entity, SHARE_MEDIA.QQ);
+        return new MainViewModel(this);
     }
 
     @Override

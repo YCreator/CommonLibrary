@@ -19,8 +19,9 @@ public class ViewAdapter {
             editText.setSelection(editText.getText().length());
             editText.requestFocus();
             InputMethodManager imm = (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
         }
-		editText.setFocusableInTouchMode(needRequestFocus);
+        editText.setFocusableInTouchMode(needRequestFocus);
     }
 }

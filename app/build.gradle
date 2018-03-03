@@ -15,6 +15,7 @@ android {
                 includeCompileClasspath = true
             }
         }
+        multiDexEnabled true
     }
 
     packagingOptions {

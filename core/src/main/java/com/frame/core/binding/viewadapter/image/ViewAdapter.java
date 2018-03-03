@@ -8,14 +8,17 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-/*import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;*/
-
 
 /**
  * Created by goldze on 2017/6/18.
  */
 public final class ViewAdapter {
+    /**
+     *
+     * @param imageView
+     * @param url               图片路径
+     * @param placeholderRes    占位图片id
+     */
     @BindingAdapter(value = {"url", "placeholderRes"}, requireAll = false)
     public static void setImageUri(ImageView imageView, String url, int placeholderRes) {
         if (!TextUtils.isEmpty(url)) {
