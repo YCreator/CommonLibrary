@@ -2,40 +2,49 @@ package com.frame.core.bus;
 
 import java.lang.ref.WeakReference;
 
-import rx.functions.Action0;
-import rx.functions.Action1;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+
 
 /**
  *
  */
 public class WeakAction<T> {
-    private Action0 action;
-    private Action1<T> action1;
+    private Action action;
+    private Consumer<T> action1;
     private boolean isLive;
     private Object target;
     private WeakReference reference;
 
-    public WeakAction(Object target, Action0 action) {
-        reference = new WeakReference(target);
+    public WeakAction(Object target, Action action) {
+        reference = new WeakReference<>(target);
         this.action = action;
 
     }
 
-    public WeakAction(Object target, Action1<T> action1) {
-        reference = new WeakReference(target);
+    public WeakAction(Object target, Consumer<T> action1) {
+        reference = new WeakReference<>(target);
         this.action1 = action1;
     }
 
     public void execute() {
         if (action != null && isLive()) {
-            action.call();
+            try {
+                action.run();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void execute(T parameter) {
         if (action1 != null
                 && isLive()) {
-            action1.call(parameter);
+            try {
+                action1.accept(parameter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -46,11 +55,11 @@ public class WeakAction<T> {
         action1 = null;
     }
 
-    public Action0 getAction() {
+    public Action getAction() {
         return action;
     }
 
-    public Action1 getAction1() {
+    public Consumer getAction1() {
         return action1;
     }
 

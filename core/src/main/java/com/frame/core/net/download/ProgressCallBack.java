@@ -12,9 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
-import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2017/9/26 0026.
@@ -24,7 +23,7 @@ public abstract class ProgressCallBack<T> {
 
     private String destFileDir; // 本地文件存放路径
     private String destFileName; // 文件名
-    private Subscription mSubscription;
+    private Disposable mSubscription;
     private final Handler handler;
 
     public ProgressCallBack(String destFileDir, String destFileName) {
@@ -84,18 +83,8 @@ public abstract class ProgressCallBack<T> {
      */
     public void subscribeLoadProgress() {
         mSubscription = RxBus.getDefault().toObservable(DownLoadStateBean.class)
-                .subscribe(new Action1<DownLoadStateBean>() {
-                    @Override
-                    public void call(final DownLoadStateBean progressLoadBean) {
-                        // 回调到主线程更新UI
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                progress(progressLoadBean.getBytesLoaded(), progressLoadBean.getTotal());
-                            }
-                        });
-                    }
-                });
+                .subscribe(progressLoadBean -> // 回调到主线程更新UI
+                        handler.post(() -> progress(progressLoadBean.getBytesLoaded(), progressLoadBean.getTotal())));
         //将订阅者加入管理站
         RxSubscriptions.add(mSubscription);
     }

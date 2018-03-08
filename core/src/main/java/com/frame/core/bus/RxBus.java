@@ -4,23 +4,29 @@ package com.frame.core.bus;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.subjects.PublishSubject;
-import rx.subjects.SerializedSubject;
-import rx.subjects.Subject;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
+
 
 /**
  * 只会把在订阅发生的时间点之后来自原始Observable的数据发射给观察者
  */
 public class RxBus {
     private static volatile RxBus mDefaultInstance;
-    private final Subject<Object, Object> mBus;
+    private final Subject<Object> mBus;
 
-    private final Map<Class<?>, Object> mStickyEventMap;
+    private final Map<Class<?>, CompositeDisposable> mStickyEventMap;
 
     public RxBus() {
-        mBus = new SerializedSubject<>(PublishSubject.create());
+        mBus = PublishSubject.create().toSerialized();
         mStickyEventMap = new ConcurrentHashMap<>();
     }
 
@@ -43,6 +49,18 @@ public class RxBus {
     }
 
     /**
+     * 返回指定类型的带背压的Flowable实例
+     *
+     * @param <T>
+     * @param type
+     * @return
+     */
+    public <T> Flowable<T> getObservable(Class<T> type) {
+        return mBus.toFlowable(BackpressureStrategy.BUFFER)
+                .ofType(type);
+    }
+
+    /**
      * 根据传递的 eventType 类型返回特定类型(eventType)的 被观察者
      */
     public <T> Observable<T> toObservable(Class<T> eventType) {
@@ -50,10 +68,57 @@ public class RxBus {
     }
 
     /**
+     * 一个默认的订阅方法
+     *
+     * @param <T>
+     * @param type
+     * @param next
+     * @param error
+     * @return
+     */
+    public <T> Disposable doSubscribe(Class<T> type, Consumer<T> next, Consumer<Throwable> error){
+        return getObservable(type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next,error);
+    }
+
+    /**
      * 判断是否有订阅者
      */
     public boolean hasObservers() {
         return mBus.hasObservers();
+    }
+
+    /**
+     * 保存订阅后的disposable
+     * @param o
+     * @param disposable
+     */
+    public void addSubscription(Object o, Disposable disposable) {
+        if (mStickyEventMap.get(o.getClass()) != null) {
+            mStickyEventMap.get(o.getClass()).add(disposable);
+        } else {
+            //一次性容器,可以持有多个并提供 添加和移除。
+            CompositeDisposable disposables = new CompositeDisposable();
+            disposables.add(disposable);
+            mStickyEventMap.put(o.getClass(), disposables);
+        }
+    }
+
+    /**
+     * 取消订阅
+     * @param o
+     */
+    public void unSubscribe(Object o) {
+        if (!mStickyEventMap.containsKey(o.getClass())){
+            return;
+        }
+        if (mStickyEventMap.get(o.getClass()) != null) {
+            mStickyEventMap.get(o.getClass()).dispose();
+        }
+
+        mStickyEventMap.remove(o.getClass());
     }
 
     public void reset() {
@@ -67,9 +132,9 @@ public class RxBus {
     /**
      * 发送一个新Sticky事件
      */
-    public void postSticky(Object event) {
+    public void postSticky(Object event, Disposable disposable) {
         synchronized (mStickyEventMap) {
-            mStickyEventMap.put(event.getClass(), event);
+            addSubscription(event, disposable);
         }
         post(event);
     }
@@ -83,12 +148,7 @@ public class RxBus {
             final Object event = mStickyEventMap.get(eventType);
 
             if (event != null) {
-                return Observable.merge(observable, Observable.create(new Observable.OnSubscribe<T>() {
-                    @Override
-                    public void call(Subscriber<? super T> subscriber) {
-                        subscriber.onNext(eventType.cast(event));
-                    }
-                }));
+                return Observable.merge(observable, Observable.create(e -> e.onNext(eventType.cast(event))));
             } else {
                 return observable;
             }

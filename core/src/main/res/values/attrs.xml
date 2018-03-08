@@ -100,6 +100,7 @@
     <attr name="itemView" format="reference" />
     <!-- require List<ViewModel> bind to ItemView to presentation.-->
     <attr name="items" format="reference" />
+    <attr name="itemBinding" format="reference" />
     <!-- require a adapter which type of BindingRecyclerViewAdapter<T> to AdapterView-->
     <attr name="adapter" format="reference" />
 
@@ -108,7 +109,7 @@
     <attr name="url" format="string" />
     <attr name="onTouchCommand" format="reference" />
 
-    <!-- require BindingCommand {@link com.frame.core.binding.command.BindingCommand } to deal with view click event. -->
+    <!-- require BindingCommand {@lcom.frame.core.mvvm.bindingding.command.BindingCommand } to deal with view click event. -->
     <attr name="onClickCommand" format="reference" />
     <attr name="onLongClickCommand" format="reference" />
     <!-- require BindingCommand<Boolean> {@link com.kelin.mvvmlight.command.BindingCommand } to deal with view focus change event.

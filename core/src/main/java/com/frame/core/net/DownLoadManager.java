@@ -6,6 +6,10 @@ import com.frame.core.net.interceptor.ProgressInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
@@ -13,10 +17,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by yzd on 2017/5/11.
@@ -49,9 +49,9 @@ public class DownLoadManager {
                 .download(downUrl)
                 .subscribeOn(Schedulers.io())//请求网络 在调度者的io线程
                 .observeOn(Schedulers.io()) //指定线程保存文件
-                .doOnNext(new Action1<ResponseBody>() {
+                .doOnNext(new Consumer<ResponseBody>() {
                     @Override
-                    public void call(ResponseBody body) {
+                    public void accept(ResponseBody body) {
                         callBack.saveFile(body);
                     }
                 })

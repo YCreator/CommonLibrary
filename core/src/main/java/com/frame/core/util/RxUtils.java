@@ -2,12 +2,12 @@ package com.frame.core.util;
 
 import android.content.Context;
 
-import com.frame.core.net.ExceptionHandle;
-import com.trello.rxlifecycle.LifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -21,6 +21,7 @@ public class RxUtils {
      *
      * @param context Activity或者Fragment
      */
+    @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindToLifecycle(Context context) {
         if (context instanceof LifecycleProvider) {
             return ((LifecycleProvider) context).bindToLifecycle();
@@ -32,18 +33,10 @@ public class RxUtils {
     /**
      * 线程调度器
      */
-    /*public static Observable.Transformer schedulersTransformer() {
+    public static <T> ObservableTransformer<T, T> schedulersTransformer() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
-    }*/
-
-
-
-    private static class HttpResponseFunc<T> implements Func1<Throwable, Observable<T>> {
-        @Override
-        public Observable<T> call(Throwable t) {
-            return Observable.error(ExceptionHandle.handleException(t));
-        }
     }
+
 
 }

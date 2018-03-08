@@ -1,35 +1,36 @@
 package com.frame.core.net.download;
 
-import rx.Subscriber;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by yzd on 2017/5/11.
  */
 
-public class DownLoadSubscriber<T> extends Subscriber<T> {
-    private ProgressCallBack fileCallBack;
+public class DownLoadSubscriber<T> implements Observer<T> {
+    private ProgressCallBack<T> fileCallBack;
 
-    public DownLoadSubscriber(ProgressCallBack fileCallBack) {
+    public DownLoadSubscriber(ProgressCallBack<T> fileCallBack) {
         this.fileCallBack = fileCallBack;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (fileCallBack != null)
-            fileCallBack.onStart();
-    }
-
-    @Override
-    public void onCompleted() {
-        if (fileCallBack != null)
-            fileCallBack.onCompleted();
     }
 
     @Override
     public void onError(Throwable e) {
         if (fileCallBack != null)
             fileCallBack.onError(e);
+    }
+
+    @Override
+    public void onComplete() {
+        if (fileCallBack != null)
+            fileCallBack.onCompleted();
+    }
+
+    @Override
+    public void onSubscribe(Disposable d) {
+        if (fileCallBack != null)
+            fileCallBack.onStart();
     }
 
     @Override

@@ -1,25 +1,27 @@
 package com.frame.core.bus;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 
 /**
  * 管理 CompositeSubscription
  */
 public class RxSubscriptions {
-    private static CompositeSubscription mSubscriptions = new CompositeSubscription();
+    private static CompositeDisposable mSubscriptions = new CompositeDisposable();
 
     public static boolean isUnsubscribed() {
-        return mSubscriptions.isUnsubscribed();
+        return mSubscriptions.isDisposed();
     }
 
-    public static void add(Subscription s) {
+    public static void add(Disposable s) {
         if (s != null) {
             mSubscriptions.add(s);
         }
     }
 
-    public static void remove(Subscription s) {
+    public static void remove(Disposable s) {
         if (s != null) {
             mSubscriptions.remove(s);
         }
@@ -30,10 +32,10 @@ public class RxSubscriptions {
     }
 
     public static void unsubscribe() {
-        mSubscriptions.unsubscribe();
+        mSubscriptions.dispose();
     }
 
-    public static boolean hasSubscriptions() {
+    /*public static boolean hasSubscriptions() {
         return mSubscriptions.hasSubscriptions();
-    }
+    }*/
 }
