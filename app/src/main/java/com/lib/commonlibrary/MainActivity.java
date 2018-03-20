@@ -2,10 +2,11 @@ package com.lib.commonlibrary;
 
 import android.content.Intent;
 
-import com.frame.core.base.NewBaseActivity;
+import com.frame.core.mvvm.base.NewBaseActivity;
 import com.jcx.hnn.BR;
 import com.jcx.hnn.R;
 import com.jcx.hnn.databinding.ActivityMainBinding;
+import com.lib.imagelib.loader.ImageEngine;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.utils.Log;
 
@@ -62,5 +63,12 @@ public class MainActivity extends NewBaseActivity<ActivityMainBinding, MainViewM
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    @Override
+    public void initViewObservable() {
+        ImageEngine.with(this)
+                .url("https://img.alicdn.com/bao/uploaded/i3/2756649157/TB2tMJLjJBopuFjSZPcXXc9EpXa_!!2756649157.jpg_220x220.jpg")
+                .into(this.findViewById(R.id.iv));
     }
 }

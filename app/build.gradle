@@ -61,4 +61,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':sharelib')
     compile project(':core')
+    compile project(':imagelib')
 }

@@ -149,7 +149,7 @@ public class StringUtils {
         if (isEmpty(paramString))
             return false;
 
-        String checkMobileRule = "[1][35478]\\d{9}";
+        String checkMobileRule = "[1]\\d{10}";
         // Pattern pattern = Pattern.compile("^[1]((3[0-9])|(5[^4,\\D])|(8[0,5-9])|(4[5,7])|(7[0,6-8]))\\d{8}$");
         Pattern pattern = Pattern.compile(checkMobileRule);
         return pattern.matcher(paramString).matches();

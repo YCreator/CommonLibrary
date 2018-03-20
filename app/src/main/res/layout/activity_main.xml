@@ -24,6 +24,7 @@
             bind:onClickCommand="@{user.shareClick}" />
 
         <ImageView
+            android:id="@+id/iv"
             android:layout_width="160dp"
             android:layout_height="160dp"
             bind:placeholderRes="@{R.mipmap.ic_launcher}" />

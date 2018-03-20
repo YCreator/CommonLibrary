@@ -1,4 +1,4 @@
-package com.frame.core.mvvm.binding.viewadapter.ptrClassicFrameLayout;
+package com.frame.core.mvvm.binding.viewadapter.ptrclassicframelayout;
 
 import android.databinding.BindingAdapter;
 

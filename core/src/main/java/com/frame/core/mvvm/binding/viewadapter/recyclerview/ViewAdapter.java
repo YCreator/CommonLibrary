@@ -83,7 +83,7 @@ public class ViewAdapter {
             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
             if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                 if (onLoadMoreCommand != null) {
-                    methodInvoke.onNext(recyclerView.getAdapter().getItemCount());0
+                    methodInvoke.onNext(recyclerView.getAdapter().getItemCount());
                 }
             }
         }
