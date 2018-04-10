@@ -9,7 +9,7 @@ import com.bumptech.glide.request.RequestOptions;
  * Created by yzd on 2018/3/16 0016.
  */
 
-public class GlidePubImpl implements GlidePub {
+public class GlidePubImpl implements Pub {
 
     @Override
     public void initOption() {

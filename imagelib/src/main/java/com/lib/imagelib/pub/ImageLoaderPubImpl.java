@@ -21,7 +21,7 @@ import java.io.File;
  * Created by yzd on 2018/3/16 0016.
  */
 
-public class ImageLoaderPubImpl implements ImageLoaderPub {
+public class ImageLoaderPubImpl implements Pub {
     @Override
     public void initOption() {
         File cacheDir = StorageUtils.getOwnCacheDirectory(ImagePub.mContext, "");
