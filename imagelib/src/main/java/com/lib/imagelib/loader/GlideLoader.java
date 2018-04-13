@@ -169,7 +169,6 @@ public class GlideLoader implements ILoader {
             if (config.getErrorResId() > 0) {
                 options.error(config.getErrorResId());
             }
-
             request.apply(options);
             if (config.getTarget() instanceof ImageView) {
                 request.into((ImageView) config.getTarget());
@@ -300,11 +299,12 @@ public class GlideLoader implements ILoader {
     private DrawableTransitionOptions drawableAnimator(SingleConfig config) {
         DrawableCrossFadeFactory.Builder builder = new DrawableCrossFadeFactory.Builder();
         if (config.getAnimationType() == AnimationMode.ANIMATIONID) {
-            builder.setDefaultAnimationId(config.getAnimationId());
+            builder.setCrossFadeEnabled(true);
+            //builder.setDefaultAnimationId(config.getAnimationId());
         } else if (config.getAnimationType() == AnimationMode.ANIMATOR) {
-            builder.setDefaultAnimationFactory(config.getAnimator());
+           // builder.setDefaultAnimationFactory(config.getAnimator());
         } else if (config.getAnimationType() == AnimationMode.ANIMATION) {
-            builder.setDefaultAnimation(config.getAnimation());
+           // builder.setDefaultAnimation(config.getAnimation());
         }
         return DrawableTransitionOptions.withCrossFade(builder);
     }
@@ -317,11 +317,12 @@ public class GlideLoader implements ILoader {
     private BitmapTransitionOptions bitmapAnimator(SingleConfig config) {
         DrawableCrossFadeFactory.Builder builder = new DrawableCrossFadeFactory.Builder();
         if (config.getAnimationType() == AnimationMode.ANIMATIONID) {
-            builder.setDefaultAnimationId(config.getAnimationId());
+            builder.setCrossFadeEnabled(true);
+            //builder.setDefaultAnimationId(config.getAnimationId());
         } else if (config.getAnimationType() == AnimationMode.ANIMATOR) {
-            builder.setDefaultAnimationFactory(config.getAnimator());
+           // builder.setDefaultAnimationFactory(config.getAnimator());
         } else if (config.getAnimationType() == AnimationMode.ANIMATION) {
-            builder.setDefaultAnimation(config.getAnimation());
+           // builder.setDefaultAnimation(config.getAnimation());
         }
         return BitmapTransitionOptions.withCrossFade(builder);
     }

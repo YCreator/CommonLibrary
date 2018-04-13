@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.lib.imagelib.config.GlobalConfig;
 import com.lib.imagelib.config.PriorityMode;
 import com.lib.imagelib.config.ScaleMode;
 import com.lib.imagelib.config.SingleConfig;
@@ -34,7 +33,7 @@ public class PicassoLoader implements ILoader {
 
     @Override
     public void request(final SingleConfig config) {
-        RequestCreator request = Picasso.with(config.getContext()).load(config.getUrl());
+        RequestCreator request = Picasso.get().load(config.getUrl());
         if (config.getPlaceHolderResId() != 0) {
             request.placeholder(config.getPlaceHolderResId());
         } else {
@@ -69,7 +68,7 @@ public class PicassoLoader implements ILoader {
                 }
 
                 @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                     if (config.getBitmapListener() != null)
                         config.getBitmapListener().onFail();
                 }
@@ -88,12 +87,12 @@ public class PicassoLoader implements ILoader {
 
     @Override
     public void pause() {
-        Picasso.with(GlobalConfig.context).pauseTag("");
+        Picasso.get().pauseTag("");
     }
 
     @Override
     public void resume() {
-        Picasso.with(GlobalConfig.context).resumeTag("");
+        Picasso.get().resumeTag("");
     }
 
     @Override
@@ -129,7 +128,7 @@ public class PicassoLoader implements ILoader {
     @Override
     public Bitmap loadBitmap(Context context, String url) {
         try {
-            return Picasso.with(context).load(url).get();
+            return Picasso.get().load(url).get();
         } catch (IOException e) {
             e.printStackTrace();
         }

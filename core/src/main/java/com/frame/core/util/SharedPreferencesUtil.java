@@ -12,7 +12,7 @@ import java.util.Map;
 public final class SharedPreferencesUtil {
 
     private static String FILE_NAME = "file_name";
-    private final String MAK = "3Wri9i2abNXlLhme"; // "innoview";
+    private static String MAK = "innoview";// = "3Wri9i2abNXlLhme"; // "innoview";
     private Context context;
     private static SharedPreferencesUtil instance;
 
@@ -28,6 +28,10 @@ public final class SharedPreferencesUtil {
             FILE_NAME = filename;
         }
         return instance;
+    }
+
+    public static void encryptKey(String key) {
+        MAK = key;
     }
 
     /**

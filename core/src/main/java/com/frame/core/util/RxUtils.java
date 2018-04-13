@@ -38,5 +38,14 @@ public class RxUtils {
 
     }
 
+    /**
+     * 新线程调度
+     * @param <T>
+     * @return
+     */
+    public static <T> ObservableTransformer<T, T> schedulersNewTransformer() {
+        return observable -> observable.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread());
+    }
+
 
 }

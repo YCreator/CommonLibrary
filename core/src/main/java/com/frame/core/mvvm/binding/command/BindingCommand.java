@@ -6,7 +6,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**
- * About : kelin的ReplyCommand
+ * ReplyCommand
  * 执行的命令回调, 用于ViewModel与xml之间的数据绑定
  */
 public class BindingCommand<T> {

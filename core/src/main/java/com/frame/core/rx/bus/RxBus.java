@@ -1,4 +1,4 @@
-package com.frame.core.bus;
+package com.frame.core.rx.bus;
 
 
 import java.util.Map;
@@ -76,11 +76,11 @@ public class RxBus {
      * @param error
      * @return
      */
-    public <T> Disposable doSubscribe(Class<T> type, Consumer<T> next, Consumer<Throwable> error){
+    public <T> Disposable doSubscribe(Class<T> type, Consumer<T> next, Consumer<Throwable> error) {
         return getObservable(type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next,error);
+                .subscribe(next, error);
     }
 
     /**
@@ -92,6 +92,7 @@ public class RxBus {
 
     /**
      * 保存订阅后的disposable
+     *
      * @param o
      * @param disposable
      */
@@ -108,10 +109,11 @@ public class RxBus {
 
     /**
      * 取消订阅
+     *
      * @param o
      */
     public void unSubscribe(Object o) {
-        if (!mStickyEventMap.containsKey(o.getClass())){
+        if (!mStickyEventMap.containsKey(o.getClass())) {
             return;
         }
         if (mStickyEventMap.get(o.getClass()) != null) {

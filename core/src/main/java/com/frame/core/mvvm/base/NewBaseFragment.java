@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.frame.core.bus.Messenger;
+import com.frame.core.rx.bus.Messenger;
 import com.frame.core.interf.IBaseActivity;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 

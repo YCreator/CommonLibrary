@@ -1,4 +1,4 @@
-package com.lib.tpl.share;
+package com.lib.tpl;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.lib.tpl.share.PLATFORM_TYPE;
+import com.lib.tpl.share.ShareEntity;
 import com.tencent.connect.share.QzonePublish;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
@@ -34,44 +36,43 @@ import java.util.List;
 public final class ShareHelper {
 
     private static ShareHelper helper;
-    private Context mContext;
 
     private ShareHelper() {
     }
 
-    public static ShareHelper getInstance() {
+    static ShareHelper getInstance() {
         if (helper == null) {
             helper = new ShareHelper();
         }
         return helper;
     }
 
-    public ShareHelper setWeixin(String id, String secret) {
+    ShareHelper setWeixin(String id, String secret) {
         PlatformConfig.setWeixin(id, secret);
         return this;
     }
 
-    public ShareHelper setSina(String id, String secret) {
+    ShareHelper setSina(String id, String secret) {
         PlatformConfig.setSinaWeibo(id, secret, "http://sns.whalecloud.com");
         return this;
     }
 
-    public ShareHelper setQQ(String id, String secret) {
+    ShareHelper setQQ(String id, String secret) {
         PlatformConfig.setQQZone(id, secret);
         return this;
     }
 
-    public ShareHelper setAlipay(String id) {
+    ShareHelper setAlipay(String id) {
         PlatformConfig.setAlipay(id);
         return this;
     }
 
-    public ShareHelper setDing(String id) {
+    ShareHelper setDing(String id) {
         PlatformConfig.setDing(id);
         return this;
     }
 
-    public ShareHelper setDebug(boolean debug) {
+    ShareHelper setDebug(boolean debug) {
         Config.DEBUG = debug;
         return this;
     }
@@ -82,8 +83,7 @@ public final class ShareHelper {
      * @param context
      * @param key
      */
-    public void init(Context context, String key) {
-        mContext = context.getApplicationContext();
+    void init(Context context, String key) {
         UMShareAPI.init(context, key);
         UMShareAPI.get(context);
     }
@@ -176,19 +176,19 @@ public final class ShareHelper {
         @Override
         public void onResult(SHARE_MEDIA platform) {
             Log.d("plat", "platform" + platform);
-            Toast.makeText(mContext, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TpHelper.mContext, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
 
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(mContext, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TpHelper.mContext, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
             Log.d("throw", "throw:" + (t != null ? t.getMessage() : "t==null"));
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(mContext, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TpHelper.mContext, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
         }
     };
 

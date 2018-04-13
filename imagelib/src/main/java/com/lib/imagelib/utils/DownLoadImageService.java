@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
-import com.lib.imagelib.loader.ImageEngine;
+import com.lib.imagelib.ImageEngine;
 
 import java.io.File;
 import java.io.FileNotFoundException;

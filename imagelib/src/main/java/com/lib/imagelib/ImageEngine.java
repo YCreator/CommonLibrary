@@ -1,4 +1,4 @@
-package com.lib.imagelib.loader;
+package com.lib.imagelib;
 
 import android.content.Context;
 import android.view.View;
@@ -6,6 +6,7 @@ import android.view.View;
 import com.lib.imagelib.config.GlobalConfig;
 import com.lib.imagelib.config.MemoryMode;
 import com.lib.imagelib.config.SingleConfig;
+import com.lib.imagelib.loader.ILoader;
 
 /**
  * Created by yzd on 2018/3/17 0017.

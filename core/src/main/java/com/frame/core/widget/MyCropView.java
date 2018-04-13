@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.blankj.utilcode.util.ImageUtils;
+import com.frame.core.util.utils.ImageUtils;
 import com.frame.core.util.PixelUtil;
 import com.frame.core.util.TLog;
 import com.frame.core.util.ToastUtil;

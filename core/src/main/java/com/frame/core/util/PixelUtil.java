@@ -8,7 +8,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.blankj.utilcode.util.ScreenUtils;
+import com.frame.core.util.utils.ScreenUtils;
 import com.frame.core.BaseApplication;
 
 

@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
 
 
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -24,16 +24,25 @@ android {
 
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
+    compile(name: 'alibabauth_ui-1.1.4', ext: 'aar')
+    compile(name: 'securityguardaar3-5.1.81', ext: 'aar')
+    compile(name: 'alibc_trade_sdk-3.1.1.11', ext: 'aar')
     api fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     //fastjson
-    compile 'com.alibaba:fastjson:1.2.9'
+    /*compile 'com.alibaba:fastjson:1.2.9'
     //支付
     //compile 'com.alibaba.alipay:alipaySingle:20160825@jar'
     //登陆
@@ -51,4 +60,6 @@ dependencies {
     compile 'com.alibaba.mtl:app-monitor-sdk:2.5.1.3_for_bc_proguard@jar'
     //电商SDK
     compile 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar'
+    //微信sdk
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'*/
 }

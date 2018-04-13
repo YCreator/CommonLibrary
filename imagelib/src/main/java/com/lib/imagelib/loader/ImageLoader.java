@@ -3,6 +3,7 @@ package com.lib.imagelib.loader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +29,6 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import java.io.File;
 import java.io.IOException;
 
-import javax.annotation.Nullable;
 
 /**
  * Created by yzd on 2018/3/19 0019.

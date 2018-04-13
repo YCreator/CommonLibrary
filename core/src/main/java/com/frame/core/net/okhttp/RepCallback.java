@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
 import com.frame.core.entity.JsonEntity;
-import com.frame.core.exception.InstanceFactoryException;
-import com.frame.core.exception.ResponseException;
+import com.frame.core.crash.exception.InstanceFactoryException;
+import com.frame.core.crash.exception.ResponseException;
 import com.frame.core.interf.Mapper;
 import com.frame.core.net.ICallback;
 import com.frame.core.net.Retrofit.ErrorRep;

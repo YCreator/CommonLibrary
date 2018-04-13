@@ -1,6 +1,7 @@
 package com.frame.core.net.okhttp;
 
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.frame.core.BaseApplication;
@@ -9,10 +10,20 @@ import com.frame.core.util.TLog;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Cache;
 import okhttp3.Call;
@@ -36,6 +47,7 @@ public final class OkHttpEngine implements Engine {
     private static OkHttpEngine okHttpEngine;
     private OkHttpClient mOkHttpClient;
     private static CookiesManager mCookiesManager;
+    private X509TrustManager x509TrustManager;
 
     public static void setCookieStore(CookiesManager cookiesManager) {
         mCookiesManager = cookiesManager;
@@ -64,6 +76,8 @@ public final class OkHttpEngine implements Engine {
         builder.connectTimeout(60, TimeUnit.SECONDS);
         builder.readTimeout(60, TimeUnit.SECONDS);
         builder.writeTimeout(60, TimeUnit.SECONDS);
+        builder.sslSocketFactory(createSSLSocketFactory(), x509TrustManager);
+        builder.hostnameVerifier(new TrustAllHostnameVerifier());
         builder.retryOnConnectionFailure(true);
         File cacheDir = new File(BaseApplication.get_context().getCacheDir(), "HttpResponseCache");
         builder.cache(new Cache(cacheDir, 10 * 1024 * 1024));
@@ -88,7 +102,7 @@ public final class OkHttpEngine implements Engine {
         Request request = new Request.Builder().url(url).get().build();
         Response response = mOkHttpClient.newCall(request).execute();
         if (response.code() == 200) {
-           return response.body().string();
+            return response.body().string();
         }
         return "";
     }
@@ -293,5 +307,54 @@ public final class OkHttpEngine implements Engine {
         if (cookies.isEmpty()) return;
 
         mOkHttpClient.cookieJar().saveFromResponse(userRequest.url(), cookies);
+    }
+
+    /**
+     * 默认信任所有的证书
+     * TODO 最好加上证书认证，主流App都有自己的证书
+     *
+     * @return
+     */
+    @SuppressLint("TrulyRandom")
+    private SSLSocketFactory createSSLSocketFactory() {
+        SSLSocketFactory sSLSocketFactory = null;
+        try {
+            x509TrustManager = new TrustAllManager();
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, new TrustManager[]{x509TrustManager},
+                    new SecureRandom());
+            sSLSocketFactory = sc.getSocketFactory();
+        } catch (Exception e) {
+        }
+        return sSLSocketFactory;
+    }
+
+    private static class TrustAllManager implements X509TrustManager {
+
+        @SuppressLint("TrustAllX509TrustManager")
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+        }
+
+        @SuppressLint("TrustAllX509TrustManager")
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+    }
+
+    private static class TrustAllHostnameVerifier implements HostnameVerifier {
+
+        @SuppressLint("BadHostnameVerifier")
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
     }
 }

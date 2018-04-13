@@ -1,4 +1,4 @@
-package com.lib.imagelib;
+package com.lib.imagelib.pub;
 
 import android.support.annotation.DrawableRes;
 

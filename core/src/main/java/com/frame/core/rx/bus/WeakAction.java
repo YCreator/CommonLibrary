@@ -1,4 +1,4 @@
-package com.frame.core.bus;
+package com.frame.core.rx.bus;
 
 import java.lang.ref.WeakReference;
 

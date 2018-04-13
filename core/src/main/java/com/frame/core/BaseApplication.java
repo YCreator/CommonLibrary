@@ -9,7 +9,7 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 
-import com.blankj.utilcode.util.Utils;
+import com.frame.core.util.utils.Utils;
 import com.frame.core.base.AppManager;
 import com.frame.core.db.DatabaseManager;
 import com.frame.core.net.okhttp.CookiesManager;

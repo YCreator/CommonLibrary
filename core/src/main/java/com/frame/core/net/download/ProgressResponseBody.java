@@ -1,6 +1,6 @@
 package com.frame.core.net.download;
 
-import com.frame.core.bus.RxBus;
+import com.frame.core.rx.bus.RxBus;
 
 import java.io.IOException;
 

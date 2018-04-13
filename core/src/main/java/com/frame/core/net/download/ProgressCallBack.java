@@ -3,8 +3,8 @@ package com.frame.core.net.download;
 import android.os.Handler;
 import android.util.Log;
 
-import com.frame.core.bus.RxBus;
-import com.frame.core.bus.RxSubscriptions;
+import com.frame.core.rx.bus.RxBus;
+import com.frame.core.rx.bus.RxSubscriptions;
 
 import java.io.File;
 import java.io.FileNotFoundException;

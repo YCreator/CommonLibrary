@@ -3,7 +3,7 @@ package com.frame.core.net;
 import android.content.Context;
 
 import com.frame.core.BaseApplication;
-import com.frame.core.exception.InstanceFactoryException;
+import com.frame.core.crash.exception.InstanceFactoryException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

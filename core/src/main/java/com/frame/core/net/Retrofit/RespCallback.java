@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.frame.core.entity.JsonEntity;
-import com.frame.core.exception.InstanceFactoryException;
+import com.frame.core.crash.exception.InstanceFactoryException;
 import com.frame.core.gson.GsonFactory;
 import com.frame.core.interf.Mapper;
 import com.frame.core.rx.Lifeful;

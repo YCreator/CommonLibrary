@@ -1,4 +1,4 @@
-package com.lib.imagelib;
+package com.lib.imagelib.pub;
 
 /**
  * Created by yzd on 2018/3/17 0017.

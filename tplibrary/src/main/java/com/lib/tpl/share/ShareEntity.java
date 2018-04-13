@@ -25,7 +25,7 @@ public class ShareEntity implements Serializable {
         this.text = text;
     }
 
-    UMImage getImage() {
+    public UMImage getImage() {
         return image;
     }
 

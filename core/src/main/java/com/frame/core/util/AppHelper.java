@@ -112,6 +112,7 @@ public final class AppHelper {
     public static boolean isAppExist(Context context, String packageName) {
         PackageManager manager = context.getPackageManager();
         //PackageManager.GET_UNINSTALLED_PACKAGES
+        manager.getLaunchIntentForPackage(packageName);
         List<PackageInfo> list = manager.getInstalledPackages(0);
         for (PackageInfo info : list) {
             if (info.packageName.equalsIgnoreCase(packageName)) {
@@ -194,6 +195,26 @@ public final class AppHelper {
         }
         if (telephonyManager == null) return "";
         return telephonyManager.getDeviceId();
+    }
+
+    /**
+     * 判断App是否安装
+     *
+     * @param packageName 包名
+     * @return {@code true}: 已安装<br>{@code false}: 未安装
+     */
+    public static boolean isInstallApp(String packageName) {
+        return !isSpace(packageName) && BaseApplication.get_context().getPackageManager().getLaunchIntentForPackage(packageName) != null;
+    }
+
+    private static boolean isSpace(String s) {
+        if (s == null) return true;
+        for (int i = 0, len = s.length(); i < len; ++i) {
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
