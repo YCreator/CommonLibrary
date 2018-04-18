@@ -9,11 +9,12 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 
-import com.frame.core.util.utils.Utils;
 import com.frame.core.base.AppManager;
 import com.frame.core.db.DatabaseManager;
 import com.frame.core.net.okhttp.CookiesManager;
 import com.frame.core.util.AppHelper;
+import com.frame.core.util.utils.DeviceUtils;
+import com.frame.core.util.utils.Utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -91,7 +92,7 @@ public class BaseApplication extends Application {
      */
     public static String getDeviceId() {
         if (deviceId == null) {
-            deviceId = AppHelper.getDeviceId(get_context());
+            deviceId = DeviceUtils.getDeviceId();
         }
         if (deviceId == null) deviceId = "";
         return deviceId;

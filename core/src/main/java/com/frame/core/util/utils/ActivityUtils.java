@@ -34,6 +34,7 @@ public final class ActivityUtils {
 
     /**
      * Return whether the activity exists.
+     * 判断activity是否存在
      *
      * @param pkg The name of the package.
      * @param cls The name of the class.
@@ -50,6 +51,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param clz The activity class.
      */
@@ -60,6 +62,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param clz     The activity class.
      * @param options Additional options for how the Activity should be started.
@@ -72,6 +75,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param clz       The activity class.
      * @param enterAnim A resource ID of the animation resource to use for the
@@ -92,6 +96,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity The activity.
      * @param clz      The activity class.
@@ -103,6 +108,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity The activity.
      * @param clz      The activity class.
@@ -116,6 +122,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity       The activity.
      * @param clz            The activity class.
@@ -131,6 +138,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity  The activity.
      * @param clz       The activity class.
@@ -152,6 +160,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras The Bundle of extras to add to this intent.
      * @param clz    The activity class.
@@ -164,6 +173,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras  The Bundle of extras to add to this intent.
      * @param clz     The activity class.
@@ -178,6 +188,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras    The Bundle of extras to add to this intent.
      * @param clz       The activity class.
@@ -200,6 +211,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras   The Bundle of extras to add to this intent.
      * @param activity The activity.
@@ -213,6 +225,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras   The Bundle of extras to add to this intent.
      * @param activity The activity.
@@ -228,6 +241,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras         The Bundle of extras to add to this intent.
      * @param activity       The activity.
@@ -245,6 +259,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras    The Bundle of extras to add to this intent.
      * @param activity  The activity.
@@ -268,6 +283,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param pkg The name of the package.
      * @param cls The name of the class.
@@ -279,6 +295,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param pkg     The name of the package.
      * @param cls     The name of the class.
@@ -292,6 +309,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param pkg       The name of the package.
      * @param cls       The name of the class.
@@ -313,6 +331,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity The activity.
      * @param pkg      The name of the package.
@@ -326,6 +345,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity The activity.
      * @param pkg      The name of the package.
@@ -341,6 +361,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity       The activity.
      * @param pkg            The name of the package.
@@ -357,6 +378,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity  The activity.
      * @param pkg       The name of the package.
@@ -379,6 +401,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras The Bundle of extras to add to this intent.
      * @param pkg    The name of the package.
@@ -392,6 +415,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras  The Bundle of extras to add to this intent.
      * @param pkg     The name of the package.
@@ -407,6 +431,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras    The Bundle of extras to add to this intent.
      * @param pkg       The name of the package.
@@ -430,6 +455,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity The activity.
      * @param extras   The Bundle of extras to add to this intent.
@@ -445,6 +471,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras   The Bundle of extras to add to this intent.
      * @param activity The activity.
@@ -462,6 +489,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras         The Bundle of extras to add to this intent.
      * @param activity       The activity.
@@ -480,6 +508,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param extras    The Bundle of extras to add to this intent.
      * @param pkg       The name of the package.
@@ -503,6 +532,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param intent The description of the activity to start.
      */
@@ -512,6 +542,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param intent  The description of the activity to start.
      * @param options Additional options for how the Activity should be started.
@@ -542,6 +573,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity The activity.
      * @param intent   The description of the activity to start.
@@ -553,6 +585,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity The activity.
      * @param intent   The description of the activity to start.
@@ -566,6 +599,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity       The activity.
      * @param intent         The description of the activity to start.
@@ -580,6 +614,7 @@ public final class ActivityUtils {
 
     /**
      * Start the activity.
+     * 启动activity
      *
      * @param activity  The activity.
      * @param intent    The description of the activity to start.
@@ -600,6 +635,7 @@ public final class ActivityUtils {
 
     /**
      * Start activities.
+     * 启动多个activity
      *
      * @param intents The descriptions of the activities to start.
      */
@@ -609,6 +645,7 @@ public final class ActivityUtils {
 
     /**
      * Start activities.
+     * 启动多个activity
      *
      * @param intents The descriptions of the activities to start.
      * @param options Additional options for how the Activity should be started.
@@ -620,6 +657,7 @@ public final class ActivityUtils {
 
     /**
      * Start activities.
+     * 启动多个activity
      *
      * @param intents   The descriptions of the activities to start.
      * @param enterAnim A resource ID of the animation resource to use for the
@@ -639,6 +677,7 @@ public final class ActivityUtils {
 
     /**
      * Start activities.
+     * 启动多个activity
      *
      * @param activity The activity.
      * @param intents  The descriptions of the activities to start.
@@ -650,6 +689,7 @@ public final class ActivityUtils {
 
     /**
      * Start activities.
+     * 启动多个activity
      *
      * @param activity The activity.
      * @param intents  The descriptions of the activities to start.
@@ -663,6 +703,7 @@ public final class ActivityUtils {
 
     /**
      * Start activities.
+     * 启动多个activity
      *
      * @param activity  The activity.
      * @param intents   The descriptions of the activities to start.
@@ -683,6 +724,7 @@ public final class ActivityUtils {
 
     /**
      * Start home activity.
+     * 启动入口activity
      */
     public static void startHomeActivity() {
         Intent homeIntent = new Intent(Intent.ACTION_MAIN);
@@ -692,6 +734,7 @@ public final class ActivityUtils {
 
     /**
      * Return the list of activity.
+     * 返回activity数组
      *
      * @return the list of activity
      */
@@ -701,6 +744,7 @@ public final class ActivityUtils {
 
     /**
      * Return the name of launcher activity.
+     * 返回入口activity名称
      *
      * @return the name of launcher activity
      */
@@ -710,6 +754,7 @@ public final class ActivityUtils {
 
     /**
      * Return the name of launcher activity.
+     * 返回入口activity名称
      *
      * @param pkg The name of the package.
      * @return the name of launcher activity
@@ -730,6 +775,7 @@ public final class ActivityUtils {
 
     /**
      * Return the top activity in activity's stack.
+     * 返回当前activity
      *
      * @return the top activity in activity's stack
      */
@@ -739,6 +785,7 @@ public final class ActivityUtils {
 
     /**
      * Return whether the activity exists in activity's stack.
+     * 判断栈内是否有activity
      *
      * @param activity The activity.
      * @return {@code true}: yes<br>{@code false}: no
@@ -755,6 +802,7 @@ public final class ActivityUtils {
 
     /**
      * Return whether the activity exists in activity's stack.
+     * 判断栈内是否有activity
      *
      * @param clz The activity class.
      * @return {@code true}: yes<br>{@code false}: no
@@ -771,6 +819,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activity.
+     * 结束activity
      *
      * @param activity The activity.
      */
@@ -780,6 +829,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activity.
+     * 结束activity
      *
      * @param activity   The activity.
      * @param isLoadAnim True to use animation for the outgoing activity, false otherwise.
@@ -793,6 +843,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activity.
+     * 结束activity
      *
      * @param activity  The activity.
      * @param enterAnim A resource ID of the animation resource to use for the
@@ -809,6 +860,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activity.
+     * 结束activity
      *
      * @param clz The activity class.
      */
@@ -818,6 +870,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activity.
+     * 结束activity
      *
      * @param clz        The activity class.
      * @param isLoadAnim True to use animation for the outgoing activity, false otherwise.
@@ -836,6 +889,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activity.
+     * 结束activity
      *
      * @param clz       The activity class.
      * @param enterAnim A resource ID of the animation resource to use for the
@@ -857,6 +911,7 @@ public final class ActivityUtils {
 
     /**
      * Finish to the activity.
+     * 结束activity
      *
      * @param activity      The activity.
      * @param isIncludeSelf True to include the activity, false otherwise.
@@ -868,6 +923,7 @@ public final class ActivityUtils {
 
     /**
      * Finish to the activity.
+     * 结束activity
      *
      * @param activity      The activity.
      * @param isIncludeSelf True to include the activity, false otherwise.
@@ -892,6 +948,7 @@ public final class ActivityUtils {
 
     /**
      * Finish to the activity.
+     * 结束activity
      *
      * @param activity      The activity.
      * @param isIncludeSelf True to include the activity, false otherwise.
@@ -920,6 +977,7 @@ public final class ActivityUtils {
 
     /**
      * Finish to the activity.
+     * 结束activity
      *
      * @param clz           The activity class.
      * @param isIncludeSelf True to include the activity, false otherwise.
@@ -931,6 +989,7 @@ public final class ActivityUtils {
 
     /**
      * Finish to the activity.
+     * 结束activity
      *
      * @param clz           The activity class.
      * @param isIncludeSelf True to include the activity, false otherwise.
@@ -955,6 +1014,7 @@ public final class ActivityUtils {
 
     /**
      * Finish to the activity.
+     * 结束activity
      *
      * @param clz           The activity class.
      * @param isIncludeSelf True to include the activity, false otherwise.
@@ -983,6 +1043,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activities whose type not equals the activity class.
+     * 结束activity
      *
      * @param clz The activity class.
      */
@@ -993,6 +1054,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activities whose type not equals the activity class.
+     * 结束activity
      *
      * @param clz        The activity class.
      * @param isLoadAnim True to use animation for the outgoing activity, false otherwise.
@@ -1010,6 +1072,7 @@ public final class ActivityUtils {
 
     /**
      * Finish the activities whose type not equals the activity class.
+     * 结束activity
      *
      * @param clz       The activity class.
      * @param enterAnim A resource ID of the animation resource to use for the
@@ -1031,6 +1094,7 @@ public final class ActivityUtils {
 
     /**
      * Finish all of activities.
+     * 结束所有activity
      */
     public static void finishAllActivities() {
         finishAllActivities(false);
@@ -1038,6 +1102,7 @@ public final class ActivityUtils {
 
     /**
      * Finish all of activities.
+     * 结束所有activity
      *
      * @param isLoadAnim True to use animation for the outgoing activity, false otherwise.
      */
@@ -1055,6 +1120,7 @@ public final class ActivityUtils {
 
     /**
      * Finish all of activities.
+     * 结束所有activity
      *
      * @param enterAnim A resource ID of the animation resource to use for the
      *                  incoming activity.
@@ -1074,6 +1140,7 @@ public final class ActivityUtils {
 
     /**
      * Finish all of activities except the newest activity.
+     * 结束所有activity
      */
     public static void finishAllActivitiesExceptNewest() {
         finishAllActivitiesExceptNewest(false);
@@ -1081,6 +1148,7 @@ public final class ActivityUtils {
 
     /**
      * Finish all of activities except the newest activity.
+     * 结束所有activity
      *
      * @param isLoadAnim True to use animation for the outgoing activity, false otherwise.
      */
@@ -1093,6 +1161,7 @@ public final class ActivityUtils {
 
     /**
      * Finish all of activities except the newest activity.
+     * 结束所有activity
      *
      * @param enterAnim A resource ID of the animation resource to use for the
      *                  incoming activity.
@@ -1109,6 +1178,7 @@ public final class ActivityUtils {
 
     /**
      * Return the icon of activity.
+     * 返回应用图标
      *
      * @param clz The activity class.
      * @return the icon of activity
@@ -1119,6 +1189,7 @@ public final class ActivityUtils {
 
     /**
      * Return the icon of activity.
+     * 返回应用图标
      *
      * @param activityName The name of activity.
      * @return the icon of activity
@@ -1135,6 +1206,7 @@ public final class ActivityUtils {
 
     /**
      * Return the logo of activity.
+     * 返回应用图标
      *
      * @param clz The activity class.
      * @return the logo of activity
@@ -1145,6 +1217,7 @@ public final class ActivityUtils {
 
     /**
      * Return the logo of activity.
+     * 返回应用图标
      *
      * @param activityName The name of activity.
      * @return the logo of activity

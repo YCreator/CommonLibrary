@@ -47,7 +47,7 @@ public final class PhoneUtils {
      *
      * @return the unique device id
      */
-    @SuppressLint("HardwareIds")
+    @SuppressLint({"HardwareIds", "MissingPermission"})
     @RequiresPermission(READ_PHONE_STATE)
     public static String getDeviceId() {
         TelephonyManager tm =
@@ -62,7 +62,7 @@ public final class PhoneUtils {
      *
      * @return the IMEI
      */
-    @SuppressLint("HardwareIds")
+    @SuppressLint({"HardwareIds", "MissingPermission"})
     @RequiresPermission(READ_PHONE_STATE)
     public static String getIMEI() {
         TelephonyManager tm =
@@ -80,7 +80,7 @@ public final class PhoneUtils {
      *
      * @return the MEID
      */
-    @SuppressLint("HardwareIds")
+    @SuppressLint({"HardwareIds", "MissingPermission"})
     @RequiresPermission(READ_PHONE_STATE)
     public static String getMEID() {
         TelephonyManager tm =
@@ -99,7 +99,7 @@ public final class PhoneUtils {
      *
      * @return the IMSI
      */
-    @SuppressLint("HardwareIds")
+    @SuppressLint({"HardwareIds", "MissingPermission"})
     @RequiresPermission(READ_PHONE_STATE)
     public static String getIMSI() {
         TelephonyManager tm =
@@ -191,7 +191,7 @@ public final class PhoneUtils {
      * SubscriberId(IMSI) = 460030419724900<br>
      * VoiceMailNumber = *86<br>
      */
-    @SuppressLint("HardwareIds")
+    @SuppressLint({"HardwareIds", "MissingPermission"})
     @RequiresPermission(READ_PHONE_STATE)
     public static String getPhoneStatus() {
         TelephonyManager tm =
@@ -231,6 +231,7 @@ public final class PhoneUtils {
      *
      * @param phoneNumber The phone number.
      */
+    @SuppressLint("MissingPermission")
     @RequiresPermission(CALL_PHONE)
     public static void call(final String phoneNumber) {
         Utils.getApp().startActivity(IntentUtils.getCallIntent(phoneNumber, true));

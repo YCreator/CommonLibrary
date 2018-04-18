@@ -36,6 +36,7 @@ public final class AppUtils {
 
     /**
      * Install the app.
+     * 安装app
      * <p>Target APIs greater than 25 must hold
      * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
      *
@@ -49,6 +50,7 @@ public final class AppUtils {
 
     /**
      * Install the app.
+     * 安装app
      * <p>Target APIs greater than 25 must hold
      * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
      *
@@ -63,6 +65,7 @@ public final class AppUtils {
 
     /**
      * Install the app.
+     * 安装app
      * <p>Target APIs greater than 25 must hold
      * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
      *
@@ -82,6 +85,7 @@ public final class AppUtils {
 
     /**
      * Install the app.
+     * 安装app
      * <p>Target APIs greater than 25 must hold
      * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
      *
@@ -103,6 +107,7 @@ public final class AppUtils {
 
     /**
      * Install the app silently.
+     * 静默安装app
      * <p>Without root permission must hold
      * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
      *
@@ -115,6 +120,7 @@ public final class AppUtils {
 
     /**
      * Install the app silently.
+     * 静默安装app
      * <p>Without root permission must hold
      * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
      *
@@ -128,6 +134,7 @@ public final class AppUtils {
 
     /**
      * Install the app silently.
+     * 静默安装app
      * <p>Without root permission must hold
      * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
      *
@@ -141,6 +148,7 @@ public final class AppUtils {
 
     /**
      * Install the app silently.
+     * 静默安装app
      * <p>Without root permission must hold
      * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
      *
@@ -168,6 +176,7 @@ public final class AppUtils {
 
     /**
      * Uninstall the app.
+     * 卸载app
      *
      * @param packageName The name of the package.
      */
@@ -178,6 +187,7 @@ public final class AppUtils {
 
     /**
      * Uninstall the app.
+     * 卸载app
      *
      * @param activity    The activity.
      * @param packageName The name of the package.
@@ -196,6 +206,8 @@ public final class AppUtils {
 
     /**
      * Uninstall the app silently.
+     * 静默卸载app
+     *
      * <p>Without root permission must hold
      * {@code <uses-permission android:name="android.permission.DELETE_PACKAGES" />}</p>
      *
@@ -208,6 +220,8 @@ public final class AppUtils {
 
     /**
      * Uninstall the app silently.
+     * 静默卸载app
+     *
      * <p>Without root permission must hold
      * {@code <uses-permission android:name="android.permission.DELETE_PACKAGES" />}</p>
      *
@@ -234,6 +248,7 @@ public final class AppUtils {
 
     /**
      * Return whether the app is installed.
+     * 判断app是否已安装
      *
      * @param action   The Intent action, such as ACTION_VIEW.
      * @param category The desired category.
@@ -250,6 +265,7 @@ public final class AppUtils {
 
     /**
      * Return whether the app is installed.
+     * 判断app是否已安装
      *
      * @param packageName The name of the package.
      * @return {@code true}: yes<br>{@code false}: no
@@ -260,6 +276,7 @@ public final class AppUtils {
 
     /**
      * Return whether the application with root permission.
+     * 判断是否获取root权限
      *
      * @return {@code true}: yes<br>{@code false}: no
      */
@@ -274,6 +291,7 @@ public final class AppUtils {
 
     /**
      * Return whether it is a debug application.
+     * 判断是否是调试应用
      *
      * @return {@code true}: yes<br>{@code false}: no
      */
@@ -283,6 +301,7 @@ public final class AppUtils {
 
     /**
      * Return whether it is a debug application.
+     * 判断是否是调试应用
      *
      * @param packageName The name of the package.
      * @return {@code true}: yes<br>{@code false}: no
@@ -301,6 +320,7 @@ public final class AppUtils {
 
     /**
      * Return whether it is a system application.
+     * 判断是否为系统应用
      *
      * @return {@code true}: yes<br>{@code false}: no
      */
@@ -310,6 +330,7 @@ public final class AppUtils {
 
     /**
      * Return whether it is a system application.
+     * 判断是否为系统应用
      *
      * @param packageName The name of the package.
      * @return {@code true}: yes<br>{@code false}: no
@@ -328,6 +349,7 @@ public final class AppUtils {
 
     /**
      * Return whether application is foreground.
+     * 判断应用是否在前台
      *
      * @return {@code true}: yes<br>{@code false}: no
      */
@@ -347,6 +369,8 @@ public final class AppUtils {
 
     /**
      * Return whether application is foreground.
+     * 判断应用是否在前台
+     *
      * <p>Target APIs greater than 21 must hold
      * {@code <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />}</p>
      *
@@ -359,6 +383,7 @@ public final class AppUtils {
 
     /**
      * Launch the application.
+     * 启动app
      *
      * @param packageName The name of the package.
      */
@@ -369,6 +394,7 @@ public final class AppUtils {
 
     /**
      * Launch the application.
+     * 启动app
      *
      * @param activity    The activity.
      * @param packageName The name of the package.
@@ -384,6 +410,7 @@ public final class AppUtils {
 
     /**
      * Launch the application's details settings.
+     * 启动app的设置
      */
     public static void launchAppDetailsSettings() {
         launchAppDetailsSettings(Utils.getApp().getPackageName());
@@ -391,6 +418,7 @@ public final class AppUtils {
 
     /**
      * Launch the application's details settings.
+     * 启动app的设置
      *
      * @param packageName The name of the package.
      */
@@ -403,6 +431,7 @@ public final class AppUtils {
 
     /**
      * Exit the application.
+     * 推出app
      */
     public static void exitApp() {
         List<Activity> activityList = Utils.getActivityList();
@@ -416,6 +445,7 @@ public final class AppUtils {
 
     /**
      * Return the application's icon.
+     * 返回app的图标
      *
      * @return the application's icon
      */
@@ -425,6 +455,7 @@ public final class AppUtils {
 
     /**
      * Return the application's icon.
+     * 返回app的图标
      *
      * @param packageName The name of the package.
      * @return the application's icon
@@ -443,6 +474,7 @@ public final class AppUtils {
 
     /**
      * Return the application's package name.
+     * 获取app包名
      *
      * @return the application's package name
      */
@@ -452,6 +484,7 @@ public final class AppUtils {
 
     /**
      * Return the application's name.
+     * 获取app包名
      *
      * @return the application's name
      */
@@ -461,6 +494,7 @@ public final class AppUtils {
 
     /**
      * Return the application's name.
+     * 获取app包名
      *
      * @param packageName The name of the package.
      * @return the application's name
@@ -479,6 +513,7 @@ public final class AppUtils {
 
     /**
      * Return the application's path.
+     * 获取app的路径
      *
      * @return the application's path
      */
@@ -488,6 +523,7 @@ public final class AppUtils {
 
     /**
      * Return the application's path.
+     * 获取app的路径
      *
      * @param packageName The name of the package.
      * @return the application's path
@@ -506,6 +542,7 @@ public final class AppUtils {
 
     /**
      * Return the application's version name.
+     * 获取app版本名称
      *
      * @return the application's version name
      */
@@ -515,6 +552,7 @@ public final class AppUtils {
 
     /**
      * Return the application's version name.
+     * 获取app版本名称
      *
      * @param packageName The name of the package.
      * @return the application's version name
@@ -533,6 +571,7 @@ public final class AppUtils {
 
     /**
      * Return the application's version code.
+     * 获取app版本号
      *
      * @return the application's version code
      */
@@ -542,6 +581,7 @@ public final class AppUtils {
 
     /**
      * Return the application's version code.
+     * 获取app版本号
      *
      * @param packageName The name of the package.
      * @return the application's version code
@@ -560,6 +600,7 @@ public final class AppUtils {
 
     /**
      * Return the application's signature.
+     * 获取应用签名
      *
      * @return the application's signature
      */

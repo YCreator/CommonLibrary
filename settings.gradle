@@ -1,1 +1,1 @@
-include ':app', ':core', ':sharelib', ':paylib', ':authlib'
+include ':app', ':core', ':imagelib', ':tplibrary'

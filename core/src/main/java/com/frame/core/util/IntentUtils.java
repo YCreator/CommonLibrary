@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
  * 跳转工具
  * Created by yzd on 2016/5/23.
  */
+@Deprecated
 public class IntentUtils {
 
 

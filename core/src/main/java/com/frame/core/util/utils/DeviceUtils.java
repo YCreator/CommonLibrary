@@ -1,14 +1,18 @@
 package com.frame.core.util.utils;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresPermission;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -295,5 +299,20 @@ public final class DeviceUtils {
      */
     public static void reboot2Bootloader() {
         ShellUtils.execCmd("reboot bootloader", true);
+    }
+
+    /**
+     * 获取设备号
+     *
+     * @return
+     */
+    @SuppressLint("HardwareIds")
+    public static String getDeviceId() {
+        TelephonyManager telephonyManager = (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(Utils.getApp(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return "";
+        }
+        if (telephonyManager == null) return "";
+        return telephonyManager.getDeviceId();
     }
 }

@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
  * 文件相关工具类
  * Created by yzd on 2016/7/8.
  */
+@Deprecated
 public class FileUtils {
 
     /**

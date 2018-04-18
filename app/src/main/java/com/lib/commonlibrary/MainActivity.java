@@ -6,7 +6,6 @@ import com.frame.core.mvvm.base.NewBaseActivity;
 import com.jcx.hnn.BR;
 import com.jcx.hnn.R;
 import com.jcx.hnn.databinding.ActivityMainBinding;
-import com.lib.imagelib.loader.ImageEngine;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.utils.Log;
 
@@ -67,8 +66,8 @@ public class MainActivity extends NewBaseActivity<ActivityMainBinding, MainViewM
 
     @Override
     public void initViewObservable() {
-        ImageEngine.with(this)
+       /* ImageEngine.with(this)
                 .url("https://img.alicdn.com/bao/uploaded/i3/2756649157/TB2tMJLjJBopuFjSZPcXXc9EpXa_!!2756649157.jpg_220x220.jpg")
-                .into(this.findViewById(R.id.iv));
+                .into(this.findViewById(R.id.iv));*/
     }
 }

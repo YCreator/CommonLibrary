@@ -1,18 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.jcx.hnn"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                includeCompileClasspath = true
+                includeCompileClasspath = true 
             }
         }
         multiDexEnabled true
@@ -53,13 +53,24 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs', '../core/libs', '../tplibrary/libs'
+    }
+}
+
 dependencies {
+    //compile(name: 'tplibrary-release', ext: 'aar')
+    //compile(name: 'core-release', ext: 'aar')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+    implementation 'com.jakewharton:butterknife:7.0.1'
     testCompile 'junit:junit:4.12'
-    compile project(':sharelib')
+    compile project(':tplibrary')
     compile project(':core')
     compile project(':imagelib')
 }

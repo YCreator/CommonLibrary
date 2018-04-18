@@ -394,7 +394,7 @@ public final class IntentUtils {
     @SuppressLint("MissingPermission")
     @RequiresPermission(CALL_PHONE)
     public static Intent getCallIntent(final String phoneNumber, final boolean isNewTask) {
-        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNumber));
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
         return getIntent(intent, isNewTask);
     }
 
@@ -438,6 +438,7 @@ public final class IntentUtils {
 
     /**
      * Return the intent of capture.
+     * 打开系统照相机
      *
      * @param outUri    The uri of output.
      * @param isNewTask True to add flag of new task, false otherwise.
@@ -447,6 +448,53 @@ public final class IntentUtils {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outUri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        return getIntent(intent, isNewTask);
+    }
+
+    /**
+     * 跳转到手机相册
+     *
+     * @return
+     */
+    public static Intent getPickIntent() {
+        return getPickIntent(false);
+    }
+
+    /**
+     * 跳转到手机相册
+     *
+     * @param isNewTask True to add flag of new task, false otherwise.
+     * @return ther intent of pick
+     */
+    public static Intent getPickIntent(boolean isNewTask) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT ? Intent.ACTION_GET_CONTENT : Intent.ACTION_PICK);
+        return getIntent(intent, isNewTask);
+    }
+
+    /**
+     * 跳转到系统浏览器
+     *
+     * @param url
+     * @return
+     */
+    public static Intent getSystemWebIntent(String url) {
+        return getSystemWebIntent(url, false);
+    }
+
+    /**
+     * 跳转到系统浏览器
+     *
+     * @param url       跳转链接
+     * @param isNewTask
+     * @return
+     */
+    public static Intent getSystemWebIntent(String url, boolean isNewTask) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri contentUrl = Uri.parse(url);
+        intent.setData(contentUrl);
         return getIntent(intent, isNewTask);
     }
 

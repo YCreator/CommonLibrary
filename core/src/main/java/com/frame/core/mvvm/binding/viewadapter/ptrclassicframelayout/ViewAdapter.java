@@ -4,9 +4,9 @@ import android.databinding.BindingAdapter;
 
 import com.frame.core.mvvm.binding.command.BindingCommand;
 
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
+import com.frame.core.widget.uptrefresh.PtrClassicFrameLayout;
+import com.frame.core.widget.uptrefresh.PtrDefaultHandler;
+import com.frame.core.widget.uptrefresh.PtrFrameLayout;
 
 /**
  * Created by yzd on 2018/3/8 0008.

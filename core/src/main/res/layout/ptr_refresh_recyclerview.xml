@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<in.srain.cube.views.ptr.PtrClassicFrameLayout
+<com.frame.core.widget.uptrefresh.PtrClassicFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
     android:id="@id/ptr_pull_rv_to_refresh"
@@ -16,4 +16,4 @@
         android:id="@id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</in.srain.cube.views.ptr.PtrClassicFrameLayout>
+</com.frame.core.widget.uptrefresh.PtrClassicFrameLayout>

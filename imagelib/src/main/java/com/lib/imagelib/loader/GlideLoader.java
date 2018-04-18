@@ -18,7 +18,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory;
+import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -70,7 +70,7 @@ public class GlideLoader implements ILoader {
         if (isInternalCD) {
             builder.setDiskCache(new InternalCacheDiskCacheFactory(context, Contants.DEFAULT_DISK_CACHE_DIR, cacheSizeInM * 1024 * 1024));
         } else {
-            builder.setDiskCache(new ExternalCacheDiskCacheFactory(context, Contants.DEFAULT_DISK_CACHE_DIR, cacheSizeInM * 1024 * 1024));
+            builder.setDiskCache(new ExternalPreferredCacheDiskCacheFactory(context, Contants.DEFAULT_DISK_CACHE_DIR, cacheSizeInM * 1024 * 1024));
         }
     }
 
@@ -107,13 +107,13 @@ public class GlideLoader implements ILoader {
             setShapeModeAndBlur(config, options);
 
             if (config.getDiskCacheMode() != 0) {
-                options.diskCacheStrategy(config.getDiskCacheMode() == DiskCacheMode.ALL
+                options = options.diskCacheStrategy(config.getDiskCacheMode() == DiskCacheMode.ALL
                         ? DiskCacheStrategy.ALL : config.getDiskCacheMode() == DiskCacheMode.AUTOMATIC
                         ? DiskCacheStrategy.AUTOMATIC : config.getDiskCacheMode() == DiskCacheMode.DATA
                         ? DiskCacheStrategy.DATA : config.getDiskCacheMode() == DiskCacheMode.RESOURCE
                         ? DiskCacheStrategy.RESOURCE : DiskCacheStrategy.NONE);
             }
-            request.apply(options);
+            request = request.apply(options);
             request.into(target);
         } else {
 
@@ -122,7 +122,7 @@ public class GlideLoader implements ILoader {
             }
 
             if (ImageUtil.shouldSetPlaceHolder(config)) {
-                options.placeholder(config.getPlaceHolderResId());
+                options = options.placeholder(config.getPlaceHolderResId());
             }
 
             int scaleMode = config.getScaleMode();
@@ -146,17 +146,17 @@ public class GlideLoader implements ILoader {
 
             //设置缩略图
             if (config.getThumbnail() != 0) {
-                request.thumbnail(config.getThumbnail());
+                request = request.thumbnail(config.getThumbnail());
             }
 
             //设置图片加载的分辨 sp
             if (config.getoWidth() != 0 && config.getoHeight() != 0) {
-                options.override(config.getoWidth(), config.getoHeight());
+                options = options.override(config.getoWidth(), config.getoHeight());
             }
 
             //是否跳过磁盘存储
             if (config.getDiskCacheMode() != 0) {
-                options.diskCacheStrategy(config.getDiskCacheMode() == DiskCacheMode.ALL
+                options = options.diskCacheStrategy(config.getDiskCacheMode() == DiskCacheMode.ALL
                         ? DiskCacheStrategy.ALL : config.getDiskCacheMode() == DiskCacheMode.AUTOMATIC
                         ? DiskCacheStrategy.AUTOMATIC : config.getDiskCacheMode() == DiskCacheMode.DATA
                         ? DiskCacheStrategy.DATA : config.getDiskCacheMode() == DiskCacheMode.RESOURCE
@@ -167,9 +167,9 @@ public class GlideLoader implements ILoader {
             setPriority(config, options);
 
             if (config.getErrorResId() > 0) {
-                options.error(config.getErrorResId());
+                options = options.error(config.getErrorResId());
             }
-            request.apply(options);
+            request = request.apply(options);
             if (config.getTarget() instanceof ImageView) {
                 request.into((ImageView) config.getTarget());
             }
@@ -225,9 +225,7 @@ public class GlideLoader implements ILoader {
                     .load(url)
                     .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
@@ -302,9 +300,9 @@ public class GlideLoader implements ILoader {
             builder.setCrossFadeEnabled(true);
             //builder.setDefaultAnimationId(config.getAnimationId());
         } else if (config.getAnimationType() == AnimationMode.ANIMATOR) {
-           // builder.setDefaultAnimationFactory(config.getAnimator());
+            // builder.setDefaultAnimationFactory(config.getAnimator());
         } else if (config.getAnimationType() == AnimationMode.ANIMATION) {
-           // builder.setDefaultAnimation(config.getAnimation());
+            // builder.setDefaultAnimation(config.getAnimation());
         }
         return DrawableTransitionOptions.withCrossFade(builder);
     }
@@ -315,16 +313,14 @@ public class GlideLoader implements ILoader {
      * @param config
      */
     private BitmapTransitionOptions bitmapAnimator(SingleConfig config) {
-        DrawableCrossFadeFactory.Builder builder = new DrawableCrossFadeFactory.Builder();
         if (config.getAnimationType() == AnimationMode.ANIMATIONID) {
-            builder.setCrossFadeEnabled(true);
-            //builder.setDefaultAnimationId(config.getAnimationId());
+
         } else if (config.getAnimationType() == AnimationMode.ANIMATOR) {
-           // builder.setDefaultAnimationFactory(config.getAnimator());
+            // builder.setDefaultAnimationFactory(config.getAnimator());
         } else if (config.getAnimationType() == AnimationMode.ANIMATION) {
-           // builder.setDefaultAnimation(config.getAnimation());
+            // builder.setDefaultAnimation(config.getAnimation());
         }
-        return BitmapTransitionOptions.withCrossFade(builder);
+        return BitmapTransitionOptions.withCrossFade();
     }
 
     /**

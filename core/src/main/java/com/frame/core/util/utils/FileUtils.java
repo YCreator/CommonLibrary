@@ -1,9 +1,14 @@
 package com.frame.core.util.utils;
 
 import android.annotation.SuppressLint;
-
-import com.frame.core.util.utils.*;
-import com.frame.core.util.utils.CloseUtils;
+import android.content.ContentUris;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -38,6 +43,7 @@ public final class FileUtils {
 
     /**
      * Return the file by path.
+     * 根据文件路径返回文件对象
      *
      * @param filePath The path of file.
      * @return the file
@@ -48,6 +54,7 @@ public final class FileUtils {
 
     /**
      * Return whether the file exists.
+     * 判断文件是否存在
      *
      * @param filePath The path of file.
      * @return {@code true}: yes<br>{@code false}: no
@@ -58,6 +65,7 @@ public final class FileUtils {
 
     /**
      * Return whether the file exists.
+     * 判断文件是否存在
      *
      * @param file The file.
      * @return {@code true}: yes<br>{@code false}: no
@@ -68,6 +76,7 @@ public final class FileUtils {
 
     /**
      * Rename the file.
+     * 重命名文件
      *
      * @param filePath The path of file.
      * @param newName  The new name of file.
@@ -79,6 +88,7 @@ public final class FileUtils {
 
     /**
      * Rename the file.
+     * 重命名文件
      *
      * @param file    The file.
      * @param newName The new name of file.
@@ -101,6 +111,7 @@ public final class FileUtils {
 
     /**
      * Return whether it is a directory.
+     * 判断是否为文件夹
      *
      * @param dirPath The path of directory.
      * @return {@code true}: yes<br>{@code false}: no
@@ -111,6 +122,7 @@ public final class FileUtils {
 
     /**
      * Return whether it is a directory.
+     * 判断是否为文件夹
      *
      * @param file The file.
      * @return {@code true}: yes<br>{@code false}: no
@@ -121,6 +133,7 @@ public final class FileUtils {
 
     /**
      * Return whether it is a file.
+     * 判断是否为文件
      *
      * @param filePath The path of file.
      * @return {@code true}: yes<br>{@code false}: no
@@ -131,6 +144,7 @@ public final class FileUtils {
 
     /**
      * Return whether it is a file.
+     * 判断是否为文件
      *
      * @param file The file.
      * @return {@code true}: yes<br>{@code false}: no
@@ -141,6 +155,7 @@ public final class FileUtils {
 
     /**
      * Create a directory if it doesn't exist, otherwise do nothing.
+     * 创建一个文件夹
      *
      * @param dirPath The path of directory.
      * @return {@code true}: exists or creates successfully<br>{@code false}: otherwise
@@ -151,6 +166,7 @@ public final class FileUtils {
 
     /**
      * Create a directory if it doesn't exist, otherwise do nothing.
+     * 创建一个文件夹
      *
      * @param file The file.
      * @return {@code true}: exists or creates successfully<br>{@code false}: otherwise
@@ -161,6 +177,7 @@ public final class FileUtils {
 
     /**
      * Create a file if it doesn't exist, otherwise do nothing.
+     * 创建一个文件
      *
      * @param filePath The path of file.
      * @return {@code true}: exists or creates successfully<br>{@code false}: otherwise
@@ -171,6 +188,7 @@ public final class FileUtils {
 
     /**
      * Create a file if it doesn't exist, otherwise do nothing.
+     * 创建一个文件
      *
      * @param file The file.
      * @return {@code true}: exists or creates successfully<br>{@code false}: otherwise
@@ -1022,6 +1040,90 @@ public final class FileUtils {
         int lastSep = filePath.lastIndexOf(File.separator);
         if (lastPoi == -1 || lastSep >= lastPoi) return "";
         return filePath.substring(lastPoi + 1);
+    }
+
+    /**
+     * 根据uri获取绝对路径
+     *
+     * @param uri
+     * @return
+     */
+    public static String getPathByUri(Uri uri) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+                && DocumentsContract.isDocumentUri(Utils.getApp(), uri)) {
+            if (isExternalStorageDocument(uri)) {
+                String docId = DocumentsContract.getDocumentId(uri);
+                String[] split = docId.split(":");
+                String type = split[0];
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+            } else if (isDownloadsDocument(uri)) {
+                String id = DocumentsContract.getDocumentId(uri);
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads")
+                        , Long.valueOf(id));
+                return getDataColumn(Utils.getApp(), contentUri, null, null);
+            } else if (isMediaDocument(uri)) {
+                String docId = DocumentsContract.getDocumentId(uri);
+                String[] split = docId.split(":");
+                String type = split[0];
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                String selection = "_id=?";
+                String[] selectionArgs = new String[]{split[1]};
+                return getDataColumn(Utils.getApp(), contentUri, selection, selectionArgs);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            if (isGooglePhotosUri(uri))
+                return uri.getLastPathSegment();
+
+            return getDataColumn(Utils.getApp(), uri, null, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    private static String getDataColumn(Context context, Uri uri, String selection,
+                                        String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection,
+                    selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    private static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    private static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    private static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    private static boolean isGooglePhotosUri(Uri uri) {
+        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
     ///////////////////////////////////////////////////////////////////////////

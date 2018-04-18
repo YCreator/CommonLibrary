@@ -23,11 +23,11 @@
             bind:isThrottleFirst="true"
             bind:onClickCommand="@{user.shareClick}" />
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/iv"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            bind:placeholderRes="@{R.mipmap.ic_launcher}" />
+            bind:placeholderRes="@{R.mipmap.ic_launcher}" />-->
 
         <TextView
             android:layout_width="wrap_content"
