@@ -17,6 +17,10 @@ import android.telephony.TelephonyManager;
 import com.frame.core.BaseApplication;
 
 import java.util.List;
+
+/**
+ * please use com.frame.core.util.utils.AppUtils
+ */
 @Deprecated
 public final class AppHelper {
 

@@ -17,7 +17,7 @@ import java.util.Enumeration;
  * 网络工具
  */
 @Deprecated
-public class NetWorkUtil {
+class NetWorkUtil {
 
     public static boolean isNetWorkAvailable(Context context) {
         ConnectivityManager connectivity = getConnectManager(context.getApplicationContext());

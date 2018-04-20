@@ -17,7 +17,7 @@ import java.util.Stack;
  * 请使用AppManager
  */
 @Deprecated
-public class StackManager {
+class StackManager {
     /**
      * 保存所有Activity
      */

@@ -1,8 +1,10 @@
-package com.frame.core.base;
+package com.frame.core.mvp;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.frame.core.base.BaseFragment;
 
 /**
  *

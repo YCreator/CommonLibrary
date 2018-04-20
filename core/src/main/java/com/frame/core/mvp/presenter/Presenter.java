@@ -1,4 +1,4 @@
-package com.frame.core.interf.presenter;
+package com.frame.core.mvp.presenter;
 
 /**
  * 主持人接口

@@ -4,6 +4,8 @@ package com.frame.core.mvvm.binding.viewadapter.tkrefreshlayout;
 import android.databinding.BindingAdapter;
 
 import com.frame.core.mvvm.binding.command.BindingCommand;
+import com.lcodecore.tkrefreshlayout.IBottomView;
+import com.lcodecore.tkrefreshlayout.IHeaderView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
@@ -33,5 +35,13 @@ public class ViewAdapter {
                 }
             }
         });
+    }
+
+    @BindingAdapter(value = {"header", "footer"}, requireAll = false)
+    public static void setHeaderAndBottomerCommand(TwinklingRefreshLayout layout, IHeaderView headerView, IBottomView footerView) {
+        if (headerView != null)
+            layout.setHeaderView(headerView);
+        if (footerView != null)
+            layout.setBottomView(footerView);
     }
 }

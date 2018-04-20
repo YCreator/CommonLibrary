@@ -1,6 +1,7 @@
 package com.frame.core.util.utils;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -34,6 +35,7 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 
 import com.frame.core.util.constant.MemoryConstants;
@@ -60,6 +62,65 @@ public final class ImageUtils {
 
     private ImageUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    /**
+     * 图片压缩
+     * @param path
+     * @param format
+     * @param wantSize
+     * @return
+     */
+    public static byte[] zoomWantSizeImage(String path, Bitmap.CompressFormat format, int wantSize) {
+        return zoomWantSizeImage(BitmapFactory.decodeFile(path), format, wantSize);
+    }
+
+    /**
+     * 图片压缩
+     *
+     * @param bitmap   图片
+     * @param wantSize 期望的图片大小 k
+     * @return
+     */
+    public static byte[] zoomWantSizeImage(Bitmap bitmap, Bitmap.CompressFormat format, int wantSize) {
+        byte[] imgBytes;
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            if (bitmap == null) {
+                return new byte[]{};
+            }
+            bitmap.compress(format, 100, out);
+            int option = 100;
+            while (out.toByteArray().length / 1024 > wantSize) {
+                option -= 10;
+                if (option <= 0) {
+                    break;
+                }
+                out.reset();
+                bitmap.compress(format, option, out);
+            }
+            imgBytes = out.toByteArray();
+            out.flush();
+            out.close();
+            bitmap.recycle();
+        } catch (IOException e) {
+            e.printStackTrace();
+            imgBytes = new byte[]{};
+        }
+        return imgBytes;
+    }
+
+    /**
+     * 旋转Bitmap
+     *
+     * @param b
+     * @param rotateDegree
+     * @return
+     */
+    public static Bitmap getRotateBitmap(Bitmap b, float rotateDegree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotateDegree);
+        return Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, false);
     }
 
     /**
@@ -386,6 +447,24 @@ public final class ImageUtils {
         Canvas canvas = new Canvas(ret);
         canvas.drawColor(color, PorterDuff.Mode.DARKEN);
         return ret;
+    }
+
+    /**
+     * 重新调整 bitmap 大小
+     *
+     * @param bitmap
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Bitmap zoomBitmap(Bitmap bitmap, int width, int height) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        Matrix matrix = new Matrix();
+        float scaleWidth = ((float) width / w);
+        float scaleHeight = ((float) height / h);
+        matrix.postScale(scaleWidth, scaleHeight);
+        return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
     }
 
     /**
@@ -1838,6 +1917,194 @@ public final class ImageUtils {
         options.inJustDecodeBounds = false;
         if (recycle && !src.isRecycled()) src.recycle();
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+    }
+
+    /**
+     * 模糊图片的具体方法
+     *
+     * @param context 上下文对象
+     * @param image   需要模糊的图片
+     * @return 模糊处理后的图片
+     */
+    public static Bitmap blurBitmap(Context context, Bitmap image, float blurRadius, float scale) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            // 计算图片缩小后的长宽
+            int width = Math.round(image.getWidth() * scale);
+            int height = Math.round(image.getHeight() * scale);
+            // 将缩小后的图片做为预渲染的图片
+            Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+            // 创建一张渲染后的输出图片
+            Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
+            // 创建RenderScript内核对象
+            RenderScript rs = RenderScript.create(context);
+
+            // 创建一个模糊效果的RenderScript的工具对象
+            ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+            // 由于RenderScript并没有使用VM来分配内存,所以需要使用Allocation类来创建和分配内存空间
+            // 创建Allocation对象的时候其实内存是空的,需要使用copyTo()将数据填充进去
+            Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
+            Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
+
+            // 设置渲染的模糊程度, 25f是最大模糊度
+            blurScript.setRadius(blurRadius);
+            // 设置blurScript对象的输入内存
+            blurScript.setInput(tmpIn);
+            // 将输出数据保存到输出内存中
+            blurScript.forEach(tmpOut);
+
+            // 将数据填充到Allocation中
+            tmpOut.copyTo(outputBitmap);
+
+            return outputBitmap;
+        }
+
+        return image;
+    }
+
+    /**
+     * 柔化效果(高斯模糊)(优化后比上面快三倍)
+     * @param bmp
+     * @return
+     */
+    public static Bitmap blurImageAmeliorate(Bitmap bmp)
+    {
+        long start = System.currentTimeMillis();
+        // 高斯矩阵
+        int[] gauss = new int[] { 1, 2, 1, 2, 4, 2, 1, 2, 1 };
+
+        int width = bmp.getWidth();
+        int height = bmp.getHeight();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        int pixR = 0;
+        int pixG = 0;
+        int pixB = 0;
+
+        int pixColor = 0;
+
+        int newR = 0;
+        int newG = 0;
+        int newB = 0;
+
+        int delta = 16; // 值越小图片会越亮，越大则越暗
+
+        int idx = 0;
+        int[] pixels = new int[width * height];
+        bmp.getPixels(pixels, 0, width, 0, 0, width, height);
+        for (int i = 1, length = height - 1; i < length; i++)
+        {
+            for (int k = 1, len = width - 1; k < len; k++)
+            {
+                idx = 0;
+                for (int m = -1; m <= 1; m++)
+                {
+                    for (int n = -1; n <= 1; n++)
+                    {
+                        pixColor = pixels[(i + m) * width + k + n];
+                        pixR = Color.red(pixColor);
+                        pixG = Color.green(pixColor);
+                        pixB = Color.blue(pixColor);
+
+                        newR = newR + (int) (pixR * gauss[idx]);
+                        newG = newG + (int) (pixG * gauss[idx]);
+                        newB = newB + (int) (pixB * gauss[idx]);
+                        idx++;
+                    }
+                }
+
+                newR /= delta;
+                newG /= delta;
+                newB /= delta;
+
+                newR = Math.min(255, Math.max(0, newR));
+                newG = Math.min(255, Math.max(0, newG));
+                newB = Math.min(255, Math.max(0, newB));
+
+                pixels[i * width + k] = Color.argb(255, newR, newG, newB);
+
+                newR = 0;
+                newG = 0;
+                newB = 0;
+            }
+        }
+
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        long end = System.currentTimeMillis();
+        Log.d("may", "used time="+(end - start));
+        return bitmap;
+    }
+
+    // 计算，缩放bitmap
+    public static int computeSampleSize(BitmapFactory.Options options,
+                                        int minSideLength, int maxNumOfPixels) {
+        int initialSize = computeInitialSampleSize(options, minSideLength,
+                maxNumOfPixels);
+
+        int roundedSize;
+        if (initialSize <= 8) {
+            roundedSize = 1;
+            while (roundedSize < initialSize) {
+                roundedSize <<= 1;
+            }
+        } else {
+            roundedSize = (initialSize + 7) / 8 * 8;
+        }
+
+        return roundedSize;
+    }
+
+    /**
+     * 读取图片属性：旋转的角度
+     *
+     * @param path 图片绝对路径
+     * @return degree旋转的角度
+     */
+
+    public static int readPictureDegree(String path) {
+        int degree = 0;
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+    private static int computeInitialSampleSize(BitmapFactory.Options options,
+                                                int minSideLength, int maxNumOfPixels) {
+        double w = options.outWidth;
+        double h = options.outHeight;
+
+        int lowerBound = (maxNumOfPixels == -1) ? 1 :
+                (int) Math.ceil(Math.sqrt(w * h / maxNumOfPixels));
+        int upperBound = (minSideLength == -1) ? 128 :
+                (int) Math.min(Math.floor(w / minSideLength),
+                        Math.floor(h / minSideLength));
+
+        if (upperBound < lowerBound) {
+            return lowerBound;
+        }
+
+        if ((maxNumOfPixels == -1) &&
+                (minSideLength == -1)) {
+            return 1;
+        } else if (minSideLength == -1) {
+            return lowerBound;
+        } else {
+            return upperBound;
+        }
     }
 
     private static File getFileByPath(final String filePath) {

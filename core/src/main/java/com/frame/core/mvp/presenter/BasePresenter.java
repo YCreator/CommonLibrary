@@ -1,4 +1,4 @@
-package com.frame.core.interf.presenter;
+package com.frame.core.mvp.presenter;
 
 import android.os.Bundle;
 

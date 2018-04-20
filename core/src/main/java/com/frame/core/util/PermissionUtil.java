@@ -62,7 +62,7 @@ import android.os.Build;
  * Created by yzd on 2017/2/17 0017.
  */
 @Deprecated
-public class PermissionUtil {
+class PermissionUtil {
 
     public static void checkReadCalendarPermission(Activity activity, int requestCode) {
         AppHelper.requestPermission(activity, Manifest.permission.READ_CALENDAR, requestCode);

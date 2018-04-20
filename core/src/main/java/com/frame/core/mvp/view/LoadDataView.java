@@ -1,4 +1,4 @@
-package com.frame.core.interf.view;
+package com.frame.core.mvp.view;
 
 /**
  * 访问数据处理接口
@@ -17,8 +17,8 @@ public interface LoadDataView {
     void hideLoading();
 
     /**
-     * 错误信息返回
+     * 信息返回
      * @param message
      */
-    void showError(String message);
+    void showMessage(String message);
 }

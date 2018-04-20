@@ -36,8 +36,10 @@ import java.net.URL;
 /**
  * bitmap工具类
  * Created by Administrator on 2016/1/9.
+ * please use com.frame.core.util.utils.ImagUtils
  */
-public class BitmapUtils {
+@Deprecated
+class BitmapUtils {
 
     /**
      * 压缩显示bitmap，防止图片过大引起内存溢出

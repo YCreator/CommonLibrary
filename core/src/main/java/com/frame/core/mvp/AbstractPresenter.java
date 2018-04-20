@@ -1,48 +1,41 @@
-package com.frame.core.base;
+package com.frame.core.mvp;
 
 import android.content.Context;
 
 import com.frame.core.BaseApplication;
-import com.frame.core.interf.presenter.BasePresenter;
-import com.frame.core.interf.view.BaseMvpView;
+import com.frame.core.base.BaseAppCompatActivity;
 import com.frame.core.rx.Lifeful;
 
 /**
- * mvp中presenter的抽象类
- * Created by yzd on 2016/8/29.
+ * Created by yzd on 2016/5/26.
+ *
  */
-public abstract class BaseMvpPresenter<T extends BaseMvpView> implements BasePresenter {
+public abstract class AbstractPresenter<T>{
 
     private Context mContext;
     private T view;
     private Lifeful lifeful;
 
-    public BaseMvpPresenter(T view) {
+    public AbstractPresenter(T view) {
         this.view = view;
     }
 
     @Deprecated
-    public BaseMvpPresenter(Context mContext, T view) {
+    public AbstractPresenter(Context mContext, T view) {
         this.mContext = mContext;
         this.view = view;
     }
 
-    public BaseMvpPresenter(T view, Lifeful lifeful) {
+    public AbstractPresenter(T view, Lifeful lifeful) {
         this.view = view;
         this.lifeful = lifeful;
     }
 
     @Deprecated
-    public BaseMvpPresenter(Context mContext, T view, Lifeful lifeful) {
+    public AbstractPresenter(Context mContext, T view, Lifeful lifeful) {
         this.mContext = mContext;
         this.view = view;
         this.lifeful = lifeful;
-    }
-
-    @Override
-    public void initPage() {
-        getView().initView();
-        getView().initListener();
     }
 
     @Deprecated
@@ -58,7 +51,15 @@ public abstract class BaseMvpPresenter<T extends BaseMvpView> implements BasePre
         return view;
     }
 
+    public BaseAppCompatActivity getBaseActivity() {
+        if (mContext != null && mContext instanceof BaseAppCompatActivity) {
+            return (BaseAppCompatActivity) mContext;
+        }
+        return null;
+    }
+
     public Lifeful getLifeful() {
         return lifeful;
     }
+
 }

@@ -24,7 +24,7 @@ import java.text.DecimalFormat;
  * Created by yzd on 2016/7/8.
  */
 @Deprecated
-public class FileUtils {
+class FileUtils {
 
     /**
      * 根据uri获取文件路径

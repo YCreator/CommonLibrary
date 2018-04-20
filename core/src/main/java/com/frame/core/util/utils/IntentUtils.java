@@ -3,6 +3,7 @@ package com.frame.core.util.utils;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -502,7 +503,7 @@ public final class IntentUtils {
         return isNewTask ? intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) : intent;
     }
 
-//    /**
+    //    /**
 //     * 获取选择照片的 Intent
 //     *
 //     * @return
@@ -548,25 +549,38 @@ public final class IntentUtils {
 //        return intent;
 //    }
 //
-//    public static Intent buildImageCropIntent(final Uri uriFrom, final Uri uriTo, final int outputX, final int outputY, final boolean returnData) {
-//        return buildImageCropIntent(uriFrom, uriTo, 1, 1, outputX, outputY, returnData);
-//    }
-//
-//    public static Intent buildImageCropIntent(Uri uriFrom, Uri uriTo, int aspectX, int aspectY,
-//                                              int outputX, int outputY, boolean returnData) {
-//        Intent intent = new Intent("com.android.camera.action.CROP");
-//        intent.setDataAndType(uriFrom, "image*//*");
-//        intent.putExtra("crop", "true");
-//        intent.putExtra("output", uriTo);
-//        intent.putExtra("aspectX", aspectX);
-//        intent.putExtra("aspectY", aspectY);
-//        intent.putExtra("outputX", outputX);
-//        intent.putExtra("outputY", outputY);
-//        intent.putExtra("scale", true);
-//        intent.putExtra("return-data", returnData);
-//        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
-//        return intent;
-//    }
+    public static Intent buildImageCropIntent(final Uri uriFrom, final Uri uriTo, final int outputX, final int outputY, final boolean returnData) {
+        return buildImageCropIntent(uriFrom, uriTo, 1, 1, outputX, outputY, returnData);
+    }
+
+    public static Intent buildImageCropIntent(Uri uriFrom, Uri uriTo) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uriFrom, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+        intent.putExtra("scale", false);
+        intent.putExtra("scaleUpIfNeeded", true);
+        intent.putExtra("noFaceDetection", true);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriTo);
+        return intent;
+    }
+
+    public static Intent buildImageCropIntent(Uri uriFrom, Uri uriTo, int aspectX, int aspectY,
+                                              int outputX, int outputY, boolean returnData) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uriFrom, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("output", uriTo);
+        intent.putExtra("aspectX", aspectX);
+        intent.putExtra("aspectY", aspectY);
+        intent.putExtra("outputX", outputX);
+        intent.putExtra("outputY", outputY);
+        intent.putExtra("scale", true);
+        intent.putExtra("return-data", returnData);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+        return intent;
+    }
 //
 //    public static Intent buildImageCaptureIntent(final Uri uri) {
 //        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

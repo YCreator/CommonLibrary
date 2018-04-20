@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.frame.core.R;
-import com.frame.core.util.BitmapUtils;
+import com.frame.core.util.utils.ImageUtils;
 
 /**
  * 高斯模糊控件
@@ -97,8 +97,8 @@ public class BlurredView extends RelativeLayout {
 
         // blur image
         if (null != drawable) {
-            mOriginBitmap = BitmapUtils.drawableToBitmap(drawable);
-            mBlurredBitmap = BitmapUtils.blurBitmap(context, mOriginBitmap, 25f, 0.4f);
+            mOriginBitmap = ImageUtils.drawable2Bitmap(drawable);
+            mBlurredBitmap = ImageUtils.blurBitmap(context, mOriginBitmap, 25f, 0.4f);
         }
 
         // setVisibility
@@ -165,7 +165,7 @@ public class BlurredView extends RelativeLayout {
     public void setBlurredImg(Bitmap blurredBitmap) {
         if (null != blurredBitmap) {
             mOriginBitmap = blurredBitmap;
-            mBlurredBitmap = BitmapUtils.blurBitmap(mContext, blurredBitmap, 25f, 0.4f);
+            mBlurredBitmap = ImageUtils.blurBitmap(mContext, blurredBitmap, 25f, 0.4f);
             setImageView();
             setMove(mContext, isMove);
         }
@@ -178,8 +178,8 @@ public class BlurredView extends RelativeLayout {
      */
     public void setBlurredImg(Drawable blurDrawable) {
         if (null != blurDrawable) {
-            mOriginBitmap = BitmapUtils.drawableToBitmap(blurDrawable);
-            mBlurredBitmap = BitmapUtils.blurBitmap(mContext, mOriginBitmap, 25f, 0.4f);
+            mOriginBitmap = ImageUtils.drawable2Bitmap(blurDrawable);
+            mBlurredBitmap = ImageUtils.blurBitmap(mContext, mOriginBitmap, 25f, 0.4f);
             setImageView();
             setMove(mContext, isMove);
         }

@@ -1,4 +1,4 @@
-package com.frame.core.interf.view;
+package com.frame.core.mvp.view;
 
 import java.util.List;
 

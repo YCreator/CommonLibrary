@@ -8,7 +8,6 @@ import com.frame.core.mvvm.binding.command.BindingCommand;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 
 
@@ -64,20 +63,15 @@ public class ViewAdapter {
 
         private BindingCommand<Integer> onLoadMoreCommand;
 
-        public OnScrollListener(final BindingCommand<Integer> onLoadMoreCommand) {
+        OnScrollListener(final BindingCommand<Integer> onLoadMoreCommand) {
             this.onLoadMoreCommand = onLoadMoreCommand;
             methodInvoke.throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe(new Consumer<Integer>() {
-                        @Override
-                        public void accept(Integer integer) {
-                            onLoadMoreCommand.execute(integer);
-                        }
-                    });
+                    .subscribe(onLoadMoreCommand::execute);
         }
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            /*LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
@@ -85,12 +79,31 @@ public class ViewAdapter {
                 if (onLoadMoreCommand != null) {
                     methodInvoke.onNext(recyclerView.getAdapter().getItemCount());
                 }
-            }
+            }*/
         }
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
+            switch (newState) {
+                case RecyclerView.SCROLL_STATE_IDLE:
+                    if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                        int visibleItemCount = layoutManager.getChildCount();
+                        int totalItemCount = layoutManager.getItemCount();
+                        int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            if (onLoadMoreCommand != null) {
+                                methodInvoke.onNext(recyclerView.getAdapter().getItemCount());
+                            }
+                        }
+                    }
+                    break;
+                case RecyclerView.SCROLL_STATE_DRAGGING:
+                    break;
+                case RecyclerView.SCROLL_STATE_SETTLING:
+                    break;
+            }
         }
 
 

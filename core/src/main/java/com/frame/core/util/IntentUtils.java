@@ -13,9 +13,10 @@ import android.support.v4.app.ActivityCompat;
 /**
  * 跳转工具
  * Created by yzd on 2016/5/23.
+ * please use com.frame.core.util.utils.IntentUtils
  */
 @Deprecated
-public class IntentUtils {
+class IntentUtils {
 
 
     /**

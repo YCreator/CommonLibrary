@@ -21,15 +21,15 @@ public class ViewAdapter {
         layout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                if (onRefreshCommand != null) {
-                    onRefreshCommand.execute();
+                if (onLoadMoreCommand != null) {
+                    onLoadMoreCommand.execute();
                 }
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                if (onLoadMoreCommand != null) {
-                    onLoadMoreCommand.execute();
+                if (onRefreshCommand != null) {
+                    onRefreshCommand.execute();
                 }
             }
         });

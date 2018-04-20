@@ -41,8 +41,10 @@ import java.net.URL;
 
 /**
  * Tools for handler picture
+ * please use com.frame.core.util.utils.ImageUtils
  */
-public final class ImageTools {
+@Deprecated
+final class ImageTools {
 
     /**
      * Transfer drawable to bitmap

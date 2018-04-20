@@ -1,10 +1,11 @@
-package com.frame.core.base;
+package com.frame.core.mvp;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.frame.core.interf.presenter.BasePresenter;
+import com.frame.core.base.BaseFragment;
+import com.frame.core.mvp.presenter.BasePresenter;
 
 /**
  * Created by yzd on 2017/2/5 0005.

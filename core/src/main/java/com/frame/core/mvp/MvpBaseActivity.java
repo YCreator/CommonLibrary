@@ -1,14 +1,17 @@
-package com.frame.core.base;
+package com.frame.core.mvp;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.frame.core.base.BaseAppCompatActivity;
+import com.frame.core.mvp.presenter.BasePresenter;
+
 /**
- * 结合mvp模式中的presenter所构建的activity基类
- * Created by yzd on 2016/8/29.
+ * Created by yzd on 2017/2/5 0005.
  */
-public abstract class BaseMvpActivity<T extends BaseMvpPresenter> extends BaseAppCompatActivity {
+
+public abstract class MvpBaseActivity<T extends BasePresenter> extends BaseAppCompatActivity {
 
     protected T presenter;
 
@@ -61,6 +64,6 @@ public abstract class BaseMvpActivity<T extends BaseMvpPresenter> extends BaseAp
     /**
      * 返回主持人
      */
-    protected abstract @NonNull T initPresenter();
-
+    protected abstract @NonNull
+    T initPresenter();
 }

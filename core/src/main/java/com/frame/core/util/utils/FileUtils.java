@@ -11,12 +11,17 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.DigestInputStream;
@@ -1088,6 +1093,36 @@ public final class FileUtils {
             return uri.getPath();
         }
         return null;
+    }
+
+    public static String txtReader(File txtFile) {
+        try {
+            InputStreamReader isr = new InputStreamReader(new FileInputStream(txtFile), "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder str = new StringBuilder();
+            String mimeTypeLine = null;
+            while ((mimeTypeLine = br.readLine()) != null) {
+                str.append(mimeTypeLine);
+            }
+            return str.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static void txtWriter(File file, String txt) {
+        try {
+            FileOutputStream writerStream = new FileOutputStream(file);
+            BufferedWriter oWriter = new BufferedWriter(new OutputStreamWriter(writerStream, "UTF-8"));
+            oWriter.write(txt);
+            oWriter.flush();
+            writerStream.close();
+            oWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private static String getDataColumn(Context context, Uri uri, String selection,

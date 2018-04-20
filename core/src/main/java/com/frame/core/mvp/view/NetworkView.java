@@ -1,4 +1,4 @@
-package com.frame.core.interf.view;
+package com.frame.core.mvp.view;
 
 /**
  * 网络状态处理接口

@@ -1,6 +1,7 @@
 package com.frame.core.base;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import java.util.Stack;
@@ -52,10 +53,10 @@ public class AppManager {
      */
     public void removeActivity(Activity activity) {
         if (activityStack.contains(activity)) {
+            finishActivity(activity);
             activityStack.remove(activity);
         }
     }
-
 
     /**
      * 是否有activity
@@ -74,11 +75,45 @@ public class AppManager {
     }
 
     /**
+     * 获取第一个压入栈的Activity
+     *
+     * @return
+     */
+    public Activity lastActivity() {
+        if (!activityStack.isEmpty()) {
+            return activityStack.firstElement();
+        }
+        return null;
+    }
+
+    /**
      * 结束当前Activity（堆栈中最后一个压入的）
      */
     public void finishActivity() {
         Activity activity = activityStack.lastElement();
         finishActivity(activity);
+    }
+
+    /**
+     * 退出栈中其他所有Activity
+     *
+     * @param cls Class 类名
+     */
+    @SuppressWarnings("rawtypes")
+    public void removeOtherActivity(@NonNull Class cls) {
+        while (true) {
+            Activity a1 = currentActivity();
+            Activity a2 = lastActivity();
+            if (a1 != null && !a1.getClass().equals(cls)) {
+                removeActivity(a1);
+                continue;
+            }
+            if (a2 != null && !a2.getClass().equals(cls)) {
+                removeActivity(a2);
+                continue;
+            }
+            break;
+        }
     }
 
     /**
@@ -121,7 +156,7 @@ public class AppManager {
      *
      * @author kymjs
      */
-    public static Activity getActivity(Class<?> cls) {
+    public static Activity getActivity(Class<? extends Activity> cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 return activity;

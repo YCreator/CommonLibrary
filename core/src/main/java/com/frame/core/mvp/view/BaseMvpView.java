@@ -1,4 +1,4 @@
-package com.frame.core.interf.view;
+package com.frame.core.mvp.view;
 
 /**
  * mvp中view的接口类
