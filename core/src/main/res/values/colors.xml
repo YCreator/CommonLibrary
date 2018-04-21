@@ -18,6 +18,8 @@
     <color name="orange">#f89957</color>
     <color name="bg_gray">#f0f0f0</color>
     <color name="bg_light">#fff5ee</color>
+    <color name="theme_color">#ffef0a66</color>
+    <color name="blue_color">#619ff4</color>
 
     <!-- 字体颜色 -->
     <color name="text_black">#353535</color>

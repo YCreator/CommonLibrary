@@ -1,4 +1,4 @@
-package com.frame.core.widget;
+package com.frame.core.widget.Popupwindow;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -13,6 +13,10 @@ import android.widget.PopupWindow;
  */
 
 public class CommonPopuWindow extends PopupWindow {
+
+    public CommonPopuWindow() {
+        super(null, 0, 0);
+    }
 
     public CommonPopuWindow(Context context) {
         super(context);
