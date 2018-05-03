@@ -27,6 +27,16 @@ public final class RegexUtils {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
+     * 判断是否输入特殊符号，是，返回true,否，返回false
+     *
+     * @param input
+     * @return
+     */
+    public static boolean isSpecial(final CharSequence input) {
+        return isMatch(RegexConstants.REGEX_SPECIAL_CHAR, input);
+    }
+
+    /**
      * Return whether input matches regex of simple mobile.
      *
      * @param input The input.

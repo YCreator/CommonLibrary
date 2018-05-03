@@ -12,7 +12,6 @@ import android.os.Bundle;
 import com.frame.core.base.AppManager;
 import com.frame.core.db.DatabaseManager;
 import com.frame.core.net.okhttp.CookiesManager;
-import com.frame.core.util.AppHelper;
 import com.frame.core.util.utils.DeviceUtils;
 import com.frame.core.util.utils.Utils;
 
@@ -32,6 +31,7 @@ public class BaseApplication extends Application {
     private static CookiesManager cookiesManager;
     private static ExecutorService executor;
     public static String deviceId;
+    public static int status = -1;
     public static int MODEL;
     public volatile static boolean DEBUG = true;       //控制开发和生产模式
     public static final int PRO = 0;    //生产
@@ -42,7 +42,7 @@ public class BaseApplication extends Application {
         Utils.init(this);
         super.onCreate();
         _context = this.getApplicationContext();
-        DEBUG = AppHelper.isDebug();
+        DEBUG = Utils.isDebug();
         _resource = _context.getResources();
         _asset = _context.getAssets();
         //注册监听每个activity的生命周期,便于堆栈式管理

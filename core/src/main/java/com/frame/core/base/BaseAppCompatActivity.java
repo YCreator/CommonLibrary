@@ -68,10 +68,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        TLog.i("Activity", "onCreate");
+        onBeforeSetContentLayout(savedInstanceState);
         super.onCreate(savedInstanceState);
-        onBeforeSetContentLayout();
-        //StackManager.getStackManager().pushActivity(this);
         setContentView(initPageLayoutID());
         ButterKnife.bind(this);
         initActionBar();
@@ -105,12 +103,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             ActionBar actionBar = getSupportActionBar();
             actionBar.setDisplayHomeAsUpEnabled(true);
             mActionBarToolbar.setNavigationIcon(setBackIcon() == 0 ? R.drawable.ic_arrow_back_white_18dp : setBackIcon());
-            mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finishPage();
-                }
-            });
+            mActionBarToolbar.setNavigationOnClickListener(v -> finishPage());
         }
     }
 
@@ -120,7 +113,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
      */
     protected Toolbar getActionBarToolbar() {
         if (mActionBarToolbar == null) {
-            mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
+            mActionBarToolbar = findViewById(R.id.toolbar);
             if (mActionBarToolbar != null) {
                 setSupportActionBar(mActionBarToolbar);
             }
@@ -157,7 +150,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             mLoadingDialog = null;
         }
         ButterKnife.unbind(this);
-        //StackManager.getStackManager().popActivity(this);
     }
 
     /**
@@ -206,7 +198,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     /**
      * 初始化布局前回调
      */
-    protected void onBeforeSetContentLayout() {
+    protected void onBeforeSetContentLayout(Bundle savedInstanceState) {
     }
 
     /**

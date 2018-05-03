@@ -1,4 +1,4 @@
-package com.frame.core.widget.Popupwindow;
+package com.frame.core.widget.popupwindow;
 
 import android.content.Context;
 import android.view.View;

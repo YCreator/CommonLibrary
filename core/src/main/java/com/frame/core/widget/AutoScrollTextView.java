@@ -124,11 +124,9 @@ public class AutoScrollTextView extends AppCompatTextView {
 
         private SavedState(Parcel in) {
             super(in);
-            boolean[] b = null;
+            boolean[] b = new boolean[1];
             in.readBooleanArray(b);
-            if (b != null && b.length > 0) {
-                isStarting = b[0];
-            }
+            isStarting = b[0];
             step = in.readFloat();
         }
     }

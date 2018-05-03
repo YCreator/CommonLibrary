@@ -70,7 +70,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         mIsVisibleToUser = isVisibleToUser;
-        TLog.i(TAG,"setUserVisibleHint====>"+isVisibleToUser+"====>"+position);
+        TLog.i(TAG, "setUserVisibleHint====>" + isVisibleToUser + "====>" + position);
         if (isActivityCreated) {
             if (isVisibleToUser) {
                 if (isFirstVisible) {
@@ -86,7 +86,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        TLog.i(TAG,"onCreate====>"+position);
+        TLog.i(TAG, "onCreate====>" + position);
         super.onCreate(savedInstanceState);
         init();
     }
@@ -97,14 +97,15 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        TLog.i(TAG,"onCreateView====>"+position+"====>"+isActivityCreated+"====>"+isFirstVisible);
+    public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        TLog.i(TAG, "onCreateView====>" + position + "====>" + isActivityCreated + "====>" + isFirstVisible);
+        assert inflater != null;
         return inflater.inflate(initPageLayoutId(), container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        TLog.i(TAG,"onViewCreated====>"+position);
+    public void onViewCreated(@Nullable View view, @Nullable Bundle savedInstanceState) {
+        TLog.i(TAG, "onViewCreated====>" + position);
         mFragmentView = view;
         ButterKnife.bind(this, mFragmentView);
         initPageView();
@@ -113,7 +114,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        TLog.i(TAG,"onActivityCreated====>"+position+"_"+getUserVisibleHint());
+        TLog.i(TAG, "onActivityCreated====>" + position + "_" + getUserVisibleHint());
         super.onActivityCreated(savedInstanceState);
         isActivityCreated = true;
         if (getUserVisibleHint() || mIsVisibleToUser) {
@@ -128,7 +129,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
 
     @Override
     public void onDestroyView() {
-        TLog.i(TAG,"onDestroyView====>"+position);
+        TLog.i(TAG, "onDestroyView====>" + position);
         super.onDestroyView();
         ButterKnife.unbind(this);
         mFragmentView = null;
@@ -136,7 +137,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
 
     @Override
     public void onDetach() {
-        TLog.i(TAG,"onDetach====>"+position);
+        TLog.i(TAG, "onDetach====>" + position);
         super.onDetach();
         //noinspection TryWithIdenticalCatches
         try {
@@ -155,7 +156,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
 
     @Override
     public boolean getUserVisibleHint() {
-        TLog.i(TAG,"getUserVisibleHint====>"+super.getUserVisibleHint()+"====>"+position);
+        TLog.i(TAG, "getUserVisibleHint====>" + super.getUserVisibleHint() + "====>" + position);
         return super.getUserVisibleHint();
     }
 
@@ -164,23 +165,23 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
      * 用于ViewPager下的页面懒加载，在一个生命周期内只会调用一次
      */
     protected void onPageFirstVisible() {
-        TLog.i(TAG,"onPageFirstVisible====>"+position);
+        TLog.i(TAG, "onPageFirstVisible====>" + position);
     }
 
     /**
      * 逻辑处理
      */
     protected void process(Bundle savedInstanceState) {
-        TLog.i(TAG,"process====>"+position);
+        TLog.i(TAG, "process====>" + position);
     }
 
     protected void onPageStart() {
-        TLog.i(TAG,"onPageStart====>"+super.getUserVisibleHint()+"====>"+position);
+        TLog.i(TAG, "onPageStart====>" + super.getUserVisibleHint() + "====>" + position);
         lazyLoad();
     }
 
     protected void onPageEnd() {
-        TLog.i(TAG,"onPageEnd====>"+super.getUserVisibleHint()+"====>"+position);
+        TLog.i(TAG, "onPageEnd====>" + super.getUserVisibleHint() + "====>" + position);
     }
 
     /**

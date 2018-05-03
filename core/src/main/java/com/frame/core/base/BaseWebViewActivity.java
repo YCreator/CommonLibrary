@@ -1,13 +1,17 @@
 package com.frame.core.base;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +30,7 @@ import com.frame.core.R;
 import com.frame.core.entity.JsObjectAndNameEntity;
 import com.frame.core.util.StringUtils;
 import com.frame.core.util.TLog;
+import com.frame.core.util.ToastUtil;
 import com.frame.core.util.utils.AppUtils;
 import com.frame.core.util.utils.IntentUtils;
 
@@ -67,7 +72,7 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
         });
         tvTitle.setLines(1);
         pb.setMax(100);
-        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);//是否开启本地DOM存储  鉴于它的安全特性（任何人都能读取到它，尽管有相应的限制，将敏感数据存储在这里依然不是明智之举），Android 默认是关闭该功能的。
         webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
         String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
         webView.getSettings().setAppCachePath(appCachePath);
@@ -90,7 +95,9 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
         webView.getSettings().setLoadsImagesAutomatically(true);                  //支持自动加载图片
         webView.getSettings().setAllowFileAccess(true);                           //设置可以访问文件
         webView.getSettings().setDefaultTextEncodingName("UTF-8");                //设置编码格式
-        // webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); //自适应屏幕
+        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setSavePassword(true);//保存密码
         JsObjectAndNameEntity jsOb = inJavaScriptLocalObj();
         if (jsOb != null) {
             webView.addJavascriptInterface(jsOb.getObJs(), jsOb.getName());
@@ -99,12 +106,15 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+        webView.setSaveEnabled(true);
+        webView.setKeepScreenOn(true);
         webView.setFocusableInTouchMode(true);
         webView.setFocusable(true);
         webView.requestFocus(R.id.webview);
         webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         //webView.setInitialScale(100);
         webView.setWebChromeClient(new WebChromeClient() {
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 if (pb != null) {
@@ -126,8 +136,18 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
         });
 
         webView.setWebViewClient(new MyWebViewClient());
+        webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            Intent intent = IntentUtils.getSystemWebIntent(url);
+            startActivity(intent);
+        });
         customWebSetting(webView);
         loadWeb(loadWeb());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle paramBundle) {
+        super.onSaveInstanceState(paramBundle);
+        paramBundle.putString("url", webView.getUrl());
     }
 
     @Override
@@ -163,39 +183,6 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
 
     }
 
-    /*@Override
-    protected int getToolbarColor() {
-        return this.getResources().getColor(R.color.theme_color);
-    }
-
-    @Override
-    protected void setStatusBar() {
-        StatusBarUtil.setColor(this, getToolbarColor(), 0);
-    }
-*/
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        /*if (!AppConfig.isDebug()) {
-            //统计页面
-            MobclickAgent.onPageStart(this.getClass().getName());
-            MobclickAgent.onResume(this);
-        }
-        JPushInterface.onResume(this);*/
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        /*if (!AppConfig.isDebug()) {
-            //统计页面
-            MobclickAgent.onPageEnd(this.getClass().getName());
-            MobclickAgent.onPause(this);
-        }
-        JPushInterface.onPause(this);*/
-    }
-
     @Override
     protected void onDestroy() {
         if (webView != null) {
@@ -218,9 +205,9 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (webView.canGoBack()) {
-            menu.getItem(0).setIcon(R.drawable.close);
+            menu.findItem(R.id.action_filter).setIcon(R.drawable.close);
         } else {
-            menu.getItem(0).setIcon(null);
+            menu.findItem(R.id.action_filter).setIcon(null);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -230,7 +217,6 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
         int i = item.getItemId();
         if (i == R.id.action_filter) {
             finishPage();
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -257,13 +243,24 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
                 }
                 return true;
             } else if (url.startsWith("tel:")) {
-                @SuppressLint("MissingPermission") Intent intent = IntentUtils.getCallIntent(url.replace("tel:", ""));
+                if (ActivityCompat.checkSelfPermission(BaseWebViewActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ToastUtil.showLong(BaseWebViewActivity.this, "拨打电话权限未开启");
+                    view.goBack();
+                    return false;
+                }
+                Intent intent = IntentUtils.getCallIntent(url.replace("tel:", ""));
                 startActivity(intent);
                 return true;
             }
-            if (url.startsWith("http")) {
+            if (url.startsWith("http:") || url.startsWith("https:")) {
                 view.loadUrl(url);   //此方法始终在一同一个webView 中显示
                 return false;
+            }
+            try {
+                Intent intent = IntentUtils.getSystemWebIntent(url);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return true;
         }
@@ -278,10 +275,10 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
                     , request.getUrl().getPort()
                     , request.getUrl().getScheme());
 
-            if (webView.canGoBack()) {
-                //重新绘制
-                invalidateOptionsMenu();
-            }
+//            if (webView.canGoBack()) {
+//                //重新绘制
+//                invalidateOptionsMenu();
+//            }
             return super.shouldOverrideUrlLoading(view, request);
         }
 
@@ -290,18 +287,17 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
                 pb.setVisibility(View.VISIBLE);
                 pb.setProgress(0);
             }
+            //重新绘制
+            invalidateOptionsMenu();
 //            LogUtils.e(" onPageStarted webView.canGoBack() ",webView.canGoBack());
-
             super.onPageStarted(view, url, favicon);
         }
 
         public void onPageFinished(WebView view, String url) {
-//            if(webView.canGoBack()){
-//                //重新绘制
-//                invalidateOptionsMenu();
-//            }
             super.onPageFinished(view, url);
-
+            if (!view.getSettings().getLoadsImagesAutomatically()) {
+                view.getSettings().setLoadsImagesAutomatically(true);
+            }
             // view.loadUrl("javascript:window.app.showSource(document.getElementsByTagName('html')[0].innerHTML)");
         }
 
@@ -343,19 +339,4 @@ public abstract class BaseWebViewActivity extends BaseAppCompatActivity {
         }
     }
 
-    /*@Override
-    public void showLoadingDialog() {
-        if (dialog == null || !dialog.isShowing()) {
-            dialog = new LoadingDialog(this);
-            dialog.show();
-        }
-    }
-
-    @Override
-    public void dismissLoadingDialog() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-            dialog = null;
-        }
-    }*/
 }

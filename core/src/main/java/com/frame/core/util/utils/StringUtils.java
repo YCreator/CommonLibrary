@@ -1,5 +1,8 @@
 package com.frame.core.util.utils;
 
+import java.text.Collator;
+import java.util.Locale;
+
 /**
  * <pre>
  *     author: admin
@@ -10,17 +13,44 @@ package com.frame.core.util.utils;
  */
 public final class StringUtils {
 
+    private static final String FIRST_PINYIN_UNIHAN = "\u963F";
+    private static final String LAST_PINYIN_UNIHAN = "\u84D9";
+
+    private static final char FIRST_UNIHAN = '\u3400';
+    private static final Collator COLLATOR = Collator.getInstance(Locale.CHINA);
+
     private StringUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
     /**
+     * 判断字符串是否有内容
      * Return whether the string is null or 0-length.
      *
      * @param s The string.
      * @return {@code true}: yes<br> {@code false}: no
      */
     public static boolean isEmpty(final CharSequence s) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            int j = s.charAt(i);
+            if (j != 32 && j != 9 && j != 13 && j != 10) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 判断字符串是否绝对的空
+     * Return whether the string is null or 0-length.
+     *
+     * @param s The string.
+     * @return {@code true}: yes<br> {@code false}: no
+     */
+    public static boolean isAbsEmpty(final CharSequence s) {
         return s == null || s.length() == 0;
     }
 
@@ -48,6 +78,43 @@ public final class StringUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * 判断是否输入有中文字符,是，返回true,否，返回false
+     *
+     * @param string
+     * @return
+     */
+    public static boolean isChinese(String string) {
+        char[] chars = string.toCharArray();
+        for (char c : chars) {
+            if (isCharHanzi(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否为中文字符
+     *
+     * @param character
+     * @return
+     */
+    public static boolean isCharHanzi(char character) {
+        final String letter = Character.toString(character);
+        if (character < 256 || character < FIRST_UNIHAN) {
+            return false;
+        } else {
+            int cmp = COLLATOR.compare(letter, FIRST_PINYIN_UNIHAN);
+            if (cmp < 0) {
+                return false;
+            } else {
+                cmp = COLLATOR.compare(letter, LAST_PINYIN_UNIHAN);
+                return cmp <= 0;
+            }
+        }
     }
 
     /**

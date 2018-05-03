@@ -395,7 +395,10 @@ public final class IntentUtils {
     @SuppressLint("MissingPermission")
     @RequiresPermission(CALL_PHONE)
     public static Intent getCallIntent(final String phoneNumber, final boolean isNewTask) {
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_CALL);
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.setData(Uri.parse("tel:" + phoneNumber));
         return getIntent(intent, isNewTask);
     }
 
