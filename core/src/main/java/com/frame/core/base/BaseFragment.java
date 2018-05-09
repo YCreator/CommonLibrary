@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.frame.core.autoscreen.ScreenAdapterTools;
+import com.frame.core.autoscreen.conversion.CustomConversion;
 import com.frame.core.interf.IBaseView;
 import com.frame.core.rx.Lifeful;
 import com.frame.core.util.TLog;
@@ -109,6 +111,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, Lifefu
         mFragmentView = view;
         ButterKnife.bind(this, mFragmentView);
         initPageView();
+        ScreenAdapterTools.getInstance().loadView((ViewGroup) view, new CustomConversion());
         initPageViewListener();
     }
 

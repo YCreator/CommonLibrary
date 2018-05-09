@@ -28,6 +28,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.frame.core.R;
+import com.frame.core.autoscreen.ScreenAdapterTools;
+import com.frame.core.autoscreen.conversion.CustomConversion;
 import com.frame.core.interf.IBaseView;
 import com.frame.core.rx.Lifeful;
 import com.frame.core.util.MyPreferences;
@@ -76,6 +78,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         setStatusBar();
         init();
         initPageView();
+        ScreenAdapterTools.getInstance().reset(this);//如果希望android7.0分屏也适配的话,加上这句
+        ScreenAdapterTools.getInstance().loadView((ViewGroup) getWindow().getDecorView(), new CustomConversion());
         initPageViewListener();
         process(savedInstanceState);
     }
