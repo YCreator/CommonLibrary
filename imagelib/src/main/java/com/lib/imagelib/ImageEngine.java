@@ -20,20 +20,16 @@ public final class ImageEngine {
      */
     public static int CACHE_IMAGE_SIZE = 250;
 
-    public static void init(final Context context) {
-        init(context, CACHE_IMAGE_SIZE, GlobalConfig.Engine.GLIDELOADER);
+    public static void init(final Context context, ILoader loader) {
+        init(context, CACHE_IMAGE_SIZE, loader);
     }
 
-    public static void init(final Context context, GlobalConfig.Engine engine) {
-        init(context, CACHE_IMAGE_SIZE, engine);
+    public static void init(final Context context, int cacheSizeInM, ILoader loader) {
+        init(context, cacheSizeInM, MemoryMode.NORMAL, loader);
     }
 
-    public static void init(final Context context, int cacheSizeInM, GlobalConfig.Engine engine) {
-        init(context, cacheSizeInM, MemoryMode.NORMAL, engine);
-    }
-
-    public static void init(final Context context, int cacheSizeInM, int memoryMode, GlobalConfig.Engine engine) {
-        init(context, cacheSizeInM, memoryMode, true, engine);
+    public static void init(final Context context, int cacheSizeInM, int memoryMode, ILoader loader) {
+        init(context, cacheSizeInM, memoryMode, true, loader);
     }
     /**
      * @param context        上下文
@@ -41,9 +37,9 @@ public final class ImageEngine {
      * @param memoryMode     调整内存缓存的大小 LOW(0.5f) ／ NORMAL(1f) ／ HIGH(1.5f);
      * @param isInternalCD   true 磁盘缓存到应用的内部目录 / false 磁盘缓存到外部存
      */
-    public static void init(final Context context, int cacheSizeInM, int memoryMode, boolean isInternalCD, GlobalConfig.Engine engine) {
+    public static void init(final Context context, int cacheSizeInM, int memoryMode, boolean isInternalCD, ILoader loader) {
         ImageEngine.context = context;
-        GlobalConfig.init(context, cacheSizeInM, memoryMode, isInternalCD, engine);
+        GlobalConfig.init(context, cacheSizeInM, memoryMode, isInternalCD, loader);
     }
 
     /**

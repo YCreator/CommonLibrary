@@ -1,1 +1,1 @@
-include ':app', ':core', ':imagelib', ':tplibrary'
+include ':app', ':core', ':imagelib', ':tplibrary', ':glideloader', ':picassoloader', ':frescoloader', ':imageloader'

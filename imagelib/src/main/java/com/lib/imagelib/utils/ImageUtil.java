@@ -2,7 +2,11 @@ package com.lib.imagelib.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -302,5 +306,125 @@ public class ImageUtil {
 
     private static Uri resourceIdToUri(Context context, int resourceId) {
         return Uri.parse(Contants.ANDROID_RESOURCE + context.getPackageName() + Contants.FOREWARD_SLASH + resourceId);
+    }
+
+    public static Bitmap rectRound(Bitmap source,int radius, int margin){
+        return new RoundedCornersTransformation2(radius,margin).transform(source,source.getWidth(),source.getHeight());
+    }
+
+    public static Bitmap cropCirle(Bitmap source,boolean recycleOriginal) {
+        //BitmapPool mBitmapPool = Glide.get(BigLoader.context).getBitmapPool();
+
+
+        int size = Math.min(source.getWidth(), source.getHeight());
+
+        int width = (source.getWidth() - size) / 2;
+        int height = (source.getHeight() - size) / 2;
+        //source.setHasAlpha(true);
+        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        //bitmap.setHasAlpha(true);
+
+
+
+        Canvas canvas = new Canvas(bitmap);
+
+        //canvas.drawColor(Color.TRANSPARENT);
+        //canvas.setBitmap(bitmap);
+        Paint paint = new Paint();
+        //paint.setColor(Color.TRANSPARENT);
+        //paint.setColorFilter()
+        BitmapShader shader =
+                new BitmapShader(source, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+        if (width != 0 || height != 0) {
+            // source isn't square, move viewport to center
+            Matrix matrix = new Matrix();
+            matrix.setTranslate(-width, -height);
+            shader.setLocalMatrix(matrix);
+        }
+        paint.setShader(shader);
+        paint.setAntiAlias(true);
+
+        float r = size / 2f;
+        canvas.drawCircle(r, r, r, paint);
+        if(recycleOriginal){
+            source.recycle();
+        }
+
+        return bitmap;
+    }
+
+    public static long getCacheSize() {
+        File dir = new File(GlobalConfig.context.getCacheDir(), Contants.DEFAULT_DISK_CACHE_DIR);
+        return dir.exists() ? getFolderSize(dir) : 0;
+    }
+
+    /**
+     * 删除指定目录下的文件，这里用于缓存的删除
+     *
+     * @param filePath filePath
+     * @param deleteThisPath deleteThisPath
+     */
+    public static void deleteFolderFile(String filePath, boolean deleteThisPath) {
+        if (!TextUtils.isEmpty(filePath)) {
+            try {
+                File file = new File(filePath);
+                if (file.isDirectory()) {
+                    File files[] = file.listFiles();
+                    for (File file1 : files) {
+                        deleteFolderFile(file1.getAbsolutePath(), true);
+                    }
+                }
+                if (deleteThisPath) {
+                    if (!file.isDirectory()) {
+                        file.delete();
+                    } else {
+                        if (file.listFiles().length == 0) {
+                            file.delete();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 获取指定文件夹内所有文件大小的和
+     *
+     * @param file file
+     * @return size
+     * @throws Exception
+     */
+    public static long getFolderSize(File file) {
+        long size = 0;
+        try {
+            File[] fileList = file.listFiles();
+            for (File aFileList : fileList) {
+                if (aFileList.isDirectory()) {
+                    size = size + getFolderSize(aFileList);
+                } else {
+                    size = size + aFileList.length();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return size;
+    }
+
+    public static int[] getImageWidthHeight(String path) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        /**
+         * 最关键在此，把options.inJustDecodeBounds = true;
+         * 这里再decodeFile()，返回的bitmap为空，但此时调用options.outHeight时，已经包含了图片的高了
+         */
+        options.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options); // 此时返回的bitmap为null
+        /**
+         *options.outHeight为原始图片的高
+         */
+        return new int[]{options.outWidth, options.outHeight};
     }
 }

@@ -3,12 +3,11 @@ package com.lib.imagelib.config;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 
-import com.bumptech.glide.request.transition.ViewAnimationFactory;
+import com.lib.imagelib.loader.ImageListener;
 import com.lib.imagelib.utils.ImageUtil;
 
 import java.io.File;
@@ -61,8 +60,6 @@ public class SingleConfig {
     private int animationId;
     private Animation animation;
 
-    private ViewAnimationFactory animator;
-
     private int blurRadius;
     private int placeHolderResId;
     private int errorResId;
@@ -71,6 +68,31 @@ public class SingleConfig {
     private int rectRoundRadius;                //圆角矩形时圆角的半径
     private int diskCacheMode;                  //是否跳过磁盘存储
     private int scaleMode;                      //填充模式,默认centercrop,可选fitXY,centerInside...
+
+    private int roundOverlayColor;//圆角/圆外覆盖一层背景色
+    private int borderWidth;//边框的宽度
+    private int borderColor;//边框颜色
+    private boolean isUseARGB8888;
+    private boolean reuseable;
+    private int placeHolderScaleType;
+    private int errorScaleType;
+    private int loadingScaleType;
+    private int loadingResId;
+
+    private ImageListener imageListener;
+
+
+    public int getPlaceHolderScaleType() {
+        return placeHolderScaleType;
+    }
+
+    public int getErrorScaleType() {
+        return errorScaleType;
+    }
+
+    public int getLoadingResId() {
+        return loadingResId;
+    }
 
     private BitmapListener bitmapListener;
 
@@ -104,8 +126,11 @@ public class SingleConfig {
 
         this.animationId = builder.animationId;
         this.animationType = builder.animationType;
-        this.animator = builder.animator;
         this.animation = builder.animation;
+
+        this.roundOverlayColor = builder.roundOverlayColor;
+        this.borderColor = builder.borderColor;
+        this.borderWidth = builder.borderWidth;
 
         this.priority = builder.priority;
         //滤镜
@@ -132,6 +157,14 @@ public class SingleConfig {
         this.isGif = builder.isGif;
         this.blurRadius = builder.blurRadius;
         this.errorResId = builder.errorResId;
+
+        this.isUseARGB8888 = builder.isUseARGB8888;
+        this.reuseable = builder.reuseable;
+        this.placeHolderScaleType = builder.placeHolderScaleType;
+        this.errorScaleType = builder.errorScaleType;
+        this.loadingScaleType = builder.loadingScaleType;
+        this.loadingResId = builder.loadingResId;
+        this.imageListener = builder.imageListener;
     }
 
     public boolean isAsBitmap() {
@@ -145,6 +178,18 @@ public class SingleConfig {
             context = GlobalConfig.context;
         }
         return context;
+    }
+
+    public ImageListener getImageListener() {
+        return imageListener;
+    }
+
+    public boolean isUseARGB8888() {
+        return isUseARGB8888;
+    }
+
+    public int getLoadingScaleType() {
+        return loadingScaleType;
     }
 
     public int getDiskCacheMode() {
@@ -234,6 +279,18 @@ public class SingleConfig {
         return width;
     }
 
+    public int getRoundOverlayColor() {
+        return roundOverlayColor;
+    }
+
+    public int getBorderWidth() {
+        return borderWidth;
+    }
+
+    public int getBorderColor() {
+        return borderColor;
+    }
+
     public int getoWidth() {
         return oWidth;
     }
@@ -252,10 +309,6 @@ public class SingleConfig {
 
     public Animation getAnimation() {
         return animation;
-    }
-
-    public ViewAnimationFactory<Drawable> getAnimator() {
-        return animator;
     }
 
     public int getPriority() {
@@ -433,10 +486,72 @@ public class SingleConfig {
         public int animationId; //动画资源id
         public int animationType; //动画资源Type
         public Animation animation; //动画资源
-        public ViewAnimationFactory animator; //动画资源id
+
+        private int roundOverlayColor;//圆角/圆外覆盖一层背景色
+        private int borderWidth;//边框的宽度
+        private int borderColor;//边框颜色
+
+        private boolean isUseARGB8888;
+        private boolean reuseable;
+        private int placeHolderScaleType;
+        private int errorScaleType;
+        private int loadingScaleType;
+        private int loadingResId;
+
+        private ImageListener imageListener;
 
         public ConfigBuilder(Context context) {
             this.context = context;
+        }
+
+        public ConfigBuilder imageListener(ImageListener imageListener) {
+            this.imageListener = imageListener;
+            return this;
+        }
+
+        public ConfigBuilder isUseARGB8888(boolean isUseARGB8888) {
+            this.isUseARGB8888 = isUseARGB8888;
+            return this;
+        }
+
+        public ConfigBuilder reuseable(boolean reuseable) {
+            this.reuseable = reuseable;
+            return this;
+        }
+
+        public ConfigBuilder placeHolderScaleType(int placeHolderScaleType) {
+            this.placeHolderScaleType = placeHolderScaleType;
+            return this;
+        }
+
+        public ConfigBuilder errorScaleType(int errorScaleType) {
+            this.errorScaleType = errorScaleType;
+            return this;
+        }
+
+        public ConfigBuilder loadingScaleType(int loadingScaleType) {
+            this.loadingScaleType = loadingScaleType;
+            return this;
+        }
+
+        public ConfigBuilder loadingResId(int loadingResId) {
+            this.loadingResId = loadingResId;
+            return this;
+        }
+
+        public ConfigBuilder roundOverlayColor(int roundOverlayColor) {
+            this.roundOverlayColor = roundOverlayColor;
+            return this;
+        }
+
+        public ConfigBuilder borderWidth(int borderWidth) {
+            this.borderWidth = borderWidth;
+            return this;
+        }
+
+        public ConfigBuilder borderColor(int borderColor) {
+            this.borderColor = borderColor;
+            return this;
         }
 
         public ConfigBuilder ignoreCertificateVerify(boolean ignoreCertificateVerify) {
@@ -629,7 +744,7 @@ public class SingleConfig {
 
         /**
          * 圆角
-
+         *
          * @return
          */
         public ConfigBuilder asCircle() {
@@ -684,12 +799,6 @@ public class SingleConfig {
         public ConfigBuilder animate(int animationId) {
             this.animationType = AnimationMode.ANIMATIONID;
             this.animationId = animationId;
-            return this;
-        }
-
-        public ConfigBuilder animate(ViewAnimationFactory animator) {
-            this.animationType = AnimationMode.ANIMATOR;
-            this.animator = animator;
             return this;
         }
 

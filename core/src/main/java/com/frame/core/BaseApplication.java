@@ -33,7 +33,7 @@ public class BaseApplication extends Application {
     public static String deviceId;
     public static int status = -1;
     public static int MODEL;
-    public volatile static boolean DEBUG = true;       //控制开发和生产模式
+    public volatile static boolean DEBUG = false;       //控制开发和生产模式
     public static final int PRO = 0;    //生产
     public static final int DEV = 1;    //开发
 
