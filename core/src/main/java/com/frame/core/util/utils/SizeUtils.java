@@ -10,7 +10,15 @@ import android.view.ViewGroup;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/02
- *     desc  : utils about size
+ *     desc  : utils about size(尺寸工具)
+ *     menu
+ *          dp2px, px2dp     : dp 与 px 转换
+ *          sp2px, px2sp     : sp 与 px 转换
+ *          applyDimension   : 各种单位转换
+ *          forceGetViewSize : 在 onCreate 中获取视图的尺寸
+ *          measureView      : 测量视图尺寸
+ *          getMeasuredWidth : 获取测量视图宽度
+ *          getMeasuredHeight: 获取测量视图高度
  * </pre>
  */
 public final class SizeUtils {
@@ -108,12 +116,9 @@ public final class SizeUtils {
      * @param listener The get size listener.
      */
     public static void forceGetViewSize(final View view, final onGetSizeListener listener) {
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                if (listener != null) {
-                    listener.onGetSize(view);
-                }
+        view.post(() -> {
+            if (listener != null) {
+                listener.onGetSize(view);
             }
         });
     }

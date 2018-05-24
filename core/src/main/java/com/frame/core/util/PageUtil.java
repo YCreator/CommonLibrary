@@ -9,6 +9,7 @@ public class PageUtil {
     private int currentPage;
     private int pageSize;
     private int tempCurrentPage;
+    private boolean status = true;
 
     @Override
     public String toString() {
@@ -61,7 +62,8 @@ public class PageUtil {
      * 下一页
      */
     public void nextPage() {
-        currentPage ++;
+        currentPage++;
+        status = false;
     }
 
     /**
@@ -69,7 +71,8 @@ public class PageUtil {
      */
     public void nextPageBefore() {
         if (currentPage > 1) {
-            currentPage --;
+            currentPage--;
+            status = false;
         }
     }
 
@@ -78,13 +81,15 @@ public class PageUtil {
      */
     public void indexPage() {
         currentPage = 1;
+        status = false;
     }
 
     /**
      * 成功时记录当前页
-    */
+     */
     public void recordCurrentPage() {
         tempCurrentPage = currentPage;
+        status = true;
     }
 
     /**
@@ -92,5 +97,10 @@ public class PageUtil {
      */
     public void rollBackPage() {
         currentPage = tempCurrentPage;
+        status = true;
+    }
+
+    public boolean status() {
+        return status;
     }
 }

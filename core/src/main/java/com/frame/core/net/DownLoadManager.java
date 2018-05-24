@@ -67,7 +67,7 @@ public class DownLoadManager {
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(NetworkUtil.url)
+                .baseUrl("")
                 .build();
     }
 

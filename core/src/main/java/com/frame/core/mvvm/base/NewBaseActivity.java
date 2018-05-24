@@ -4,9 +4,11 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ViewGroup;
 
+import com.frame.core.autoscreen.ScreenAdapterTools;
+import com.frame.core.autoscreen.conversion.CustomConversion;
 import com.frame.core.rx.bus.Messenger;
-import com.frame.core.interf.IBaseActivity;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**
@@ -32,6 +34,10 @@ public abstract class NewBaseActivity<V extends ViewDataBinding, VM extends Base
 
         initViewObservable();
 
+        ScreenAdapterTools.getInstance().reset(this);//如果希望android7.0分屏也适配的话,加上这句
+
+        ScreenAdapterTools.getInstance().loadView((ViewGroup) getWindow().getDecorView(), new CustomConversion());
+
         viewModel.onCreate();
 
         viewModel.registerRxBus();
@@ -41,9 +47,14 @@ public abstract class NewBaseActivity<V extends ViewDataBinding, VM extends Base
     protected void onDestroy() {
         super.onDestroy();
         Messenger.getDefault().unregister(this);
-        viewModel.removeRxBus();
-        viewModel.onDestroy();
-        viewModel = null;
+        if (viewModel != null) {
+            viewModel.removeRxBus();
+            viewModel.onDestroy();
+            viewModel = null;
+        }
+        if (binding != null) {
+            binding.unbind();
+        }
     }
 
     /**
@@ -61,6 +72,7 @@ public abstract class NewBaseActivity<V extends ViewDataBinding, VM extends Base
             binding.setVariable(initVariableId(), viewModel);
         }
     }
+
 
     @Override
     public void initParam() {

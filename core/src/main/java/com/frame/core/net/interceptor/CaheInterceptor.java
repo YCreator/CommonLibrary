@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.frame.core.net.NetworkUtil;
+import com.frame.core.util.utils.NetworkUtils;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class CaheInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        if (NetworkUtil.isNetworkAvailable(context)) {
+        if (NetworkUtils.isNetworkAvailable()) {
             Response response = chain.proceed(request);
             // read from cache for 60 s
             int maxAge = 60;

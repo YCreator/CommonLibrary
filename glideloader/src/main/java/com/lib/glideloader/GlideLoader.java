@@ -78,7 +78,6 @@ public class GlideLoader implements ILoader {
         } else {
             builder.setDiskCache(new ExternalPreferredCacheDiskCacheFactory(context, Contants.DEFAULT_DISK_CACHE_DIR, cacheSizeInM * 1024 * 1024));
         }
-        builder.build(context);
         BigImageViewer.initialize(GlideBigLoader.with(context, ImageUtil.getClient(GlobalConfig.ignoreCertificateVerify)));
     }
 
@@ -287,17 +286,17 @@ public class GlideLoader implements ILoader {
 
     @Override
     public void trimMemory(int level) {
-        Glide.with(GlobalConfig.context).onTrimMemory(level);
+        Glide.get(GlobalConfig.context).onTrimMemory(level);
     }
 
     @Override
     public void onLowMemory() {
-        Glide.with(GlobalConfig.context).onLowMemory();
+        Glide.get(GlobalConfig.context).onLowMemory();
     }
 
     @Override
     public void clearAllMemoryCaches() {
-        Glide.with(GlobalConfig.context).onLowMemory();
+        Glide.get(GlobalConfig.context).onLowMemory();
     }
 
     @Override
@@ -421,51 +420,51 @@ public class GlideLoader implements ILoader {
     private void setShapeModeAndBlur(SingleConfig config, RequestOptions options) {
 
         if (config.isNeedBlur()) {
-            options.getTransformations().put(BlurTransformation.class, new BlurTransformation(config.getContext(), config.getBlurRadius()));
+            options.getTransformations().put(BlurTransformation.class, new BlurTransformation(config.getBlurRadius()));
         }
 
         if (config.isNeedBrightness()) {
-            options.getTransformations().put(BrightnessFilterTransformation.class, new BrightnessFilterTransformation(config.getContext(), config.getBrightnessLeve())); //亮度
+            options.getTransformations().put(BrightnessFilterTransformation.class, new BrightnessFilterTransformation(config.getBrightnessLeve())); //亮度
         }
 
         if (config.isNeedGrayscale()) {
-            options.getTransformations().put(GrayscaleTransformation.class, new GrayscaleTransformation(config.getContext())); //黑白效果
+            options.getTransformations().put(GrayscaleTransformation.class, new GrayscaleTransformation()); //黑白效果
         }
 
         if (config.isNeedFilteColor()) {
-            options.getTransformations().put(ColorFilterTransformation.class, new ColorFilterTransformation(config.getContext(), config.getFilteColor()));
+            options.getTransformations().put(ColorFilterTransformation.class, new ColorFilterTransformation(config.getFilteColor()));
         }
 
         if (config.isNeedSwirl()) {
-            options.getTransformations().put(SwirlFilterTransformation.class, new SwirlFilterTransformation(config.getContext(), 0.5f, 1.0f, new PointF(0.5f, 0.5f))); //漩涡
+            options.getTransformations().put(SwirlFilterTransformation.class, new SwirlFilterTransformation(0.5f, 1.0f, new PointF(0.5f, 0.5f))); //漩涡
         }
 
         if (config.isNeedToon()) {
-            options.getTransformations().put(ToonFilterTransformation.class, new ToonFilterTransformation(config.getContext())); //油画
+            options.getTransformations().put(ToonFilterTransformation.class, new ToonFilterTransformation()); //油画
         }
 
         if (config.isNeedSepia()) {
-            options.getTransformations().put(SepiaFilterTransformation.class, new SepiaFilterTransformation(config.getContext())); //墨画
+            options.getTransformations().put(SepiaFilterTransformation.class, new SepiaFilterTransformation()); //墨画
         }
 
         if (config.isNeedContrast()) {
-            options.getTransformations().put(ContrastFilterTransformation.class, new ContrastFilterTransformation(config.getContext(), config.getContrastLevel())); //锐化
+            options.getTransformations().put(ContrastFilterTransformation.class, new ContrastFilterTransformation(config.getContrastLevel())); //锐化
         }
 
         if (config.isNeedInvert()) {
-            options.getTransformations().put(InvertFilterTransformation.class, new InvertFilterTransformation(config.getContext())); //胶片
+            options.getTransformations().put(InvertFilterTransformation.class, new InvertFilterTransformation()); //胶片
         }
 
         if (config.isNeedPixelation()) {
-            options.getTransformations().put(PixelationFilterTransformation.class, new PixelationFilterTransformation(config.getContext(), config.getPixelationLevel())); //马赛克
+            options.getTransformations().put(PixelationFilterTransformation.class, new PixelationFilterTransformation(config.getPixelationLevel())); //马赛克
         }
 
         if (config.isNeedSketch()) {
-            options.getTransformations().put(SketchFilterTransformation.class, new SketchFilterTransformation(config.getContext())); //素描
+            options.getTransformations().put(SketchFilterTransformation.class, new SketchFilterTransformation()); //素描
         }
 
         if (config.isNeedVignette()) {
-            options.getTransformations().put(VignetteFilterTransformation.class, new VignetteFilterTransformation(config.getContext(), new PointF(0.5f, 0.5f),
+            options.getTransformations().put(VignetteFilterTransformation.class, new VignetteFilterTransformation(new PointF(0.5f, 0.5f),
                     new float[]{0.0f, 0.0f, 0.0f}, 0f, 0.75f)); //晕映
         }
 
@@ -474,14 +473,14 @@ public class GlideLoader implements ILoader {
 
                 break;
             case ShapeMode.RECT_ROUND:
-                options.getTransformations().put(RoundedCornersTransformation.class, new RoundedCornersTransformation(config.getContext(), config.getRectRoundRadius(), 0, RoundedCornersTransformation.CornerType.ALL));
+                options.getTransformations().put(RoundedCornersTransformation.class, new RoundedCornersTransformation(config.getRectRoundRadius(), 0, RoundedCornersTransformation.CornerType.ALL));
                 break;
             case ShapeMode.OVAL:
-                options.getTransformations().put(CropCircleTransformation.class, new CropCircleTransformation(config.getContext()));
+                options.getTransformations().put(CropCircleTransformation.class, new CropCircleTransformation());
                 break;
 
             case ShapeMode.SQUARE:
-                options.getTransformations().put(CropSquareTransformation.class, new CropSquareTransformation(config.getContext()));
+                options.getTransformations().put(CropSquareTransformation.class, new CropSquareTransformation());
                 break;
         }
     }

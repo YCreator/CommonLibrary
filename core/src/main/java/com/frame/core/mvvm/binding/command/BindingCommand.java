@@ -1,36 +1,32 @@
 package com.frame.core.mvvm.binding.command;
 
 
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-
 /**
  * ReplyCommand
  * 执行的命令回调, 用于ViewModel与xml之间的数据绑定
  */
 public class BindingCommand<T> {
-    private Action execute0;
-    private Consumer<T> execute1;
-    private Function<T, Boolean> canExecute0;
+    private BindingAction execute;
+    private BindingConsumer<T> consumer;
+    private BindingFunction<Boolean> canExecute0;
 
-    public BindingCommand(Action execute) {
-        this.execute0 = execute;
+    public BindingCommand(BindingAction execute) {
+        this.execute = execute;
     }
 
     /**
      * @param execute 带泛型参数的命令绑定
      */
-    public BindingCommand(Consumer<T> execute) {
-        this.execute1 = execute;
+    public BindingCommand(BindingConsumer<T> execute) {
+        this.consumer = execute;
     }
 
     /**
      * @param execute     触发命令
      * @param canExecute0 true则执行,反之不执行
      */
-    public BindingCommand(Action execute, Function<T, Boolean> canExecute0) {
-        this.execute0 = execute;
+    public BindingCommand(BindingAction execute, BindingFunction<Boolean> canExecute0) {
+        this.execute = execute;
         this.canExecute0 = canExecute0;
     }
 
@@ -38,21 +34,17 @@ public class BindingCommand<T> {
      * @param execute     带泛型参数触发命令
      * @param canExecute0 true则执行,反之不执行
      */
-    public BindingCommand(Consumer<T> execute, Function<T, Boolean> canExecute0) {
-        this.execute1 = execute;
+    public BindingCommand(BindingConsumer<T> execute, BindingFunction<Boolean> canExecute0) {
+        this.consumer = execute;
         this.canExecute0 = canExecute0;
     }
 
     /**
-     * 执行Action命令
+     * 执行BindingAction命令
      */
     public void execute() {
-        if (execute0 != null && canExecute0(null)) {
-            try {
-                execute0.run();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (execute != null && canExecute0()) {
+            execute.call();
         }
     }
 
@@ -62,12 +54,8 @@ public class BindingCommand<T> {
      * @param parameter 泛型参数
      */
     public void execute(T parameter) {
-        if (execute1 != null && canExecute0(parameter)) {
-            try {
-                execute1.accept(parameter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (consumer != null && canExecute0()) {
+            consumer.call(parameter);
         }
     }
 
@@ -76,16 +64,11 @@ public class BindingCommand<T> {
      *
      * @return true则执行, 反之不执行
      */
-    private boolean canExecute0(T parameter) {
+    private boolean canExecute0() {
         if (canExecute0 == null) {
             return true;
         }
-        try {
-            return canExecute0.apply(parameter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
+        return canExecute0.call();
     }
 
 

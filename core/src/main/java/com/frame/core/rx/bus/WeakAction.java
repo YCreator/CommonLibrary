@@ -1,50 +1,40 @@
 package com.frame.core.rx.bus;
 
-import java.lang.ref.WeakReference;
+import com.frame.core.mvvm.binding.command.BindingAction;
+import com.frame.core.mvvm.binding.command.BindingConsumer;
 
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
+import java.lang.ref.WeakReference;
 
 
 /**
  *
  */
 public class WeakAction<T> {
-    private Action action;
-    private Consumer<T> action1;
+    private BindingAction action;
+    private BindingConsumer<T> consumer;
     private boolean isLive;
     private Object target;
     private WeakReference reference;
 
-    public WeakAction(Object target, Action action) {
+    public WeakAction(Object target, BindingAction action) {
         reference = new WeakReference<>(target);
         this.action = action;
-
     }
 
-    public WeakAction(Object target, Consumer<T> action1) {
+    public WeakAction(Object target, BindingConsumer<T> consumer) {
         reference = new WeakReference<>(target);
-        this.action1 = action1;
+        this.consumer = consumer;
     }
 
     public void execute() {
         if (action != null && isLive()) {
-            try {
-                action.run();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            action.call();
         }
     }
 
     public void execute(T parameter) {
-        if (action1 != null
-                && isLive()) {
-            try {
-                action1.accept(parameter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (consumer != null && isLive()) {
+            consumer.call(parameter);
         }
     }
 
@@ -52,32 +42,22 @@ public class WeakAction<T> {
         reference.clear();
         reference = null;
         action = null;
-        action1 = null;
+        consumer = null;
     }
 
-    public Action getAction() {
+    public BindingAction getBindingAction() {
         return action;
     }
 
-    public Consumer getAction1() {
-        return action1;
+    public BindingConsumer getBindingConsumer() {
+        return consumer;
     }
 
     public boolean isLive() {
-        if (reference == null) {
-            return false;
-        }
-        if (reference.get() == null) {
-            return false;
-        }
-        return true;
+        return reference != null && reference.get() != null;
     }
 
-
     public Object getTarget() {
-        if (reference != null) {
-            return reference.get();
-        }
-        return null;
+        return reference != null ? reference.get() : null;
     }
 }

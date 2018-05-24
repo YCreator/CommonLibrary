@@ -15,7 +15,19 @@ import java.util.Set;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/02
- *     desc  : utils about shared preference
+ *     desc  : utils about shared preference(SP工具)
+ *     menu
+ *          getInstance        : 获取 SP 实例
+            Instance.put       : SP 中写入数据
+            Instance.getString : SP 中读取 String
+            Instance.getInt    : SP 中读取 int
+            Instance.getLong   : SP 中读取 long
+            Instance.getFloat  : SP 中读取 float
+            Instance.getBoolean: SP 中读取 boolean
+            Instance.getAll    : SP 中获取所有键值对
+            Instance.contains  : SP 中是否存在该 key
+            Instance.remove    : SP 中移除该 key
+            Instance.clear     : SP 中清除所有数据
  * </pre>
  */
 @SuppressLint("ApplySharedPref")

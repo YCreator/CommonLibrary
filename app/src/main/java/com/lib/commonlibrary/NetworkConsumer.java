@@ -1,8 +1,7 @@
 package com.lib.commonlibrary;
 
-import com.frame.core.BaseApplication;
-import com.frame.core.net.NetworkUtil;
 import com.frame.core.util.TLog;
+import com.frame.core.util.utils.NetworkUtils;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -25,7 +24,7 @@ public class NetworkConsumer implements Consumer<Disposable> {
 
     @Override
     public void accept(Disposable disposable) throws Exception {
-        if (NetworkUtil.isNetworkAvailable(BaseApplication.get_context())) {
+        if (NetworkUtils.isNetworkAvailable()) {
             if (display != null) {
                 display.normalNetwork();
             }

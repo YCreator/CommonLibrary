@@ -15,7 +15,12 @@ import java.util.List;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/11
- *     desc  : utils about sdcard
+ *     desc  : utils about sdcard(SD卡工具)
+ *     menu
+ *          isSDCardEnableByEnvironment: 根据 Environment 判断 SD 卡是否可用
+            getSDCardPathByEnvironment : 根据 Environment 获取 SD 卡路径
+            isSDCardEnable             : 判断 SD 卡是否可用
+            getSDCardPaths             : 获取 SD 卡路径
  * </pre>
  */
 public final class SDCardUtils {

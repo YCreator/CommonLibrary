@@ -27,8 +27,70 @@ import java.util.Set;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2017/12/29
- *     desc  : utils about permission
+ *     desc  : utils about permission(权限工具)
+ *     menu
+ *          getPermissions          : 获取应用权限
+            isGranted               : 判断权限是否被授予
+            launchAppDetailsSettings: 打开应用具体设置
+            permission              : 设置请求权限
+            rationale               : 设置拒绝权限后再次请求的回调接口
+            callback                : 设置回调
+            theme                   : 设置主题
+            request                 : 开始请求
  * </pre>
+ * * 用于兼容6.0权限管理
+ * 此处权限为高危权限，需要通知用户授权
+ *
+ * CALENDAR
+ ----------------------
+ READ_CALENDAR
+ WRITE_CALENDAR
+
+ CAMERA
+ ----------------------
+ CAMERA
+
+ CONTACTS
+ ----------------------
+ READ_CONTACTS
+ WRITE_CONTACTS
+ GET_ACCOUNTS
+
+ LOCATION
+ ----------------------
+ ACCESS_FINE_LOCATION
+ ACCESS_COARSE_LOCATION
+
+ MICROPHONE
+ ----------------------
+ RECORD_AUDIO
+
+ PHONE
+ ----------------------
+ READ_PHONE_STATE
+ CALL_PHONE
+ READ_CALL_LOG
+ WRITE_CALL_LOG
+ ADD_VOICEMAIL
+ USE_SIP
+ PROCESS_OUTGOING_CALLS
+
+ SENSORS
+ ----------------------
+ BODY_SENSORS
+
+ SMS
+ ----------------------
+ SEND_SMS
+ RECEIVE_SMS
+ READ_SMS
+ RECEIVE_WAP_PUSH
+ RECEIVE_MMS
+
+ STORAGE
+ ----------------------
+ READ_EXTERNAL_STORAGE
+ WRITE_EXTERNAL_STORAGE
  */
 public final class PermissionUtils {
 

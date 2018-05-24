@@ -10,7 +10,9 @@ import java.util.List;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/07
- *     desc  : utils about shell
+ *     desc  : utils about shell(Shell工具)
+ *     menu
+ *          execCmd: 是否是在 root 下执行命令
  * </pre>
  */
 public final class ShellUtils {

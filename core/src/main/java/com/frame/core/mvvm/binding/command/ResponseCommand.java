@@ -11,46 +11,55 @@ import io.reactivex.functions.Function;
 
 public class ResponseCommand<T, R> {
 
-    private Function<T, R> execute1;
-
-    private Function<T, Boolean> canExecute0;
+    private BindingFunction<R> execute;
+    private Function<T, R> function;
+    private BindingFunction<Boolean> canExecute;
 
     /**
      * like {@link BindingCommand},but ResponseCommand can return result when command has executed!
      *
      * @param execute function to execute when event occur.
-     *
      */
+    public ResponseCommand(BindingFunction<R> execute) {
+        this.execute = execute;
+    }
+
 
     public ResponseCommand(Function<T, R> execute) {
-        this.execute1 = execute;
+        this.function = execute;
     }
 
-    public ResponseCommand(Function<T, R> execute, Function<T, Boolean> canExecute0) {
-        this.execute1 = execute;
-        this.canExecute0 = canExecute0;
+
+    public ResponseCommand(BindingFunction<R> execute, BindingFunction<Boolean> canExecute) {
+        this.execute = execute;
+        this.canExecute = canExecute;
     }
 
-    private boolean canExecute0(T parameter) {
-        if (canExecute0 == null) {
+
+    public ResponseCommand(Function<T, R> execute, BindingFunction<Boolean> canExecute) {
+        this.function = execute;
+        this.canExecute = canExecute;
+    }
+
+
+    public R execute() {
+        if (execute != null && canExecute()) {
+            return execute.call();
+        }
+        return null;
+    }
+
+    private boolean canExecute() {
+        if (canExecute == null) {
             return true;
         }
-        try {
-            return canExecute0.apply(parameter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
+        return canExecute.call();
     }
 
 
-    public R execute(T parameter) {
-        if (execute1 != null && canExecute0(parameter)) {
-            try {
-                return execute1.apply(parameter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public R execute(T parameter) throws Exception {
+        if (function != null && canExecute()) {
+            return function.apply(parameter);
         }
         return null;
     }

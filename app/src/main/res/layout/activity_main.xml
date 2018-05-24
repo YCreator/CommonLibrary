@@ -5,10 +5,14 @@
     <data>
 
         <variable
-            name="user"
+            name="viewModel"
             type="com.lib.commonlibrary.MainViewModel" />
 
         <import type="com.jcx.hnn.R" />
+
+        <import type="com.frame.core.mvvm.adapter.LayoutManagers" />
+
+        <import type="com.frame.core.mvvm.binding.viewadapter.recyclerview.LineManagers" />
     </data>
 
     <LinearLayout
@@ -16,28 +20,45 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/blue_color"
+            bind:navigationIcon="@drawable/ic_arrow_back_white_18dp"
+            bind:title="@string/app_name"
+            bind:titleTextColor="@color/white" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SINA分享"
             bind:isThrottleFirst="true"
-            bind:onClickCommand="@{user.shareClick}" />
+            bind:onClickCommand="@{viewModel.shareClick}" />
 
-        <!--<ImageView
+        <ImageView
             android:id="@+id/iv"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            bind:placeholderRes="@{R.mipmap.ic_launcher}" />-->
+            bind:placeholderRes="@{R.mipmap.ic_launcher}"
+            bind:url="@{viewModel.imgUrl}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{user.userModel.username}" />
+            android:text="@{viewModel.userModel.username}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{user.userModel.password}" />
+            android:text="@{viewModel.userModel.password}" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            bind:itemBinding="@{viewModel.itemBinding}"
+            bind:items="@{viewModel.observableList}"
+            bind:layoutManager="@{LayoutManagers.linear()}"
+            bind:lineManager="@{LineManagers.vertical()}" />
 
     </LinearLayout>
 </layout>

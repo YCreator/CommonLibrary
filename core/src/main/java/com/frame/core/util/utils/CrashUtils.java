@@ -31,7 +31,9 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/09/27
- *     desc  : utils about crash
+ *     desc  : utils about crash(崩溃工具)
+ *     menu
+ *          init: 初始化
  * </pre>
  */
 public final class CrashUtils {

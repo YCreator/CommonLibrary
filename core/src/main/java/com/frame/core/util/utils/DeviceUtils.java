@@ -28,7 +28,20 @@ import static android.Manifest.permission.INTERNET;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/8/1
- *     desc  : utils about device
+ *     desc  : utils about device(设备工具)
+ *     menu
+ *          isDeviceRooted   : 判断设备是否 rooted
+            getSDKVersionName: 获取设备系统版本号
+            getSDKVersionCode: 获取设备系统版本码
+            getAndroidID     : 获取设备 AndroidID
+            getMacAddress    : 获取设备 MAC 地址
+            getManufacturer  : 获取设备厂商
+            getModel         : 获取设备型号
+            getABIs          : 获取设备 ABIs
+            shutdown         : 关机
+            reboot           : 重启
+            reboot2Recovery  : 重启到 recovery
+            reboot2Bootloader: 重启到 bootloader
  * </pre>
  */
 public final class DeviceUtils {

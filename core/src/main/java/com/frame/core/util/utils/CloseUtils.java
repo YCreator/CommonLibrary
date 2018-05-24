@@ -8,7 +8,10 @@ import java.io.IOException;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/10/09
- *     desc  : utils about close
+ *     desc  : utils about close(关闭工具)
+ *     menu
+ *          closeIO       : 关闭 IO
+            closeIOQuietly: 安静关闭 IO
  * </pre>
  */
 public final class CloseUtils {

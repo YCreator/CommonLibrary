@@ -13,7 +13,15 @@ import java.net.URLEncoder;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/07
- *     desc  : utils about encode
+ *     desc  : utils about encode(编码解码工具)
+ *     menu
+ *          urlEncode          : URL 编码
+            urlDecode          : URL 解码
+            base64Encode       : Base64 编码
+            base64Encode2String: Base64 编码
+            base64Decode       : Base64 解码
+            htmlEncode         : Html 编码
+            htmlDecode         : Html 解码
  * </pre>
  */
 public final class EncodeUtils {

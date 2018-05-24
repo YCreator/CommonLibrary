@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.frame.core.util.TLog;
 import com.frame.core.util.utils.ShellUtils.CommandResult;
 
 import java.lang.reflect.Method;
@@ -29,7 +31,23 @@ import static android.Manifest.permission.MODIFY_PHONE_STATE;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/02
- *     desc  : utils about network
+ *     desc  : utils about network(网络工具)
+ *     menu
+ *          openWirelessSettings  : 打开网络设置界面
+            isConnected           : 判断网络是否连接
+            isAvailableByPing     : 判断网络是否可用
+            getMobileDataEnabled  : 判断移动数据是否打开
+            setMobileDataEnabled  : 打开或关闭移动数据
+            isMobileData          : 判断网络是否是移动数据
+            is4G                  : 判断网络是否是 4G
+            getWifiEnabled        : 判断 wifi 是否打开
+            setWifiEnabled        : 打开或关闭 wifi
+            isWifiConnected       : 判断 wifi 是否连接状态
+            isWifiAvailable       : 判断 wifi 数据是否可用
+            getNetworkOperatorName: 获取移动网络运营商名称
+            getNetworkType        : 获取当前网络类型
+            getIPAddress          : 获取 IP 地址
+            getDomainAddress      : 获取域名 ip 地址
  * </pre>
  */
 public final class NetworkUtils {
@@ -256,9 +274,9 @@ public final class NetworkUtils {
         return tm != null ? tm.getNetworkOperatorName() : null;
     }
 
-    private static final int NETWORK_TYPE_GSM      = 16;
+    private static final int NETWORK_TYPE_GSM = 16;
     private static final int NETWORK_TYPE_TD_SCDMA = 17;
-    private static final int NETWORK_TYPE_IWLAN    = 18;
+    private static final int NETWORK_TYPE_IWLAN = 18;
 
     /**
      * Return type of network.
@@ -396,5 +414,79 @@ public final class NetworkUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 获取wifiIP
+     *
+     * @return
+     */
+    public static String getWifiIp() {
+        //获取wifi服务
+        WifiManager wifiManager = (WifiManager) Utils.getApp().getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager == null) return "";
+        //判断wifi是否开启
+        if (!wifiManager.isWifiEnabled()) {
+            wifiManager.setWifiEnabled(true);
+        }
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        int ipAddress = wifiInfo.getIpAddress();
+        return intToIp(ipAddress);
+    }
+
+    /**
+     * 获取本地ip
+     *
+     * @return
+     */
+    public static String getLocalIp() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return inetAddress.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            TLog.i(ex.toString());
+        }
+        return "";
+    }
+
+    private static String intToIp(int i) {
+        return (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + ((i >> 16) & 0xFF) + "." + (i >> 24 & 0xFF);
+    }
+
+    /**
+     * 获取ip地址
+     *
+     * @return
+     */
+    public static String getIpAddress() {
+        if (getNetworkType() == NetworkType.NETWORK_WIFI) {
+            return getWifiIp();
+        } else {
+            return getLocalIp();
+        }
+    }
+
+    /**
+     * check NetworkAvailable
+     *
+     * @return
+     */
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager) Utils.getApp().getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        if (null == manager)
+            return false;
+        NetworkInfo info = manager.getActiveNetworkInfo();
+        if (null == info || !info.isAvailable())
+            return false;
+        return true;
     }
 }

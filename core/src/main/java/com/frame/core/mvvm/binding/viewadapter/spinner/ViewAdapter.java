@@ -54,7 +54,7 @@ public class ViewAdapter {
         if (!TextUtils.isEmpty(valueReply)) {
             for (int i = 0; i < itemDatas.size(); i++) {
                 IKeyAndValue iKeyAndValue = itemDatas.get(i);
-                if (iKeyAndValue.getValue().equals(valueReply)) {
+                if (valueReply.equals(iKeyAndValue.getValue())) {
                     spinner.setSelection(i);
                     break;
                 }

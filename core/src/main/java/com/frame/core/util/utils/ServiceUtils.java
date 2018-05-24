@@ -16,7 +16,14 @@ import java.util.Set;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/02
- *     desc  : utils about service
+ *     desc  : utils about service(服务工具)
+ *     menu
+ *          getAllRunningServices: 获取所有运行的服务
+            startService         : 启动服务
+            stopService          : 停止服务
+            bindService          : 绑定服务
+            unbindService        : 解绑服务
+            isServiceRunning     : 判断服务是否运行
  * </pre>
  */
 public final class ServiceUtils {

@@ -15,7 +15,16 @@ import java.lang.reflect.Field;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/02
- *     desc  : utils about keyboard
+ *     desc  : utils about keyboard(键盘工具)
+ *     menu
+ *          showSoftInput                     : 动态显示软键盘
+            hideSoftInput                     : 动态隐藏软键盘
+            toggleSoftInput                   : 切换键盘显示与否状态
+            isSoftInputVisible                : 判断软键盘是否可见
+            registerSoftInputChangedListener  : 注册软键盘改变监听器
+            unregisterSoftInputChangedListener: 注销软键盘改变监听器
+            fixSoftInputLeaks                 : 修复软键盘内存泄漏
+            clickBlankArea2HideSoftInput      : 点击屏幕空白区域隐藏软键盘
  * </pre>
  */
 public final class KeyboardUtils {

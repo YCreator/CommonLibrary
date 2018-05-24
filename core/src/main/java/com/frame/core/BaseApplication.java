@@ -1,15 +1,12 @@
 package com.frame.core;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
 
-import com.frame.core.base.AppManager;
 import com.frame.core.db.DatabaseManager;
 import com.frame.core.net.okhttp.CookiesManager;
 import com.frame.core.util.utils.DeviceUtils;
@@ -45,8 +42,6 @@ public class BaseApplication extends Application {
         DEBUG = Utils.isDebug();
         _resource = _context.getResources();
         _asset = _context.getAssets();
-        //注册监听每个activity的生命周期,便于堆栈式管理
-        registerActivityLifecycleCallbacks(mCallbacks);
     }
 
     @Override
@@ -124,45 +119,7 @@ public class BaseApplication extends Application {
     }
 
     public static boolean isDebug() {
-        //return BuildConfig.DEBUG;
         return DEBUG;
     }
-
-    private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {
-        @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            AppManager.getAppManager().addActivity(activity);
-        }
-
-        @Override
-        public void onActivityStarted(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityPaused(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            AppManager.getAppManager().removeActivity(activity);
-        }
-    };
 
 }

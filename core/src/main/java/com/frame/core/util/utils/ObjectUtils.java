@@ -17,7 +17,14 @@ import java.util.Map;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2017/12/24
- *     desc  : utils about object
+ *     desc  : utils about object(对象工具)
+ *     menu
+ *          isEmpty       : 判断对象是否为空
+            isNotEmpty    : 判断对象是否非空
+            equals        : 判断对象是否相等
+            requireNonNull: 检查对象非空
+            getOrDefault  : 获取非空或默认对象
+            hashCode      : 获取对象哈希值
  * </pre>
  */
 public final class ObjectUtils {

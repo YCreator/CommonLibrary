@@ -17,13 +17,29 @@ import android.support.v4.util.Pair;
 import android.view.View;
 
 import java.util.List;
+import java.util.Stack;
 
 /**
  * <pre>
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/09/23
- *     desc  : utils about activity
+ *     desc  : utils about activity(Activity工具)
+ *     menu
+ *          isActivityExists               : 判断 Activity 是否存在
+            startActivity                  : 启动 Activity
+            startActivityForResult         : 启动 Activity 为返回结果
+            startActivities                : 启动多个 Activity
+            startHomeActivity              : 回到桌面
+            getActivityList                : 获取 Activity 栈链表
+            getLauncherActivity            : 获取启动项 Activity
+            getTopActivity                 : 获取栈顶 Activity
+            isActivityExistsInStack        : 判断 Activity 是否存在栈中
+            finishActivity                 : 结束 Activity
+            finishToActivity               : 结束到指定 Activity
+            finishOtherActivities          : 结束所有其他类型的 Activity
+            finishAllActivities            : 结束所有 Activity
+            finishAllActivitiesExceptNewest: 结束除最新之外的所有 Activity
  * </pre>
  */
 public final class ActivityUtils {
@@ -89,7 +105,7 @@ public final class ActivityUtils {
         Context context = Utils.getTopActivityOrApp();
         startActivity(context, null, context.getPackageName(), clz.getName(),
                 getOptionsBundle(context, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && context instanceof Activity) {
+        if (context instanceof Activity) {
             ((Activity) context).overridePendingTransition(enterAnim, exitAnim);
         }
     }
@@ -153,9 +169,7 @@ public final class ActivityUtils {
                                      @AnimRes final int exitAnim) {
         startActivity(activity, null, activity.getPackageName(), clz.getName(),
                 getOptionsBundle(activity, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            activity.overridePendingTransition(enterAnim, exitAnim);
-        }
+        activity.overridePendingTransition(enterAnim, exitAnim);
     }
 
     /**
@@ -204,7 +218,7 @@ public final class ActivityUtils {
         Context context = Utils.getTopActivityOrApp();
         startActivity(context, extras, context.getPackageName(), clz.getName(),
                 getOptionsBundle(context, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && context instanceof Activity) {
+        if (context instanceof Activity) {
             ((Activity) context).overridePendingTransition(enterAnim, exitAnim);
         }
     }
@@ -276,9 +290,7 @@ public final class ActivityUtils {
                                      @AnimRes final int exitAnim) {
         startActivity(activity, extras, activity.getPackageName(), clz.getName(),
                 getOptionsBundle(activity, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            activity.overridePendingTransition(enterAnim, exitAnim);
-        }
+        activity.overridePendingTransition(enterAnim, exitAnim);
     }
 
     /**
@@ -324,7 +336,7 @@ public final class ActivityUtils {
                                      @AnimRes final int exitAnim) {
         Context context = Utils.getTopActivityOrApp();
         startActivity(context, null, pkg, cls, getOptionsBundle(context, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && context instanceof Activity) {
+        if (context instanceof Activity) {
             ((Activity) context).overridePendingTransition(enterAnim, exitAnim);
         }
     }
@@ -394,9 +406,7 @@ public final class ActivityUtils {
                                      @AnimRes final int enterAnim,
                                      @AnimRes final int exitAnim) {
         startActivity(activity, null, pkg, cls, getOptionsBundle(activity, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            activity.overridePendingTransition(enterAnim, exitAnim);
-        }
+        activity.overridePendingTransition(enterAnim, exitAnim);
     }
 
     /**
@@ -448,7 +458,7 @@ public final class ActivityUtils {
                                      @AnimRes final int exitAnim) {
         Context context = Utils.getTopActivityOrApp();
         startActivity(context, extras, pkg, cls, getOptionsBundle(context, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && context instanceof Activity) {
+        if (context instanceof Activity) {
             ((Activity) context).overridePendingTransition(enterAnim, exitAnim);
         }
     }
@@ -525,9 +535,7 @@ public final class ActivityUtils {
                                      @AnimRes final int enterAnim,
                                      @AnimRes final int exitAnim) {
         startActivity(activity, extras, pkg, cls, getOptionsBundle(activity, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            activity.overridePendingTransition(enterAnim, exitAnim);
-        }
+        activity.overridePendingTransition(enterAnim, exitAnim);
     }
 
     /**
@@ -566,7 +574,7 @@ public final class ActivityUtils {
                                      @AnimRes final int exitAnim) {
         Context context = Utils.getTopActivityOrApp();
         startActivity(intent, context, getOptionsBundle(context, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && context instanceof Activity) {
+        if (context instanceof Activity) {
             ((Activity) context).overridePendingTransition(enterAnim, exitAnim);
         }
     }
@@ -628,9 +636,7 @@ public final class ActivityUtils {
                                      @AnimRes final int enterAnim,
                                      @AnimRes final int exitAnim) {
         startActivity(intent, activity, getOptionsBundle(activity, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            activity.overridePendingTransition(enterAnim, exitAnim);
-        }
+        activity.overridePendingTransition(enterAnim, exitAnim);
     }
 
     /**
@@ -670,7 +676,7 @@ public final class ActivityUtils {
                                        @AnimRes final int exitAnim) {
         Context context = Utils.getTopActivityOrApp();
         startActivities(intents, context, getOptionsBundle(context, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && context instanceof Activity) {
+        if (context instanceof Activity) {
             ((Activity) context).overridePendingTransition(enterAnim, exitAnim);
         }
     }
@@ -717,9 +723,7 @@ public final class ActivityUtils {
                                        @AnimRes final int enterAnim,
                                        @AnimRes final int exitAnim) {
         startActivities(intents, activity, getOptionsBundle(activity, enterAnim, exitAnim));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            activity.overridePendingTransition(enterAnim, exitAnim);
-        }
+        activity.overridePendingTransition(enterAnim, exitAnim);
     }
 
     /**
@@ -738,7 +742,7 @@ public final class ActivityUtils {
      *
      * @return the list of activity
      */
-    public static List<Activity> getActivityList() {
+    public static Stack<Activity> getActivityList() {
         return Utils.getActivityList();
     }
 
@@ -791,7 +795,7 @@ public final class ActivityUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isActivityExistsInStack(@NonNull final Activity activity) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (Activity aActivity : activities) {
             if (aActivity.equals(activity)) {
                 return true;
@@ -808,7 +812,7 @@ public final class ActivityUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isActivityExistsInStack(@NonNull final Class<?> clz) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (Activity aActivity : activities) {
             if (aActivity.getClass().equals(clz)) {
                 return true;
@@ -876,7 +880,7 @@ public final class ActivityUtils {
      * @param isLoadAnim True to use animation for the outgoing activity, false otherwise.
      */
     public static void finishActivity(@NonNull final Class<?> clz, final boolean isLoadAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (Activity activity : activities) {
             if (activity.getClass().equals(clz)) {
                 activity.finish();
@@ -900,7 +904,7 @@ public final class ActivityUtils {
     public static void finishActivity(@NonNull final Class<?> clz,
                                       @AnimRes final int enterAnim,
                                       @AnimRes final int exitAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (Activity activity : activities) {
             if (activity.getClass().equals(clz)) {
                 activity.finish();
@@ -932,7 +936,7 @@ public final class ActivityUtils {
     public static boolean finishToActivity(@NonNull final Activity activity,
                                            final boolean isIncludeSelf,
                                            final boolean isLoadAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (int i = activities.size() - 1; i >= 0; --i) {
             Activity aActivity = activities.get(i);
             if (aActivity.equals(activity)) {
@@ -961,7 +965,7 @@ public final class ActivityUtils {
                                            final boolean isIncludeSelf,
                                            @AnimRes final int enterAnim,
                                            @AnimRes final int exitAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (int i = activities.size() - 1; i >= 0; --i) {
             Activity aActivity = activities.get(i);
             if (aActivity.equals(activity)) {
@@ -998,7 +1002,7 @@ public final class ActivityUtils {
     public static boolean finishToActivity(@NonNull final Class<?> clz,
                                            final boolean isIncludeSelf,
                                            final boolean isLoadAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (int i = activities.size() - 1; i >= 0; --i) {
             Activity aActivity = activities.get(i);
             if (aActivity.getClass().equals(clz)) {
@@ -1027,7 +1031,7 @@ public final class ActivityUtils {
                                            final boolean isIncludeSelf,
                                            @AnimRes final int enterAnim,
                                            @AnimRes final int exitAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (int i = activities.size() - 1; i >= 0; --i) {
             Activity aActivity = activities.get(i);
             if (aActivity.getClass().equals(clz)) {
@@ -1061,7 +1065,7 @@ public final class ActivityUtils {
      */
     public static void finishOtherActivities(@NonNull final Class<?> clz,
                                              final boolean isLoadAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (int i = activities.size() - 1; i >= 0; i--) {
             Activity activity = activities.get(i);
             if (!activity.getClass().equals(clz)) {
@@ -1083,7 +1087,7 @@ public final class ActivityUtils {
     public static void finishOtherActivities(@NonNull final Class<?> clz,
                                              @AnimRes final int enterAnim,
                                              @AnimRes final int exitAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (int i = activities.size() - 1; i >= 0; i--) {
             Activity activity = activities.get(i);
             if (!activity.getClass().equals(clz)) {
@@ -1107,7 +1111,7 @@ public final class ActivityUtils {
      * @param isLoadAnim True to use animation for the outgoing activity, false otherwise.
      */
     public static void finishAllActivities(final boolean isLoadAnim) {
-        List<Activity> activityList = Utils.getActivityList();
+        Stack<Activity> activityList = Utils.getActivityList();
         for (int i = activityList.size() - 1; i >= 0; --i) {// remove from top
             Activity activity = activityList.get(i);
             // sActivityList remove the index activity at onActivityDestroyed
@@ -1129,7 +1133,7 @@ public final class ActivityUtils {
      */
     public static void finishAllActivities(@AnimRes final int enterAnim,
                                            @AnimRes final int exitAnim) {
-        List<Activity> activityList = Utils.getActivityList();
+        Stack<Activity> activityList = Utils.getActivityList();
         for (int i = activityList.size() - 1; i >= 0; --i) {// remove from top
             Activity activity = activityList.get(i);
             // sActivityList remove the index activity at onActivityDestroyed
@@ -1153,7 +1157,7 @@ public final class ActivityUtils {
      * @param isLoadAnim True to use animation for the outgoing activity, false otherwise.
      */
     public static void finishAllActivitiesExceptNewest(final boolean isLoadAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (int i = activities.size() - 2; i >= 0; i--) {
             finishActivity(activities.get(i), isLoadAnim);
         }
@@ -1170,7 +1174,7 @@ public final class ActivityUtils {
      */
     public static void finishAllActivitiesExceptNewest(@AnimRes final int enterAnim,
                                                        @AnimRes final int exitAnim) {
-        List<Activity> activities = Utils.getActivityList();
+        Stack<Activity> activities = Utils.getActivityList();
         for (int i = activities.size() - 2; i >= 0; i--) {
             finishActivity(activities.get(i), enterAnim, exitAnim);
         }
@@ -1272,7 +1276,7 @@ public final class ActivityUtils {
         if (!(context instanceof Activity)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        if (options != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (options != null) {
             context.startActivity(intent, options);
         } else {
             context.startActivity(intent);
@@ -1287,7 +1291,7 @@ public final class ActivityUtils {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
         }
-        if (options != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (options != null) {
             context.startActivities(intents, options);
         } else {
             context.startActivities(intents);

@@ -71,7 +71,7 @@ public class RvDataManager<T> {
                     case RecyclerView.SCROLL_STATE_IDLE:
                         if (notifyDataStatus != null) {
                             int lastPosition = manager.findLastCompletelyVisibleItemPosition();
-                            if (!loadMoreItem.isLoading() && loadMoreItem.isCanLoading() && adapter != null && lastPosition == adapter.getData().size()) {
+                            if (!loadMoreItem.isLoading() && loadMoreItem.isCanLoading() && adapter != null && lastPosition == adapter.getData().size() && page.status()) {
                                 loadMoreItem.loadingMore();
                                 notifyDataStatus.requestNextPageData();
                             }

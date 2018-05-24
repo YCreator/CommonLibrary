@@ -32,4 +32,17 @@
     <!-- 黑色半透明30%-->
     <color name="alpha_black">#20000000</color>
 
+
+    <!--            -->
+    <color name="md_btn_selected">#33969696</color>
+    <color name="md_btn_selected_dark">#40CBCBCB</color>
+
+    <color name="md_divider_black">#10000000</color>
+    <color name="md_divider_white">#10FFFFFF</color>
+
+    <color name="md_material_blue_600">#2196F3</color>
+    <color name="md_material_blue_800">#1565C0</color>
+
+    <color name="md_edittext_error">#DD2C00</color>
+
 </resources>

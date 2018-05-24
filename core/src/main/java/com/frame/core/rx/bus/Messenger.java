@@ -1,15 +1,15 @@
 package com.frame.core.rx.bus;
 
 
+import com.frame.core.mvvm.binding.command.BindingAction;
+import com.frame.core.mvvm.binding.command.BindingConsumer;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 
 /**
  *
@@ -44,7 +44,7 @@ public class Messenger {
      *                  you can also register with Activity context and also in onDestroy to unregister.
      * @param action    do something on message received
      */
-    public void register(Object recipient, Action action) {
+    public void register(Object recipient, BindingAction action) {
         register(recipient, null, false, action);
     }
 
@@ -55,7 +55,7 @@ public class Messenger {
      * @param receiveDerivedMessagesToo whether Derived class of recipient can receive the message
      * @param action                    do something on message received
      */
-    public void register(Object recipient, boolean receiveDerivedMessagesToo, Action action) {
+    public void register(Object recipient, boolean receiveDerivedMessagesToo, BindingAction action) {
         register(recipient, null, receiveDerivedMessagesToo, action);
     }
 
@@ -68,7 +68,7 @@ public class Messenger {
      *                  receive this msg
      * @param action    do something on message received
      */
-    public void register(Object recipient, Object token, Action action) {
+    public void register(Object recipient, Object token, BindingAction action) {
         register(recipient, token, false, action);
     }
 
@@ -82,7 +82,7 @@ public class Messenger {
      * @param receiveDerivedMessagesToo whether Derived class of recipient can receive the message
      * @param action                    do something on message received
      */
-    public void register(Object recipient, Object token, boolean receiveDerivedMessagesToo, Action action) {
+    public void register(Object recipient, Object token, boolean receiveDerivedMessagesToo, BindingAction action) {
 
         Type messageType = NotMsgType.class;
 
@@ -124,7 +124,7 @@ public class Messenger {
      * @param action    this action has one params that type of tClass
      * @param <T>       message data type
      */
-    public <T> void register(Object recipient, Class<T> tClass, Consumer<T> action) {
+    public <T> void register(Object recipient, Class<T> tClass, BindingConsumer<T> action) {
         register(recipient, null, false, action, tClass);
     }
 
@@ -137,7 +137,7 @@ public class Messenger {
      * @param action                    this action has one params that type of tClass
      * @param <T>                       message data type
      */
-    public <T> void register(Object recipient, boolean receiveDerivedMessagesToo, Class<T> tClass, Consumer<T> action) {
+    public <T> void register(Object recipient, boolean receiveDerivedMessagesToo, Class<T> tClass, BindingConsumer<T> action) {
         register(recipient, null, receiveDerivedMessagesToo, action, tClass);
     }
 
@@ -152,7 +152,7 @@ public class Messenger {
      * @param action    this action has one params that type of tClass
      * @param <T>       message data type
      */
-    public <T> void register(Object recipient, Object token, Class<T> tClass, Consumer<T> action) {
+    public <T> void register(Object recipient, Object token, Class<T> tClass, BindingConsumer<T> action) {
         register(recipient, token, false, action, tClass);
     }
 
@@ -168,7 +168,7 @@ public class Messenger {
      * @param tClass                    class of T for Action1
      * @param <T>                       message data type
      */
-    public <T> void register(Object recipient, Object token, boolean receiveDerivedMessagesToo, Consumer<T> action, Class<T> tClass) {
+    public <T> void register(Object recipient, Object token, boolean receiveDerivedMessagesToo, BindingConsumer<T> action, Class<T> tClass) {
 
         HashMap<Type, List<WeakActionAndToken>> recipients;
 
@@ -349,7 +349,7 @@ public class Messenger {
 
     private static <T> void unregisterFromLists(
             Object recipient,
-            Consumer<T> action,
+            BindingConsumer<T> action,
             HashMap<Type, List<WeakActionAndToken>> lists,
             Class<T> tClass) {
         Type messageType = tClass;
@@ -368,7 +368,7 @@ public class Messenger {
                 if (weakActionCasted != null
                         && recipient == weakActionCasted.getTarget()
                         && (action == null
-                        || action == weakActionCasted.getAction1())) {
+                        || action == weakActionCasted.getBindingConsumer())) {
                     item.getAction().markForDeletion();
                 }
             }
@@ -377,7 +377,7 @@ public class Messenger {
 
     private static void unregisterFromLists(
             Object recipient,
-            Action action,
+            BindingAction action,
             HashMap<Type, List<WeakActionAndToken>> lists
     ) {
         Type messageType = NotMsgType.class;
@@ -396,7 +396,7 @@ public class Messenger {
                 if (weakActionCasted != null
                         && recipient == weakActionCasted.getTarget()
                         && (action == null
-                        || action == weakActionCasted.getAction())) {
+                        || action == weakActionCasted.getBindingAction())) {
                     item.getAction().markForDeletion();
                 }
             }
@@ -407,7 +407,7 @@ public class Messenger {
     private static <T> void unregisterFromLists(
             Object recipient,
             Object token,
-            Consumer<T> action,
+            BindingConsumer<T> action,
             HashMap<Type, List<WeakActionAndToken>> lists, Class<T> tClass) {
         Type messageType = tClass;
 
@@ -425,7 +425,7 @@ public class Messenger {
                 if (weakActionCasted != null
                         && recipient == weakActionCasted.getTarget()
                         && (action == null
-                        || action == weakActionCasted.getAction1())
+                        || action == weakActionCasted.getBindingConsumer())
                         && (token == null
                         || token.equals(item.getToken()))) {
                     item.getAction().markForDeletion();
@@ -437,7 +437,7 @@ public class Messenger {
     private static void unregisterFromLists(
             Object recipient,
             Object token,
-            Action action,
+            BindingAction action,
             HashMap<Type, List<WeakActionAndToken>> lists) {
         Type messageType = NotMsgType.class;
 
@@ -455,7 +455,7 @@ public class Messenger {
                 if (weakActionCasted != null
                         && recipient == weakActionCasted.getTarget()
                         && (action == null
-                        || action == weakActionCasted.getAction())
+                        || action == weakActionCasted.getBindingAction())
                         && (token == null
                         || token.equals(item.getToken()))) {
                     item.getAction().markForDeletion();

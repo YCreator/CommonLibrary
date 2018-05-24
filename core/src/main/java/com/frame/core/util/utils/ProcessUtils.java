@@ -27,7 +27,13 @@ import static android.Manifest.permission.KILL_BACKGROUND_PROCESSES;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/10/18
- *     desc  : utils about process
+ *     desc  : utils about process(进程工具)
+ *     menu
+ *          getForegroundProcessName  : 获取前台线程包名
+            killAllBackgroundProcesses: 杀死所有的后台服务进程
+            killBackgroundProcesses   : 杀死后台服务进程
+            isMainProcess             : 判断是否运行在主进程
+            getCurrentProcessName     : 获取当前进程名称
  * </pre>
  */
 public final class ProcessUtils {

@@ -8,8 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.frame.core.autoscreen.ScreenAdapterTools;
+import com.frame.core.autoscreen.conversion.CustomConversion;
 import com.frame.core.rx.bus.Messenger;
-import com.frame.core.interf.IBaseActivity;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 /**
@@ -31,9 +32,14 @@ public abstract class NewBaseFragment<V extends ViewDataBinding, VM extends Base
     public void onDestroy() {
         super.onDestroy();
         Messenger.getDefault().unregister(this.getContext());
-        viewModel.removeRxBus();
-        viewModel.onDestroy();
-        viewModel = null;
+        if (viewModel != null) {
+            viewModel.removeRxBus();
+            viewModel.onDestroy();
+            viewModel = null;
+        }
+        if (binding != null) {
+            binding.unbind();
+        }
     }
 
     @Nullable
@@ -56,6 +62,8 @@ public abstract class NewBaseFragment<V extends ViewDataBinding, VM extends Base
         initData();
 
         initViewObservable();
+
+        ScreenAdapterTools.getInstance().loadView((ViewGroup) view, new CustomConversion());
 
         viewModel.onCreate();
 

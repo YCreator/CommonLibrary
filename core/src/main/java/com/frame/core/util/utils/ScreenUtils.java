@@ -24,7 +24,23 @@ import static android.Manifest.permission.WRITE_SETTINGS;
  *     author: admin
  *     blog  : http://core.frame.com
  *     time  : 2016/08/02
- *     desc  : utils about screen
+ *     desc  : utils about screen(屏幕工具)
+ *     menu
+ *          getScreenWidth     : 获取屏幕的宽度（单位：px）
+            getScreenHeight    : 获取屏幕的高度（单位：px）
+            getScreenDensity   : 获取屏幕密度
+            getScreenDensityDpi: 获取屏幕密度 DPI
+            setFullScreen      : 设置屏幕为全屏
+            setLandscape       : 设置屏幕为横屏
+            setPortrait        : 设置屏幕为竖屏
+            isLandscape        : 判断是否横屏
+            isPortrait         : 判断是否竖屏
+            getScreenRotation  : 获取屏幕旋转角度
+            screenShot         : 截屏
+            isScreenLock       : 判断是否锁屏
+            setSleepDuration   : 设置进入休眠时长
+            getSleepDuration   : 获取进入休眠时长
+            isTablet           : 判断是否是平板
  * </pre>
  */
 public final class ScreenUtils {

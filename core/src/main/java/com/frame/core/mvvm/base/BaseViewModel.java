@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
-import com.frame.core.interf.IBaseViewModel;
-
 /**
  * Created by yzd on 2018/2/8 0008.
  */
@@ -40,6 +38,7 @@ public class BaseViewModel implements IBaseViewModel {
             dialog = new AlertDialog.Builder(context)
                     .setTitle(title)
                     .create();
+            dialog.show();
         }
     }
 

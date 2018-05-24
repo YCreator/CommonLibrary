@@ -31,7 +31,7 @@ public class RxSubscriptions {
         mSubscriptions.clear();
     }
 
-    public static void unsubscribe() {
+    public static void dispose() {
         mSubscriptions.dispose();
     }
 
