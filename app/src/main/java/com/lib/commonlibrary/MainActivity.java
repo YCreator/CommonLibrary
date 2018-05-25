@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Looper;
 import android.util.Log;
 
-import com.frame.aop.annotation.Async;
 import com.jcx.hnn.BR;
 import com.jcx.hnn.R;
 import com.jcx.hnn.databinding.ActivityMainBinding;
@@ -40,9 +39,8 @@ public class MainActivity extends MyBaseActivity<ActivityMainBinding, MainViewMo
         async();
     }
 
-    @Async
     private void async() {
-        Log.v("thread", Looper.myLooper() == Looper.getMainLooper() ? "TRUE" : "FALSE");
+        Log.i("thread", Looper.myLooper() == Looper.getMainLooper() ? "TRUE" : "FALSE");
     }
 
 }

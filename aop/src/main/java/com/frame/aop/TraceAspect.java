@@ -1,8 +1,11 @@
 package com.frame.aop;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.frame.aop.annotation.Trace;
+import com.frame.aop.tools.Preconditions;
+import com.frame.aop.tools.StopWatch;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -34,7 +37,6 @@ public class TraceAspect {
     public Object traceMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
-        @SuppressWarnings("ReflectionForUnavailableAnnotation")
         Trace trace = methodSignature.getMethod().getAnnotation(Trace.class);
         if (trace!=null && !trace.enable()) {
             return joinPoint.proceed();
@@ -51,7 +53,7 @@ public class TraceAspect {
             className = "Anonymous class";
         }
 
-        Log.i(className, buildLogMessage(methodName, stopWatch.getElapsedTime()));
+        Log.i("Aop:"+className, buildLogMessage(methodName, stopWatch.getElapsedTime()));
 
         return result;
     }
@@ -63,6 +65,7 @@ public class TraceAspect {
      * @param methodDuration Duration of the method in milliseconds.
      * @return A string representing message.
      */
+    @SuppressLint("DefaultLocale")
     private static String buildLogMessage(String methodName, long methodDuration) {
 
         if (methodDuration > 10 * ns) {

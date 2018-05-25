@@ -2,27 +2,34 @@ package com.frame.core.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.util.Base64;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 
 /**
  * sharedpreferences工具，可加密
  */
-public final class SharedPreferencesUtil {
+public final class SPrefsUtil {
 
     private static String FILE_NAME = "file_name";
     private static String MAK = "innoview";// = "3Wri9i2abNXlLhme"; // "innoview";
     private Context context;
-    private static SharedPreferencesUtil instance;
+    private static SPrefsUtil instance;
 
-    private SharedPreferencesUtil(Context context) {
+    private SPrefsUtil(Context context) {
         this.context = context.getApplicationContext();
     }
 
-    public synchronized static SharedPreferencesUtil getInstance(Context context, String filename) {
+    public synchronized static SPrefsUtil getInstance(Context context, String filename) {
         if (instance == null) {
-            instance = new SharedPreferencesUtil(context);
+            instance = new SPrefsUtil(context);
         }
         if (filename != null) {
             FILE_NAME = filename;
@@ -132,6 +139,34 @@ public final class SharedPreferencesUtil {
 
     public boolean loadBooleanSharedPreference(String key) {
         return getShare().getBoolean(key, false);
+    }
+
+    public void saveObject(String key, Object obj) {
+        try {
+            SharedPreferences.Editor editor = getShare().edit();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(obj);
+            String stringBase64 = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+            editor.putString(key, stringBase64);
+            editor.apply();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Object getObject(String key) {
+        try {
+            String stringBase64 = load(key, "");
+            if (TextUtils.isEmpty(stringBase64))return null;
+            byte[] base64Bytes = Base64.decode(stringBase64.getBytes(), Base64.DEFAULT);
+            ByteArrayInputStream bais = new ByteArrayInputStream(base64Bytes);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void saveAllSharePreference(String keyName, List<?> list) {

@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.frame.core.base.AppManager;
-import com.frame.core.util.SharedPreferencesUtil;
+import com.frame.core.util.SPrefsUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -85,13 +85,13 @@ public final class Utils {
 
     public static boolean isDebug() {
         if (sApplication == null) return false;
-        SharedPreferencesUtil shareUtil = SharedPreferencesUtil.getInstance(sApplication, "total_app");
+        SPrefsUtil shareUtil = SPrefsUtil.getInstance(sApplication, "total_app");
         return shareUtil.loadBooleanSharedPreference("debug");
     }
 
     public static void setDebug(boolean isDebug) {
         if (sApplication == null) return;
-        SharedPreferencesUtil shareUtil = SharedPreferencesUtil.getInstance(sApplication, "total_app");
+        SPrefsUtil shareUtil = SPrefsUtil.getInstance(sApplication, "total_app");
         shareUtil.saveSharedPreferences("debug", isDebug);
     }
 

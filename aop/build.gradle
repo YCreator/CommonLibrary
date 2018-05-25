@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.hujiang.android-aspectjx'
 
 android {
     compileSdkVersion 27
@@ -27,7 +28,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'org.aspectj:aspectjrt:1.8.6'
+    implementation 'org.aspectj:aspectjrt:1.8.9'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'// 推荐同时加载RxJava
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'// RxAndroid
     implementation project(':core')
@@ -35,5 +36,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
+
+    implementation 'tony-common:tony-common-utils:1.2.4'
 
 }

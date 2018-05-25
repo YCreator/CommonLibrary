@@ -16,7 +16,7 @@ import java.io.StringWriter;
 @Aspect
 public class SafeAspect {
 
-    @Around("execution(!synthetic * *(..)) && onSafe()")
+    @Around("execution(!synthetic * *(..)) && onSafeMethod()")
     public Object doSafeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         return safeMethod(joinPoint);
     }
@@ -31,7 +31,7 @@ public class SafeAspect {
         try {
             result = joinPoint.proceed(joinPoint.getArgs());
         } catch (Throwable e) {
-            Log.w("safe", getStringFromException(e));
+            Log.w("Aop:safe", getStringFromException(e));
         }
         return result;
     }

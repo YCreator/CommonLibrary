@@ -1,7 +1,6 @@
 package com.frame.aop;
 
 import android.os.Looper;
-import android.util.Log;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -28,19 +27,15 @@ public class AsyncAspect {
 
     @Pointcut("@within(com.frame.aop.annotation.Async)||@annotation(com.frame.aop.annotation.Async)")
     public void onAsyncMethod() {
-        Log.v("thread", "onAsyncMethod");
     }
 
     private void asyncMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
-        Log.v("thread", "asyncMethod");
         Flowable.create(new FlowableOnSubscribe<Object>() {
             @Override
             public void subscribe(FlowableEmitter<Object> e) throws Exception {
                 Looper.prepare();
                 try {
-                    Log.v("thread", "proceed before");
                     joinPoint.proceed();
-                    Log.v("thread", "proceed after");
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }

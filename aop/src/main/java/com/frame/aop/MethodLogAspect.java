@@ -27,10 +27,10 @@ public class MethodLogAspect {
     }
 
     private Object methodLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        Log.w("methodLog", joinPoint.getSignature().toShortString() + " 方法参数 : " + (joinPoint.getArgs() != null ? Arrays.deepToString(joinPoint.getArgs()) : ""));
+        Log.w("Aop:methodLog", joinPoint.getSignature().toShortString() + " 方法参数 : " + (joinPoint.getArgs() != null ? Arrays.deepToString(joinPoint.getArgs()) : ""));
         Object result = joinPoint.proceed();
         String type = ((MethodSignature) joinPoint.getSignature()).getReturnType().toString();
-        Log.w("methodLog", joinPoint.getSignature().toShortString() + " 返回结果 : " + ("void".equalsIgnoreCase(type) ? "void" : result));
+        Log.w("Aop:methodLog", joinPoint.getSignature().toShortString() + " 返回结果 : " + ("void".equalsIgnoreCase(type) ? "void" : result));
         return result;
     }
 }

@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 将方法的入参和出参都打印出来,可以用于调试
  * Created by yzd on 2018/5/24 0024.
  */
 @Target({ElementType.METHOD})
