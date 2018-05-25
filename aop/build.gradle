@@ -37,6 +37,6 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
 
-    implementation 'tony-common:tony-common-utils:1.2.4'
+    //implementation 'tony-common:tony-common-utils:1.2.4'
 
 }
