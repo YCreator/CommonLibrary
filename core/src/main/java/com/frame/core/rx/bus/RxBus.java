@@ -23,9 +23,9 @@ public class RxBus {
     private static volatile RxBus mDefaultInstance;
     private final Subject<Object> mBus;
 
-    private final Map<Class<?>, CompositeDisposable> mStickyEventMap;
+    private final Map<Class<?>, ObjectDisposable> mStickyEventMap;
 
-    public RxBus() {
+    private RxBus() {
         mBus = PublishSubject.create().toSerialized();
         mStickyEventMap = new ConcurrentHashMap<>();
     }
@@ -42,6 +42,13 @@ public class RxBus {
     }
 
     /**
+     * 判断是否有订阅者
+     */
+    public boolean hasObservers() {
+        return mBus.hasObservers();
+    }
+
+    /**
      * 发送事件
      */
     public void post(Object event) {
@@ -55,7 +62,7 @@ public class RxBus {
      * @param type
      * @return
      */
-    public <T> Flowable<T> getObservable(Class<T> type) {
+    public <T> Flowable<T> toFlowable(Class<T> type) {
         return mBus.toFlowable(BackpressureStrategy.BUFFER)
                 .ofType(type);
     }
@@ -77,17 +84,10 @@ public class RxBus {
      * @return
      */
     public <T> Disposable doSubscribe(Class<T> type, Consumer<T> next, Consumer<Throwable> error) {
-        return getObservable(type)
+        return toFlowable(type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next, error);
-    }
-
-    /**
-     * 判断是否有订阅者
-     */
-    public boolean hasObservers() {
-        return mBus.hasObservers();
     }
 
     /**
@@ -98,12 +98,13 @@ public class RxBus {
      */
     public void addSubscription(Object o, Disposable disposable) {
         if (mStickyEventMap.get(o.getClass()) != null) {
-            mStickyEventMap.get(o.getClass()).add(disposable);
+            mStickyEventMap.get(o.getClass()).setObj(o);
+            mStickyEventMap.get(o.getClass()).getDisposable().add(disposable);
         } else {
             //一次性容器,可以持有多个并提供 添加和移除。
             CompositeDisposable disposables = new CompositeDisposable();
             disposables.add(disposable);
-            mStickyEventMap.put(o.getClass(), disposables);
+            mStickyEventMap.put(o.getClass(), new ObjectDisposable(o, disposables));
         }
     }
 
@@ -117,7 +118,7 @@ public class RxBus {
             return;
         }
         if (mStickyEventMap.get(o.getClass()) != null) {
-            mStickyEventMap.get(o.getClass()).dispose();
+            mStickyEventMap.get(o.getClass()).getDisposable().dispose();
         }
 
         mStickyEventMap.remove(o.getClass());
@@ -147,10 +148,10 @@ public class RxBus {
     public <T> Observable<T> toObservableSticky(final Class<T> eventType) {
         synchronized (mStickyEventMap) {
             Observable<T> observable = mBus.ofType(eventType);
-            final Object event = mStickyEventMap.get(eventType);
+            final ObjectDisposable event = mStickyEventMap.get(eventType);
 
             if (event != null) {
-                return Observable.merge(observable, Observable.create(e -> e.onNext(eventType.cast(event))));
+                return Observable.merge(observable, Observable.create(e -> e.onNext(eventType.cast(event.getObj()))));
             } else {
                 return observable;
             }

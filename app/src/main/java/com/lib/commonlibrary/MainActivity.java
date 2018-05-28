@@ -1,11 +1,10 @@
 package com.lib.commonlibrary;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Looper;
 import android.util.Log;
 
-import com.frame.aop.annotation.Permission;
+import com.frame.aop.annotation.MethodLog;
 import com.jcx.hnn.BR;
 import com.jcx.hnn.R;
 import com.jcx.hnn.databinding.ActivityMainBinding;
@@ -41,7 +40,8 @@ public class MainActivity extends MyBaseActivity<ActivityMainBinding, MainViewMo
         async();
     }
 
-    @Permission({Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE})
+    //@Permission({Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE})
+    @MethodLog
     private void async() {
         Log.i("thread", Looper.myLooper() == Looper.getMainLooper() ? "TRUE" : "FALSE");
     }

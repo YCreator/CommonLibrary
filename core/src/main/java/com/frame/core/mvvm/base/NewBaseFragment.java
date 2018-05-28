@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.frame.core.autoscreen.ScreenAdapterTools;
 import com.frame.core.autoscreen.conversion.CustomConversion;
-import com.frame.core.rx.bus.Messenger;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 /**
@@ -31,9 +30,8 @@ public abstract class NewBaseFragment<V extends ViewDataBinding, VM extends Base
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Messenger.getDefault().unregister(this.getContext());
         if (viewModel != null) {
-            viewModel.removeRxBus();
+            viewModel.unregisterEventBus();
             viewModel.onDestroy();
             viewModel = null;
         }
@@ -67,7 +65,7 @@ public abstract class NewBaseFragment<V extends ViewDataBinding, VM extends Base
 
         viewModel.onCreate();
 
-        viewModel.registerRxBus();
+        viewModel.registerEventBus();
     }
 
     @Override

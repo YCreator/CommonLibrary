@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.frame.core.autoscreen.ScreenAdapterTools;
 import com.frame.core.autoscreen.conversion.CustomConversion;
-import com.frame.core.rx.bus.Messenger;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**
@@ -40,15 +39,14 @@ public abstract class NewBaseActivity<V extends ViewDataBinding, VM extends Base
 
         viewModel.onCreate();
 
-        viewModel.registerRxBus();
+        viewModel.registerEventBus();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Messenger.getDefault().unregister(this);
         if (viewModel != null) {
-            viewModel.removeRxBus();
+            viewModel.unregisterEventBus();
             viewModel.onDestroy();
             viewModel = null;
         }

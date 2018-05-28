@@ -16,11 +16,11 @@ public interface IBaseViewModel {
     void onDestroy();
 
     /**
-     * 注册RxBus
+     * 注册EventBus
      */
-    void registerRxBus();
+    void registerEventBus();
     /**
-     * 移除RxBus
+     * 移除EventBus
      */
-    void removeRxBus();
+    void unregisterEventBus();
 }

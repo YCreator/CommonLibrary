@@ -2,7 +2,6 @@ package com.lib.commonlibrary;
 
 import android.content.Context;
 
-import com.frame.aop.annotation.MethodLog;
 import com.frame.core.mvvm.base.BaseViewModel;
 
 /**
@@ -19,7 +18,7 @@ public class ItemViewModel extends BaseViewModel {
         model = test(model.getUsername() + ",hi", model.getPassword() + ",hello");
     }
 
-    @MethodLog
+
     private UserModel test(String name, String password) {
         UserModel m = new UserModel();
         m.setPassword(password);

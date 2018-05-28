@@ -1,15 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
-
-
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -27,12 +25,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation rootProject.ext.dependencies.picasso
     implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'jp.wasabeef:picasso-transformations:2.1.2'
-    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation rootProject.ext.dependencies.picasso_transformations
+    implementation rootProject.ext.dependencies.picasso2_okhttp3_downloader
     implementation project(":imagelib")
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testImplementation rootProject.ext.androidtest.junit
+    androidTestImplementation rootProject.ext.androidtest.runner
+    androidTestImplementation rootProject.ext.androidtest.espresso_core
 }

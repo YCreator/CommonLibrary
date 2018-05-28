@@ -108,12 +108,12 @@ public class BaseViewModel implements IBaseViewModel {
     }
 
     @Override
-    public void registerRxBus() {
+    public void registerEventBus() {
 
     }
 
     @Override
-    public void removeRxBus() {
+    public void unregisterEventBus() {
 
     }
 }

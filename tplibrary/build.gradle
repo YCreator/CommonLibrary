@@ -1,15 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
-
-
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -36,10 +34,10 @@ dependencies {
     compile(name: 'alibc_trade_sdk-3.1.1.11', ext: 'aar')
     api fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation rootProject.ext.support.appcompat_v7
+    testImplementation rootProject.ext.androidtest.junit
+    androidTestImplementation rootProject.ext.androidtest.runner
+    androidTestImplementation rootProject.ext.androidtest.espresso_core
 
     //fastjson
     /*compile 'com.alibaba:fastjson:1.2.9'

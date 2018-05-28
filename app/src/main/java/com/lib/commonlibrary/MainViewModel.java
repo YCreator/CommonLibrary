@@ -6,6 +6,8 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.frame.core.mvvm.adapter.ItemBinding;
 import com.frame.core.mvvm.adapter.OnItemBind;
@@ -18,6 +20,9 @@ import com.lib.tpl.TpHelper;
 import com.lib.tpl.share.PLATFORM_TYPE;
 import com.lib.tpl.share.ShareEntity;
 import com.lib.tpl.share.ShareImage;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
@@ -48,9 +53,27 @@ public class MainViewModel extends BaseViewModel {
         observableList.add(new ItemViewModel(context, userModel2));
     }
 
+    @Override
+    public void registerEventBus() {
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void unregisterEventBus() {
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void sub(String value) {
+        Toast.makeText(context, value, Toast.LENGTH_SHORT).show();
+    }
+
     public BindingCommand shareClick = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
+            Log.i("hello", "nihao");
+            EventBus.getDefault().post("你好!");
+            if (true) return;
             ShareImage image = new ShareImage(context, R.drawable.umeng_socialize_qq);
             image.setThumb(new ShareImage(context, R.mipmap.ic_launcher));
             ShareEntity entity = new ShareEntity("test", "https://www.baidu.com", "hello world", image);
