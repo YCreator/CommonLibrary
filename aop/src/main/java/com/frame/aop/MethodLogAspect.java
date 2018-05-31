@@ -11,6 +11,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.util.Arrays;
 
 /**
+ * 打印方法日志切面类
  * Created by yzd on 2018/5/24 0024.
  */
 @Aspect
@@ -26,7 +27,7 @@ public class MethodLogAspect {
 
     }
 
-    private Object methodLog(ProceedingJoinPoint joinPoint) throws Throwable {
+    Object methodLog(ProceedingJoinPoint joinPoint) throws Throwable {
         Log.w("Aop:methodLog", joinPoint.getSignature().toShortString() + " 方法参数 : " + (joinPoint.getArgs() != null ? Arrays.deepToString(joinPoint.getArgs()) : ""));
         Object result = joinPoint.proceed();
         String type = ((MethodSignature) joinPoint.getSignature()).getReturnType().toString();

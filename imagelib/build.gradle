@@ -24,10 +24,15 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
-    api files('../core/libs/eventbus-3.1.1.jar')
+    //implementation files('../core/libs/eventbus-3.1.1.jar')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.support.appcompat_v7
     api rootProject.ext.dependencies.okhttp
@@ -39,7 +44,7 @@ dependencies {
     }
 
     //compile 'commons-io:commons-io:2.5'
-    //api 'org.greenrobot:eventbus:3.1.1'
+    api 'org.greenrobot:eventbus:3.1.1'
     api (rootProject.ext.dependencies.viewpager){
         exclude group: 'com.android.support'
     }

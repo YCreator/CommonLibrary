@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
+ * 空指针安全切面类
  * Created by yzd on 2018/5/24 0024.
  */
 @Aspect
@@ -26,7 +27,7 @@ public class SafeAspect {
 
     }
 
-    private Object safeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
+    Object safeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
         try {
             result = joinPoint.proceed(joinPoint.getArgs());

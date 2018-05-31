@@ -52,6 +52,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    /*configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }*/
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 repositories {
@@ -78,9 +87,18 @@ dependencies {
     implementation rootProject.ext.support.design
     implementation rootProject.ext.support.support_v4
     testCompile rootProject.ext.androidtest.junit
-    compile project(':tplibrary')
-    compile project(':core')
-    compile project(':imagelib')
-    compile project(':glideloader')
-    compile project(':aop')
+
+    api rootProject.ext.dependencies.SmartRefreshLayout
+    api rootProject.ext.dependencies.SmartRefreshHeader
+
+    api (rootProject.ext.dependencies.tkrefreshlayout, {
+        exclude group: 'com.android.support'
+    })
+
+    //implementation rootProject.ext.dependencies.guava
+    api project(':tplibrary')
+    api project(':core')
+    //api project(':imagelib')
+    //api project(':glideloader')
+    api project(':aop')
 }

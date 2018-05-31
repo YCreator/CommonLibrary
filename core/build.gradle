@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
@@ -83,13 +82,6 @@ dependencies {
     implementation rootProject.ext.dependencies.butterknife
 
     api(rootProject.ext.dependencies.library, {
-        exclude group: 'com.android.support'
-    })
-
-    api rootProject.ext.dependencies.SmartRefreshLayout
-    api rootProject.ext.dependencies.SmartRefreshHeader
-
-    api (rootProject.ext.dependencies.tkrefreshlayout, {
         exclude group: 'com.android.support'
     })
 

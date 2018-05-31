@@ -1,4 +1,4 @@
-package com.frame.core.mvvm.binding.viewadapter.tkrefreshlayout;
+package com.lib.commonlibrary.viewAdapter.tkrefreshlayout;
 
 
 import android.databinding.BindingAdapter;

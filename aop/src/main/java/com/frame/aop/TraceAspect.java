@@ -14,6 +14,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 /**
+ * 方法耗时统计切面类
  * Created by yzd on 2018/5/24 0024.
  */
 @Aspect

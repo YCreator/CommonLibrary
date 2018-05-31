@@ -148,8 +148,7 @@
         <attr name="onScrollStateChangedCommand" />
         <!-- require BindingCommand<ListViewScrollDataWrapper> -->
         <attr name="onScrollChangeCommand" />
-        <!-- require BindingCommand<Integer> count of list items-->
-        <attr name="onLoadMoreCommand" format="reference" />
+
     </declare-styleable>
 
     <declare-styleable name="TextView">
@@ -248,6 +247,8 @@
     <declare-styleable name="SwipeRefreshLayout">
         <!-- require RelayCommand -->
         <attr name="onRefreshCommand" format="reference" />
+
+        <attr name="onLoadMoreCommand" format="reference" />
 
         <attr name="header" format="reference" />
 

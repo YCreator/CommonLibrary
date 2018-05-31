@@ -24,10 +24,16 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //implementation files('../core/libs/eventbus-3.1.1.jar')
 
     implementation rootProject.ext.support.appcompat_v7
     implementation rootProject.ext.dependencies.glide

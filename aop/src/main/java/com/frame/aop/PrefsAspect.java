@@ -13,6 +13,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.lang.reflect.Method;
 
 /**
+ * sp存储切面类
  * Created by yzd on 2018/5/25 0025.
  */
 @Aspect
@@ -28,7 +29,7 @@ public class PrefsAspect {
 
     }
 
-    private Object prefsMethod(ProceedingJoinPoint joinPoint) throws Throwable {
+    Object prefsMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 

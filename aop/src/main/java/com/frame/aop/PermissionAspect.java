@@ -15,6 +15,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.lang.reflect.Method;
 
 /**
+ * 权限申请切面类
  * Created by yzd on 2018/5/25 0025.
  */
 @Aspect
@@ -30,7 +31,7 @@ public class PermissionAspect {
 
     }
 
-    private void permissionMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
+    void permissionMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
         Activity context = null;
         Object object = joinPoint.getThis();
         if (object instanceof Activity) {

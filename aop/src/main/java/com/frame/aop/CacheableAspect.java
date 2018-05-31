@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 
 /**
+ * 缓存切面类
  * Created by yzd on 2018/5/22 0022.
  */
 @TargetApi(14)
@@ -32,7 +33,7 @@ public class CacheableAspect {
 
     }
 
-    private Object cacheMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
+    Object cacheMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 

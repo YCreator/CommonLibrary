@@ -1,4 +1,4 @@
-package com.frame.core.mvvm.binding.viewadapter.smartrefreshlayout;
+package com.lib.commonlibrary.viewAdapter.smartrefreshlayout;
 
 
 import android.databinding.BindingAdapter;
