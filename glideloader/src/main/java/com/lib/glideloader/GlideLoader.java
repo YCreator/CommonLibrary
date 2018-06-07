@@ -49,7 +49,6 @@ import java.util.concurrent.ExecutionException;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.ColorFilterTransformation;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import jp.wasabeef.glide.transformations.CropSquareTransformation;
 import jp.wasabeef.glide.transformations.GrayscaleTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
@@ -128,8 +127,17 @@ public class GlideLoader implements ILoader {
                     }
                 };
             }
+
             setShapeModeAndBlur(config, options);
 
+            //设置图片加载的分辨 sp
+            if (config.getoWidth() != 0 && config.getoHeight() != 0) {
+                options = options.override(config.getoWidth(), config.getoHeight());
+            } else if (config.getWidth() > 0 && config.getHeight() > 0) {
+                options = options.override(config.getWidth(), config.getHeight());
+            }
+
+            //是否跳过磁盘存储
             if (config.getDiskCacheMode() != 0) {
                 options = options.diskCacheStrategy(config.getDiskCacheMode() == DiskCacheMode.ALL
                         ? DiskCacheStrategy.ALL : config.getDiskCacheMode() == DiskCacheMode.AUTOMATIC
@@ -137,11 +145,7 @@ public class GlideLoader implements ILoader {
                         ? DiskCacheStrategy.DATA : config.getDiskCacheMode() == DiskCacheMode.RESOURCE
                         ? DiskCacheStrategy.RESOURCE : DiskCacheStrategy.NONE);
             }
-            if (config.getoWidth() != 0 && config.getoHeight() != 0) {
-                options = options.override(config.getoWidth(), config.getoHeight());
-            } else if(config.getWidth() > 0 &&config.getHeight() > 0) {
-                options = options.override(config.getWidth(), config.getHeight());
-            }
+
             request = request.apply(options);
             request.into(target);
         } else {
@@ -181,7 +185,7 @@ public class GlideLoader implements ILoader {
             //设置图片加载的分辨 sp
             if (config.getoWidth() != 0 && config.getoHeight() != 0) {
                 options = options.override(config.getoWidth(), config.getoHeight());
-            } else if(config.getWidth() > 0 &&config.getHeight() > 0) {
+            } else if (config.getWidth() > 0 && config.getHeight() > 0) {
                 options = options.override(config.getWidth(), config.getHeight());
             }
 
@@ -476,7 +480,8 @@ public class GlideLoader implements ILoader {
                 options.getTransformations().put(RoundedCornersTransformation.class, new RoundedCornersTransformation(config.getRectRoundRadius(), 0, RoundedCornersTransformation.CornerType.ALL));
                 break;
             case ShapeMode.OVAL:
-                options.getTransformations().put(CropCircleTransformation.class, new CropCircleTransformation());
+                options.circleCrop();
+                //options.getTransformations().put(CropCircleTransformation.class, new CropCircleTransformation());
                 break;
 
             case ShapeMode.SQUARE:

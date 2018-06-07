@@ -41,7 +41,7 @@
 				android:layout_width="wrap_content"
 				android:layout_marginBottom="8dp"
 				android:layout_height="wrap_content" />-->
-		<com.github.piasy.biv.view.CircleLoadingView
+		<com.lib.imagelib.big.view.CircleLoadingView
 				android:layout_width="35dp"
 				android:layout_height="35dp" />
 		<TextView

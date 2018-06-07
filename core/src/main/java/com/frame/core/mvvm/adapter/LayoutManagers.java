@@ -43,10 +43,32 @@ public class LayoutManagers {
     }
 
     /**
+     * A {@link GridLayoutManager} with the given spanCount, spanSizeLookup
+     */
+    public static LayoutManagerFactory grid(final int spanCount, GridLayoutManager.SpanSizeLookup sizeLookup) {
+        return recyclerView -> {
+            GridLayoutManager manager = new GridLayoutManager(recyclerView.getContext(), spanCount);
+            manager.setSpanSizeLookup(sizeLookup);
+            return manager;
+        };
+    }
+
+    /**
      * A {@link GridLayoutManager} with the given spanCount, orientation and reverseLayout.
      **/
     public static LayoutManagerFactory grid(final int spanCount, @Orientation final int orientation, final boolean reverseLayout) {
-        return recyclerView ->  new GridLayoutManager(recyclerView.getContext(), spanCount, orientation, reverseLayout);
+        return recyclerView -> new GridLayoutManager(recyclerView.getContext(), spanCount, orientation, reverseLayout);
+    }
+
+    /**
+     * A {@link GridLayoutManager} with the given spanCount, orientation and reverseLayout, spanSizeLookup
+     */
+    public static LayoutManagerFactory grid(int spanCount, @Orientation final int orientation, final boolean reverseLayout, GridLayoutManager.SpanSizeLookup sizeLookup) {
+        return recyclerView -> {
+            GridLayoutManager manager = new GridLayoutManager(recyclerView.getContext(), spanCount, orientation, reverseLayout);
+            manager.setSpanSizeLookup(sizeLookup);
+            return manager;
+        };
     }
 
     /**

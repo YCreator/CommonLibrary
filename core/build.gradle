@@ -54,8 +54,9 @@ dependencies {
     api files('libs/retrofit-2.3.0.jar')
     api files('libs/converter-gson-2.3.0.jar')
     api files('libs/adapter-rxjava2-2.3.0.jar')
-    api files('libs/eventbus-3.1.1.jar')
+    //api files('libs/eventbus-3.1.1.jar')
     api files('libs/logging-interceptor-3.5.0.jar')
+    api 'org.greenrobot:eventbus:3.1.1'
 
     testCompile rootProject.ext.androidtest.junit
     implementation rootProject.ext.support.appcompat_v7

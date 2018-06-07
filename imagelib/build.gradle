@@ -39,14 +39,8 @@ dependencies {
     api (rootProject.ext.dependencies.subsampling_scale_image_view){
         exclude group: 'com.android.support'
     }
-    api (rootProject.ext.dependencies.progresspieview_library){
-        exclude group: 'com.android.support'
-    }
 
     //compile 'commons-io:commons-io:2.5'
     api 'org.greenrobot:eventbus:3.1.1'
-    api (rootProject.ext.dependencies.viewpager){
-        exclude group: 'com.android.support'
-    }
     testImplementation rootProject.ext.androidtest.junit
 }

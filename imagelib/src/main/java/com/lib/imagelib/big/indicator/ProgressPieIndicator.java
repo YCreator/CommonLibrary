@@ -29,9 +29,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.filippudak.ProgressPieView.ProgressPieView;
 import com.lib.imagelib.R;
 import com.lib.imagelib.big.view.BigImageView;
+import com.lib.imagelib.big.view.ProgressPieView;
 
 import java.util.Locale;
 
@@ -46,7 +46,7 @@ public class ProgressPieIndicator implements ProgressIndicator {
     @Override
     public View getView(BigImageView parent) {
         root = (RelativeLayout) View.inflate(parent.getContext(), R.layout.ui_progress_pie_indicator,null);
-        mProgressPieView = (ProgressPieView) root.findViewById(R.id.progressview);
+        mProgressPieView = root.findViewById(R.id.progressview);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         root.setLayoutParams(params);
         return root;
