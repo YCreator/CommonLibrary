@@ -5,9 +5,9 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.frame.aop.annotation.MethodLog;
-import com.jcx.hnn.BR;
-import com.jcx.hnn.R;
-import com.jcx.hnn.databinding.ActivityMainBinding;
+import com.jcx.hnn.debug.BR;
+import com.jcx.hnn.debug.R;
+import com.jcx.hnn.debug.databinding.ActivityMainBinding;
 import com.umeng.socialize.UMShareAPI;
 
 public class MainActivity extends MyBaseActivity<ActivityMainBinding, MainViewModel> {

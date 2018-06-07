@@ -1,4 +1,4 @@
-package com.genye.pi59App.activity.wxapi;
+package com.jcx.hnn.debug.wxapi;
 
 import com.umeng.weixin.callback.WXCallbackActivity;
 

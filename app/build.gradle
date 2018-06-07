@@ -53,9 +53,9 @@ android {
         }
     }
 
-    /*configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
-    }*/
+    configurations {
+        all*.exclude module: ['eventbus', 'com.android.support']  //去除重复依赖库
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -98,7 +98,7 @@ dependencies {
     //implementation rootProject.ext.dependencies.guava
     api project(':tplibrary')
     api project(':core')
-    //api project(':imagelib')
-    //api project(':glideloader')
+    api project(':imagelib')
+    api project(':glideloader')
     api project(':aop')
 }

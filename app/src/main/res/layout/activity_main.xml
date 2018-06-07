@@ -8,7 +8,7 @@
             name="viewModel"
             type="com.lib.commonlibrary.MainViewModel" />
 
-        <import type="com.jcx.hnn.R" />
+        <import type="com.jcx.hnn.debug.R" />
 
         <import type="com.frame.core.mvvm.adapter.LayoutManagers" />
 
