@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.frame.core.R;
+import com.frame.core.util.utils.Utils;
 
 
 public final class DefaultErrorActivity extends AppCompatActivity {
@@ -42,10 +43,10 @@ public final class DefaultErrorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (!AppHelper.isDebug()) {
+        if (!Utils.isDebug()) {
             finish();
             return;
-        }*/
+        }
 
         //This is needed to avoid a crash if the developer has not specified
         //an app-level theme that extends Theme.AppCompat
