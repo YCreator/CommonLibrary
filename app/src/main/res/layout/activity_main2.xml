@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dimen_normal"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_normal"
+        android:layout_weight="1"
+        android:background="@drawable/umeng_socialize_edit_bg"
+        android:padding="@dimen/dimen_normal"
+        android:text="接受数据"
+        android:textColor="@color/blue_color" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_normal">
+
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜索" />
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn1"
+            android:text="断开" />
+
+        <Button
+            android:id="@+id/btn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn2"
+            android:text="发送" />
+
+        <EditText
+            android:id="@+id/et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/btn3"
+            android:layout_alignTop="@id/btn1"
+            android:layout_toRightOf="@id/btn1"
+            android:background="@drawable/umeng_socialize_edit_bg"
+            android:gravity="top"
+            android:hint="发送数据"
+            android:padding="@dimen/dimen_normal"
+            android:textColor="@color/Green" />
+    </RelativeLayout>
+
+
+</LinearLayout>

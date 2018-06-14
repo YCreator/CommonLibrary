@@ -1,10 +1,8 @@
 package com.lib.commonlibrary;
 
 import android.content.Intent;
-import android.os.Looper;
 import android.util.Log;
 
-import com.frame.aop.annotation.MethodLog;
 import com.jcx.hnn.debug.BR;
 import com.jcx.hnn.debug.R;
 import com.jcx.hnn.debug.databinding.ActivityMainBinding;
@@ -37,13 +35,17 @@ public class MainActivity extends MyBaseActivity<ActivityMainBinding, MainViewMo
 
     @Override
     public void initViewObservable() {
-        async();
+        /*RecyclerView recyclerView = this.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        BTHelper.start().getSearch()
+                .setAdapterItem(recyclerView, new BTItem())
+                .search(10000, true);*/
     }
 
     //@Permission({Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE})
-    @MethodLog
+    /*@MethodLog
     private void async() {
         Log.i("thread", Looper.myLooper() == Looper.getMainLooper() ? "TRUE" : "FALSE");
-    }
+    }*/
 
 }

@@ -53,12 +53,17 @@
             android:text="@{viewModel.userModel.password}" />
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--<android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             bind:itemBinding="@{viewModel.itemBinding}"
             bind:items="@{viewModel.observableList}"
             bind:layoutManager="@{LayoutManagers.linear()}"
-            bind:lineManager="@{LineManagers.vertical()}" />
+            bind:lineManager="@{LineManagers.vertical()}" />-->
 
     </LinearLayout>
 </layout>

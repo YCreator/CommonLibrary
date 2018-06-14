@@ -16,6 +16,7 @@ import com.frame.core.mvvm.binding.command.BindingAction;
 import com.frame.core.mvvm.binding.command.BindingCommand;
 import com.jcx.hnn.debug.R;
 import com.jcx.hnn.debug.BR;
+import com.jcx.hnn.debug.bt.BTHelper;
 import com.lib.tpl.TpHelper;
 import com.lib.tpl.share.PLATFORM_TYPE;
 import com.lib.tpl.share.ShareEntity;
@@ -71,9 +72,11 @@ public class MainViewModel extends BaseViewModel {
     public BindingCommand shareClick = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
+            BTHelper.start().getSearch().search(10000, true);
+            if (true) return;
             Log.i("hello", "nihao");
             EventBus.getDefault().post("你好!");
-            if (true) return;
+
             ShareImage image = new ShareImage(context, R.drawable.umeng_socialize_qq);
             image.setThumb(new ShareImage(context, R.mipmap.ic_launcher));
             ShareEntity entity = new ShareEntity("test", "https://www.baidu.com", "hello world", image);

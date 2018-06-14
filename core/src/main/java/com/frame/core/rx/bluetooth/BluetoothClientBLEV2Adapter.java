@@ -21,7 +21,6 @@ import java.util.UUID;
 import io.reactivex.Observable;
 
 /**
- *
  * Created by yzd on 2018/6/13 0013.
  */
 
@@ -40,6 +39,8 @@ public class BluetoothClientBLEV2Adapter implements BluetoothClient {
     public Observable<BLEDevice> search(final int millis, final boolean cancel) {
         return Observable.create(e -> {
             BluetoothLeSearcher searcher = mClient.getBluetoothSearcher();
+
+            if (searcher == null) return;
 
             if (searcher.isScanning() && !cancel) {
                 e.onError(new BluetoothSearchConflictException("is searching now"));
@@ -92,7 +93,6 @@ public class BluetoothClientBLEV2Adapter implements BluetoothClient {
     public Observable<String> connect(final String mac) {
         return Observable.create(e -> {
             BluetoothLeConnector connector = mClient.getBluetoothLeConnector(mac);
-
             connector.setOnDataAvailableListener(new BluetoothLeConnector.OnDataAvailableListener() {
                 @Override
                 public void onCharacteristicRead(byte[] values, int status) {

@@ -28,7 +28,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.lib.commonlibrary.MainActivity">
+        <activity android:name="com.lib.commonlibrary.Main2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,14 +49,12 @@
                 <data android:scheme="tencent1104741678" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -75,7 +73,6 @@
                 <data android:scheme="tencent1105661716" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

@@ -73,7 +73,8 @@ repositories {
 dependencies {
     //compile(name: 'tplibrary-release', ext: 'aar')
     //compile(name: 'core-release', ext: 'aar')
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile(rootProject.ext.androidtest.espresso_core, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -95,10 +96,11 @@ dependencies {
         exclude group: 'com.android.support'
     })
 
+    api 'com.android.support:multidex:1.0.3'
     //implementation rootProject.ext.dependencies.guava
     api project(':tplibrary')
     api project(':core')
     api project(':imagelib')
     api project(':glideloader')
-    api project(':aop')
+    //api project(':aop')
 }
