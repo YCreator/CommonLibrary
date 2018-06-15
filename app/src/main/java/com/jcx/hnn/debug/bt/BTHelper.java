@@ -77,6 +77,7 @@ public final class BTHelper {
      * @param callback
      */
     public void connect(String mac, BaseResultCallback<byte[]> callback) {
+        client.stopSearch();
         if (!StringUtils.isEmpty(mac) && !mac.equals(mMac))
             client.connect(mac).subscribe(new Observer<String>() {
                 @Override
@@ -114,7 +115,7 @@ public final class BTHelper {
 
                 @Override
                 public void onError(Throwable e) {
-                    ToastUtils.showShort("连接失败");
+                    ToastUtils.showShort("连接失败：" + e.getMessage());
                 }
 
                 @Override

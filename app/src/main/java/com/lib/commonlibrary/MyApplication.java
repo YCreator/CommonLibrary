@@ -9,6 +9,7 @@ import com.frame.core.BaseApplication;
 import com.frame.core.crash.CaocConfig;
 import com.frame.core.crash.DefaultErrorActivity;
 import com.jcx.hnn.debug.R;
+import com.jcx.hnn.debug.bt.BTManager;
 
 /**
  * Created by yzd on 2017/2/10 0010.
@@ -28,6 +29,7 @@ public class MyApplication extends BaseApplication {
                 .setDebug(true)
                 .canShare(true)
                 .setUmeng("587c8ddc734be4160b001c6d"));*/
+        BTManager.getInstance().init();
 
     }
 
