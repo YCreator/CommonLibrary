@@ -1,11 +1,10 @@
 package com.lib.commonlibrary;
 
+import com.frame.core.rx.RxUtils;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class GoodsBean implements Serializable {
 
@@ -163,8 +162,8 @@ public class GoodsBean implements Serializable {
     public static void getGoods(Map<String, String> params, JsonDataObserver<List<GoodsBean>> observer, NetworkConsumer consumer) {
         RetroFactory.getInstance().getGoods(params)
                 .doOnSubscribe(consumer)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtils.bindToLifecycle(observer.lifeful()))
+                .compose(RxUtils.schedulersTransformer())
                 .subscribe(observer);
     }
 }

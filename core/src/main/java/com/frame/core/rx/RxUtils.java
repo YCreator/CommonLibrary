@@ -46,6 +46,19 @@ public class RxUtils {
     }
 
     /**
+     * 生命周期绑定
+     *
+     * @param lifecycle
+     * @return
+     */
+    public static <T, C> ObservableTransformer<T, T> bindToLifecycle(C lifecycle) {
+        if (lifecycle!= null && lifecycle instanceof LifecycleProvider) {
+            return ((LifecycleProvider) lifecycle).bindToLifecycle();
+        }
+        return upstream -> upstream;
+    }
+
+    /**
      * 线程调度器
      */
     public static <T> ObservableTransformer<T, T> schedulersTransformer() {
@@ -55,6 +68,7 @@ public class RxUtils {
 
     /**
      * 新线程调度
+     *
      * @param <T>
      * @return
      */
