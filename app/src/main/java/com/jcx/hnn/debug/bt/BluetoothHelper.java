@@ -23,7 +23,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.frame.core.adapter.BaseRvAdapter;
-import com.frame.core.interf.AdapterItem;
+import com.frame.core.adapter.AdapterItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;

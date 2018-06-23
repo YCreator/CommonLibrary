@@ -5,7 +5,7 @@ import android.content.Context;
 import com.frame.core.BaseApplication;
 import com.frame.core.mvp.presenter.BasePresenter;
 import com.frame.core.mvp.view.BaseMvpView;
-import com.frame.core.rx.Lifeful;
+import com.frame.core.util.lifeful.Lifeful;
 
 /**
  * mvp中presenter的抽象类

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.frame.core.BaseApplication;
 import com.frame.core.base.BaseAppCompatActivity;
-import com.frame.core.rx.Lifeful;
+import com.frame.core.util.lifeful.Lifeful;
 
 /**
  * Created by yzd on 2016/5/26.

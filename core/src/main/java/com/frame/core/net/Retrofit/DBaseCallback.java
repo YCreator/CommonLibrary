@@ -5,7 +5,7 @@ import android.os.Looper;
 
 import com.frame.core.entity.BaseJsonEntity;
 import com.frame.core.entity.JsonEntity;
-import com.frame.core.rx.Lifeful;
+import com.frame.core.util.lifeful.Lifeful;
 
 /**
  * Created by yzd on 2017/10/16 0016.

@@ -18,8 +18,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 
-import com.frame.core.interf.OnDoIntListener;
-
 /**
  * Created by yzd on 2018/4/23 0023.
  */

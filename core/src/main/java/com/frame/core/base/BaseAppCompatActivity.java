@@ -28,10 +28,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.frame.core.R;
-import com.frame.core.autoscreen.ScreenAdapterTools;
-import com.frame.core.autoscreen.conversion.CustomConversion;
-import com.frame.core.interf.IBaseView;
-import com.frame.core.rx.Lifeful;
+import com.frame.core.util.autoscreen.ScreenAdapterTools;
+import com.frame.core.util.autoscreen.conversion.CustomConversion;
+import com.frame.core.util.lifeful.Lifeful;
 import com.frame.core.util.MyPreferences;
 import com.frame.core.util.TLog;
 import com.jaeger.library.StatusBarUtil;

@@ -1,6 +1,6 @@
 package com.lib.commonlibrary;
 
-import com.frame.core.rx.Lifeful;
+import com.frame.core.util.lifeful.Lifeful;
 import com.frame.core.util.TLog;
 import com.google.gson.JsonSyntaxException;
 

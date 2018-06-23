@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.frame.core.R;
-import com.frame.core.interf.AdapterItem;
 
 import java.util.ArrayList;
 import java.util.List;

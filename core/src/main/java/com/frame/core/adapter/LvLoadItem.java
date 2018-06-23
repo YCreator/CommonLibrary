@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.frame.core.R;
-import com.frame.core.interf.FootLoading;
 import com.frame.core.util.PixelUtil;
 
 /**

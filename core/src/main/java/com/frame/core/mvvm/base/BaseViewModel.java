@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 public class BaseViewModel implements IBaseViewModel {
 
     protected Context context;
+    protected Fragment fragment;
 
     public BaseViewModel() {
     }
@@ -23,6 +24,7 @@ public class BaseViewModel implements IBaseViewModel {
 
     public BaseViewModel(Fragment fragment) {
         this(fragment.getContext());
+        this.fragment = fragment;
     }
 
     private AlertDialog dialog;
@@ -66,7 +68,7 @@ public class BaseViewModel implements IBaseViewModel {
     public void startActivity(Class<?> clz, Bundle bundle) {
         Intent intent = new Intent(context, clz);
         if (bundle != null) {
-            intent.putExtra("bundle", bundle);
+            intent.putExtras(bundle);
         }
         context.startActivity(intent);
     }

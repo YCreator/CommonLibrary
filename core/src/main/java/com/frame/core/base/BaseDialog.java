@@ -10,8 +10,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.frame.core.interf.IBaseDialog;
-
 import butterknife.ButterKnife;
 
 /**

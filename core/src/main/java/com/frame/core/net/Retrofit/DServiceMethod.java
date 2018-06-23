@@ -1,19 +1,19 @@
 package com.frame.core.net.Retrofit;
 
-import com.frame.core.interf.http.DBody;
-import com.frame.core.interf.http.DField;
-import com.frame.core.interf.http.DFieldMap;
-import com.frame.core.interf.http.DFormUrlEncoded;
-import com.frame.core.interf.http.DGET;
-import com.frame.core.interf.http.DHEAD;
-import com.frame.core.interf.http.DHeader;
-import com.frame.core.interf.http.DMultipart;
-import com.frame.core.interf.http.DPOST;
-import com.frame.core.interf.http.DPart;
-import com.frame.core.interf.http.DPath;
-import com.frame.core.interf.http.DQuery;
-import com.frame.core.interf.http.DQueryMap;
-import com.frame.core.interf.http.DUrl;
+import com.frame.core.net.Retrofit.http.DBody;
+import com.frame.core.net.Retrofit.http.DField;
+import com.frame.core.net.Retrofit.http.DFieldMap;
+import com.frame.core.net.Retrofit.http.DFormUrlEncoded;
+import com.frame.core.net.Retrofit.http.DGET;
+import com.frame.core.net.Retrofit.http.DHEAD;
+import com.frame.core.net.Retrofit.http.DHeader;
+import com.frame.core.net.Retrofit.http.DMultipart;
+import com.frame.core.net.Retrofit.http.DPOST;
+import com.frame.core.net.Retrofit.http.DPart;
+import com.frame.core.net.Retrofit.http.DPath;
+import com.frame.core.net.Retrofit.http.DQuery;
+import com.frame.core.net.Retrofit.http.DQueryMap;
+import com.frame.core.net.Retrofit.http.DUrl;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

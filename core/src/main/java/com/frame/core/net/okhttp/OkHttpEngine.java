@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.frame.core.BaseApplication;
-import com.frame.core.interf.Engine;
+import com.frame.core.net.Engine;
 import com.frame.core.util.TLog;
 
 import java.io.File;

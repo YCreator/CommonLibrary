@@ -2,8 +2,6 @@ package com.frame.core.adapter;
 
 import android.support.annotation.NonNull;
 
-import com.frame.core.interf.AdapterItem;
-
 import java.util.List;
 
 /**

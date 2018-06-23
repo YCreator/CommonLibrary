@@ -1,6 +1,6 @@
 package com.frame.core.net.http;
 
-import com.frame.core.interf.Engine;
+import com.frame.core.net.Engine;
 import com.frame.core.util.StringUtils;
 import com.frame.core.util.TLog;
 

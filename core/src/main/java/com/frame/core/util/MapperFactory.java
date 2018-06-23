@@ -1,7 +1,7 @@
 package com.frame.core.util;
 
 import com.frame.core.crash.exception.InstanceFactoryException;
-import com.frame.core.interf.Mapper;
+import com.frame.core.entity.Mapper;
 
 import java.util.HashMap;
 import java.util.Map;

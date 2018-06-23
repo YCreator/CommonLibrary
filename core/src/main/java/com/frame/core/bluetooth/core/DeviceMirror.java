@@ -111,9 +111,7 @@ public class DeviceMirror {
             } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
                 close();
                 if (connectCallback != null) {
-                    if (handler != null) {
-                        handler.removeCallbacksAndMessages(null);
-                    }
+                    handler.removeCallbacksAndMessages(null);
                     Bluetooth.getInstance().getDeviceMirrorPool().removeDeviceMirror(deviceMirror);
                     if (status == BluetoothGatt.GATT_SUCCESS) {
                         connectState = ConnectState.CONNECT_DISCONNECT;
@@ -136,9 +134,7 @@ public class DeviceMirror {
         @Override
         public void onServicesDiscovered(final BluetoothGatt gatt, final int status) {
             LogUtils.i("onServicesDiscovered  status: " + status + "  ,thread: " + Thread.currentThread());
-            if (handler != null) {
-                handler.removeMessages(MSG_CONNECT_TIMEOUT);
-            }
+            handler.removeMessages(MSG_CONNECT_TIMEOUT);
             if (status == 0) {
                 LogUtils.i("onServicesDiscovered connectSuccess.");
                 bluetoothGatt = gatt;

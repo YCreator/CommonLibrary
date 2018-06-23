@@ -51,11 +51,27 @@ public class RxUtils {
      * @param lifecycle
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static <T, C> ObservableTransformer<T, T> bindToLifecycle(C lifecycle) {
-        if (lifecycle!= null && lifecycle instanceof LifecycleProvider) {
+        if (lifecycle != null && lifecycle instanceof LifecycleProvider) {
             return ((LifecycleProvider) lifecycle).bindToLifecycle();
         }
         return upstream -> upstream;
+    }
+
+    /**
+     * 生命周期绑定
+     *
+     * @param lifecycle
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> ObservableTransformer<T, T> bindToLifecycle(LifecycleProvider lifecycle) {
+        if (lifecycle != null) {
+            return lifecycle.bindToLifecycle();
+        } else {
+            return upstream -> upstream;
+        }
     }
 
     /**

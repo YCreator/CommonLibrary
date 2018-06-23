@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,14 +16,17 @@ import android.widget.TextView;
 import com.frame.core.adapter.BaseRvAdapter;
 import com.frame.core.bluetooth.common.PropertyType;
 import com.frame.core.bluetooth.model.BluetoothLeDevice;
-import com.frame.core.interf.AdapterItem;
+import com.frame.core.adapter.AdapterItem;
 import com.frame.core.util.utils.LogUtils;
 import com.frame.core.util.utils.StringUtils;
 import com.frame.core.util.utils.ToastUtils;
 import com.jcx.hnn.debug.R;
 import com.jcx.hnn.debug.bt.BTManager;
+import com.jcx.hnn.debug.bt.BleUtil;
+import com.jcx.hnn.debug.bt.BluetoothService;
 import com.jcx.hnn.debug.bt.CallbackDataEvent;
 import com.jcx.hnn.debug.bt.ConnectEvent;
+import com.jcx.hnn.debug.bt.IOCommand;
 import com.jcx.hnn.debug.bt.NotifyDataEvent;
 import com.jcx.hnn.debug.bt.ScanEvent;
 
@@ -38,32 +42,7 @@ public class Main2Activity extends AppCompatActivity {
 
     BluetoothLeDevice bluetoothLeDevice;
 
-    /*private BluetoothLeDeviceStore bluetoothLeDeviceStore = new BluetoothLeDeviceStore();
-
-    ScanCallback periodScanCallback = new ScanCallback(new IScanCallback() {
-        @Override
-        public void onDeviceFound(BluetoothLeDevice bluetoothLeDevice) {
-            bluetoothLeDeviceStore.addDevice(bluetoothLeDevice);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (adapter != null && bluetoothLeDeviceStore != null) {
-                        adapter.setData(bluetoothLeDeviceStore.getDeviceList());
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void onScanFinish(BluetoothLeDeviceStore bluetoothLeDeviceStore) {
-
-        }
-
-        @Override
-        public void onScanTimeout() {
-
-        }
-    });*/
+    private BluetoothService chatService;
 
     private BaseRvAdapter<BluetoothLeDevice> adapter = new BaseRvAdapter<BluetoothLeDevice>(null) {
         @NonNull
@@ -102,8 +81,11 @@ public class Main2Activity extends AppCompatActivity {
 
         this.findViewById(R.id.btn3).setOnClickListener(v -> {
             String s = editText.getText().toString();
-            if (StringUtils.isEmpty(s) || bluetoothLeDevice == null) return;
-            BTManager.getInstance().write(bluetoothLeDevice, s.getBytes());
+            if (chatService != null && !StringUtils.isEmpty(s)) {
+                chatService.write(s.getBytes());
+            }
+            /*if (StringUtils.isEmpty(s) || bluetoothLeDevice == null) return;
+            BTManager.getInstance().write(bluetoothLeDevice, s.getBytes());*/
         });
         /*this.findViewById(R.id.btn3).setOnClickListener(v -> {
             String s = editText.getText().toString();
@@ -111,6 +93,38 @@ public class Main2Activity extends AppCompatActivity {
             BTHelper.start().connectAndWrite(BTHelper.start().getCurrentMac(), callback)
                     .write(s.getBytes());
         });*/
+        chatService = BleUtil.instance()
+                .setCommand(new IOCommand())
+                .setup(new BleUtil.Callback() {
+                    @Override
+                    public void connectStatus(int status) {
+                        switch (status) {
+                            case BluetoothService.STATE_CONNECTED:
+                                LogUtils.d("Ble:Status", "已连接" + BleUtil.instance().getConnectedDeviceName());
+                                break;
+                            case BluetoothService.STATE_CONNECTING:
+                                LogUtils.d("Ble:Status", "连接中");
+                                break;
+                            case BluetoothService.STATE_LISTEN:
+                            case BluetoothService.STATE_NONE:
+                                LogUtils.d("Ble:Status", "未连接");
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void writeListener(String data) {
+                        LogUtils.d("Ble:Write:Me", data);
+                    }
+
+                    @Override
+                    public void readListener(String data) {
+                        if (tv != null) {
+                            tv.setText(data);
+                        }
+                        LogUtils.d("Ble:Read:" + BleUtil.instance().getConnectedDeviceName(), data);
+                    }
+                });
     }
 
     @Override
@@ -118,6 +132,7 @@ public class Main2Activity extends AppCompatActivity {
         super.onDestroy();
         BTManager.getInstance().uninitBroadcast(this);
         EventBus.getDefault().unregister(this);
+        BleUtil.instance().onStop();
     }
 
     @Subscribe
@@ -142,6 +157,13 @@ public class Main2Activity extends AppCompatActivity {
     public void connectEvent(ConnectEvent event) {
         if (event.isSuccess()) {
             List<BluetoothGattService> list = event.getDeviceMirror().getBluetoothGatt().getServices();
+            for (BluetoothGattService service : list) {
+                Log.d("BTManager:service", service.getUuid().toString());
+                List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
+                for (BluetoothGattCharacteristic characteristic : characteristics) {
+                    Log.d("BTManager:char", service.getUuid().toString());
+                }
+            }
             BluetoothGattService service = null;
             BluetoothGattCharacteristic characteristic = null;
             if (list.size() > 0) {
@@ -164,7 +186,13 @@ public class Main2Activity extends AppCompatActivity {
     @Subscribe
     public void connect(BluetoothLeDevice bluetoothLeDevice) {
         this.bluetoothLeDevice = bluetoothLeDevice;
-        BTManager.getInstance().connect(bluetoothLeDevice);
+        chatService.connect(bluetoothLeDevice.getDevice(), true);
+        /*ParcelUuid[] uuids = bluetoothLeDevice.getDevice().getUuids();
+        Log.d("BTManager", bluetoothLeDevice.getAddress());
+        for (ParcelUuid uuid : uuids) {
+            Log.d("BTManager:connect", uuid.getUuid().toString());
+        }
+        BTManager.getInstance().connect(bluetoothLeDevice);*/
     }
 
     @Subscribe
@@ -179,19 +207,10 @@ public class Main2Activity extends AppCompatActivity {
         ToastUtils.showLong("byte:" + Arrays.toString(event.getData()) + "\n" + "string:" + new String(event.getData()));
     }
 
-    /*private BaseResultCallback<byte[]> callback = new BaseResultCallback<byte[]>() {
-        @Override
-        public void onSuccess(byte[] data) {
-            if (tv != null) {
-                tv.setText("byte:" + Arrays.toString(data) + "\n" + "string:" + new String(data));
-            }
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BleUtil.instance().onStart();
+    }
 
-        @Override
-        public void onFail(String msg) {
-            if (tv != null) {
-                tv.setText("错误：" + msg);
-            }
-        }
-    };*/
 }

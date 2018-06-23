@@ -11,10 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.frame.core.autoscreen.ScreenAdapterTools;
-import com.frame.core.autoscreen.conversion.CustomConversion;
-import com.frame.core.interf.IBaseView;
-import com.frame.core.rx.Lifeful;
+import com.frame.core.util.autoscreen.ScreenAdapterTools;
+import com.frame.core.util.autoscreen.conversion.CustomConversion;
+import com.frame.core.util.lifeful.Lifeful;
 import com.frame.core.util.TLog;
 
 import java.lang.reflect.Field;

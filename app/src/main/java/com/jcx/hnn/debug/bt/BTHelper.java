@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.frame.core.adapter.BaseRvAdapter;
-import com.frame.core.interf.AdapterItem;
+import com.frame.core.adapter.AdapterItem;
 import com.frame.core.rx.bluetooth.BluetoothClient;
 import com.frame.core.rx.bluetooth.BluetoothClientBLEV2Adapter;
 import com.frame.core.rx.bluetooth.bean.BLEDevice;

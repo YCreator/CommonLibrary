@@ -12,7 +12,9 @@ import java.io.InputStream;
 /**
  * 日志打印工具
  * Created by Administrator on 2015/12/2.
+ * please use com.frame.core.util.utils.LogUtils
  */
+@Deprecated
 public class TLog {
     public static boolean DEBUG = BaseApplication.isDebug();
     private static final String LOG_TAG = "SIMICO";

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.frame.core.interf.AdapterItem;
 import com.frame.core.util.TLog;
 import com.frame.core.util.PageUtil;
 

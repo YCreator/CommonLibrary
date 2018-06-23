@@ -15,7 +15,9 @@ import java.util.regex.Pattern;
 /**
  * 字符串校验类
  * Created by Administrator on 2015/12/22.
+ * please use com.frame.core.util.utils.StringUtils
  */
+@Deprecated
 public class StringUtils {
 
     private static final String FIRST_PINYIN_UNIHAN = "\u963F";

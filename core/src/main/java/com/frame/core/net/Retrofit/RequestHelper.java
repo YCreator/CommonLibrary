@@ -11,8 +11,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static com.frame.core.interf.Engine.CONTENT_TYPE_LABEL;
-import static com.frame.core.interf.Engine.CONTENT_TYPE_VALUE_JSON;
+import static com.frame.core.net.Engine.CONTENT_TYPE_LABEL;
+import static com.frame.core.net.Engine.CONTENT_TYPE_VALUE_JSON;
 
 /**
  * Created by yzd on 2017/9/15 0015.

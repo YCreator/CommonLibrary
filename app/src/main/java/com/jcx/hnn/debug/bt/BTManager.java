@@ -301,7 +301,7 @@ public class BTManager {
         Bluetooth.getInstance().getBluetoothAdapter().cancelDiscovery();
     }
 
-    BroadcastReceiver broadcastReceiver;
+    private BroadcastReceiver broadcastReceiver;
 
     public void initBroadcast(Context context) {
         broadcastReceiver = new BroadcastReceiver() {

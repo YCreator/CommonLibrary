@@ -5,7 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.frame.core.interf.AdapterItem;
 import com.frame.core.util.TLog;
 import com.frame.core.util.PageUtil;
 

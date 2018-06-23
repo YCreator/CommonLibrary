@@ -5,7 +5,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.frame.core.bluetooth.model.BluetoothLeDevice;
-import com.frame.core.interf.AdapterItem;
+import com.frame.core.adapter.AdapterItem;
 import com.frame.core.rx.bluetooth.callback.BaseResultCallback;
 import com.jcx.hnn.debug.R;
 

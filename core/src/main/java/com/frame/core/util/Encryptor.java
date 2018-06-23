@@ -226,7 +226,7 @@ public class Encryptor {
     }
 
     @SuppressLint("TrulyRandom")
-    public static String encrypt(String key, String input){
+    private static String encrypt(String key, String input){
         byte[] crypted = null;
         try{
             SecretKeySpec skey = new SecretKeySpec(key.getBytes(), "AES");
@@ -239,7 +239,7 @@ public class Encryptor {
         return new String(Base64.encode(crypted, Base64.DEFAULT));
     }
 
-    public static String decrypt(String key, String input){
+    private static String decrypt(String key, String input){
         byte[] output = null;
         try{
             SecretKeySpec skey = new SecretKeySpec(key.getBytes(), "AES");
