@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.lib.imagelib.big.view.BigImageView;
 import com.lib.imagelib.config.Contants;
 import com.lib.imagelib.config.GlobalConfig;
 import com.lib.imagelib.config.SingleConfig;
@@ -18,9 +19,7 @@ import com.lib.imagelib.config.SingleConfig;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -43,24 +42,17 @@ import okhttp3.OkHttpClient;
 public class ImageUtil {
     public static SingleConfig.BitmapListener getBitmapListenerProxy(final SingleConfig.BitmapListener listener) {
         return (SingleConfig.BitmapListener) Proxy.newProxyInstance(SingleConfig.class.getClassLoader(),
-                listener.getClass().getInterfaces(), new InvocationHandler() {
-                    @Override
-                    public Object invoke(Object proxy, final Method method, final Object[] args) throws Throwable {
-
-                        runOnUIThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Object object = method.invoke(listener, args);
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                } catch (InvocationTargetException e) {
-                                    e.printStackTrace();
-                                }
+                listener.getClass().getInterfaces(), (proxy,method,args) -> {
+                        runOnUIThread(() -> {
+                            try {
+                                Object object = method.invoke(listener, args);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
                             }
                         });
                         return null;
-                    }
                 });
     }
 
@@ -426,5 +418,10 @@ public class ImageUtil {
          *options.outHeight为原始图片的高
          */
         return new int[]{options.outWidth, options.outHeight};
+    }
+
+    public static void viewBigImage(SingleConfig config) {
+        BigImageView bigImageView = (BigImageView) config.getTarget();
+        bigImageView.showImage(buildUriByType(config));
     }
 }

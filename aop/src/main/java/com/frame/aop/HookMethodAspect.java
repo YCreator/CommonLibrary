@@ -1,11 +1,10 @@
 package com.frame.aop;
 
-import android.util.Log;
-
 import com.frame.aop.annotation.HookMethod;
 import com.frame.aop.tools.Preconditions;
 import com.frame.aop.tools.Reflect;
 import com.frame.aop.tools.ReflectException;
+import com.frame.core.util.utils.LogUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -51,7 +50,7 @@ public class HookMethodAspect {
                 Reflect.on(joinPoint.getTarget()).call(beforeMethod);
             } catch (ReflectException e) {
                 e.printStackTrace();
-                Log.e("Aop:HookMethod", "no method "+beforeMethod);
+                LogUtils.e("Aop:HookMethod", "no method "+beforeMethod);
             }
         }
 
@@ -62,7 +61,7 @@ public class HookMethodAspect {
                 Reflect.on(joinPoint.getTarget()).call(afterMethod);
             } catch (ReflectException e) {
                 e.printStackTrace();
-                Log.e("Aop:HookMethod", "no method "+afterMethod);
+                LogUtils.e("Aop:HookMethod", "no method "+afterMethod);
             }
         }
     }

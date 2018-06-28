@@ -1,6 +1,6 @@
 package com.frame.aop;
 
-import android.util.Log;
+import com.frame.core.util.utils.LogUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -32,7 +32,7 @@ public class SafeAspect {
         try {
             result = joinPoint.proceed(joinPoint.getArgs());
         } catch (Throwable e) {
-            Log.w("Aop:safe", getStringFromException(e));
+            LogUtils.w("Aop:safe", getStringFromException(e));
         }
         return result;
     }

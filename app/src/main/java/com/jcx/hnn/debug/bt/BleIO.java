@@ -49,6 +49,17 @@ public class BleIO extends IO {
     }
 
     @Override
+    public int Write(byte[] buffer) {
+        try {
+            this.mOut.write(buffer);
+            return buffer.length;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
     public int Write(byte[] buffer, int offset, int count) {
         try {
             this.mOut.write(buffer, offset, count);
@@ -90,6 +101,16 @@ public class BleIO extends IO {
         }
 
         return error && cnt == 0 ? -1 : cnt;
+    }
+
+    @Override
+    public int Read() throws IOException {
+        return this.mIn.read();
+    }
+
+    @Override
+    public void Flush() throws IOException  {
+        this.mOut.flush();
     }
 
     @Override

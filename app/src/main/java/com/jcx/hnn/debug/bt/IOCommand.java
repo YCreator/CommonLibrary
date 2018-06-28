@@ -86,7 +86,7 @@ public class IOCommand {
         data[1] = (byte) (z & 0xff);
         if (s.length > 1) {
             String ss = s[1];
-            int i = ss.length() - 4;
+            int i = 4 - ss.length();
             if (i > 0) {
                 for (int j = 0; j < i; j++) ss += "0";
             }
@@ -116,7 +116,7 @@ public class IOCommand {
         data[2] = (byte) (z & 0xff);
         if (s.length > 1) {
             String ss = s[1];
-            int i = ss.length() - 4;
+            int i = 4 - ss.length();
             if (i > 0) {
                 for (int j = 0; j < i; j++) ss += "0";
             }
@@ -131,6 +131,8 @@ public class IOCommand {
         sendData((byte) 0x0b, data, data.length);
 
     }
+
+    public void sendPlu(int allNum, int currentNum, byte[] code) {}
 
     private synchronized void sendData(byte c, byte[] data, int size) {
         byte b;
@@ -219,6 +221,46 @@ public class IOCommand {
         temdata[temdata.length - 2] = (int) (xda & 0xFF);
         temdata[temdata.length - 1] = (int) (xda >> 8);
         return temdata;
+    }
+
+    //自定义属性键盘
+    public void setSkuKeyboard() {
+
+    }
+
+    //发送商品数据
+    public void sendGoodsSku() {
+
+    }
+
+    //发送销售单打印
+    public void sendOrderPrint() {
+
+    }
+
+    //发送退货单打印
+    public void sendRefundPrint() {
+
+    }
+
+    //vip设置
+    public void setVips() {
+
+    }
+
+    //商家初始化
+    public void initDefault() {
+
+    }
+
+    //管理员初始化
+    public void adminInitDefault() {
+
+    }
+
+    //锁机
+    public void lock() {
+
     }
 
 }

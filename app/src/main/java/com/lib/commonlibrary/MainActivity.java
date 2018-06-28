@@ -1,6 +1,7 @@
 package com.lib.commonlibrary;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.jcx.hnn.debug.BR;
@@ -11,7 +12,7 @@ import com.umeng.socialize.UMShareAPI;
 public class MainActivity extends MyBaseActivity<ActivityMainBinding, MainViewModel> {
 
     @Override
-    public int initContentView() {
+    public int initContentView(Bundle savedInstanceState) {
         return R.layout.activity_main;
     }
 

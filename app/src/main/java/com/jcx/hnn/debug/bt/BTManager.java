@@ -179,26 +179,32 @@ public class BTManager {
         mDeviceMirrorPool = Bluetooth.getInstance().getDeviceMirrorPool();
     }
 
+    //搜索蓝牙
     public void search() {
         Bluetooth.getInstance().startScan(scanCallback);
     }
 
+    //停止搜索
     public void stopSearch() {
         Bluetooth.getInstance().stopScan(scanCallback);
     }
 
+    //连接蓝牙
     public void connect(BluetoothLeDevice bluetoothLeDevice) {
         Bluetooth.getInstance().connect(bluetoothLeDevice, connectCallback);
     }
 
+    //断开蓝牙
     public void disconnect(BluetoothLeDevice bluetoothLeDevice) {
         Bluetooth.getInstance().disconnect(bluetoothLeDevice);
     }
 
+    //是否已连接
     public boolean isConnected(BluetoothLeDevice bluetoothLeDevice) {
         return Bluetooth.getInstance().isConnect(bluetoothLeDevice);
     }
 
+    //绑定通讯
     public void bindChannel(BluetoothLeDevice bluetoothLeDevice, PropertyType propertyType, UUID serviceUUID,
                             UUID characteristicUUID, UUID descriptorUUID) {
         DeviceMirror deviceMirror = mDeviceMirrorPool.getDeviceMirror(bluetoothLeDevice);
@@ -214,20 +220,17 @@ public class BTManager {
         }
     }
 
+    //发送数据
     public void write(final BluetoothLeDevice bluetoothLeDevice, byte[] data) {
         if (dataInfoQueue != null) {
             dataInfoQueue.clear();
             dataInfoQueue = splitPacketFor20Byte(data);
             LogUtils.i("BTManager", Arrays.toString(data));
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    send(bluetoothLeDevice);
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> send(bluetoothLeDevice));
         }
     }
 
+    //读取数据
     public void read(BluetoothLeDevice bluetoothLeDevice) {
         DeviceMirror deviceMirror = mDeviceMirrorPool.getDeviceMirror(bluetoothLeDevice);
         if (deviceMirror != null) {
@@ -235,6 +238,7 @@ public class BTManager {
         }
     }
 
+    //注册通知
     public void registerNotify(BluetoothLeDevice bluetoothLeDevice, boolean isIndicate) {
         DeviceMirror deviceMirror = mDeviceMirrorPool.getDeviceMirror(bluetoothLeDevice);
         if (deviceMirror != null) {
@@ -254,12 +258,7 @@ public class BTManager {
                 deviceMirror.writeData(data);
             }
             if (dataInfoQueue.peek() != null) {
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        send(bluetoothLeDevice);
-                    }
-                }, 100);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> send(bluetoothLeDevice), 100);
             }
         }
     }

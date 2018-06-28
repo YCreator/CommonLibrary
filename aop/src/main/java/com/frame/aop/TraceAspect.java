@@ -1,11 +1,11 @@
 package com.frame.aop;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.frame.aop.annotation.Trace;
 import com.frame.aop.tools.Preconditions;
 import com.frame.aop.tools.StopWatch;
+import com.frame.core.util.utils.LogUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -54,7 +54,7 @@ public class TraceAspect {
             className = "Anonymous class";
         }
 
-        Log.i("Aop:"+className, buildLogMessage(methodName, stopWatch.getElapsedTime()));
+        LogUtils.i("Aop:"+className, buildLogMessage(methodName, stopWatch.getElapsedTime()));
 
         return result;
     }

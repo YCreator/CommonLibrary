@@ -3,6 +3,7 @@ package com.frame.core.mvvm.base;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,8 @@ public abstract class NewBaseFragment<V extends ViewDataBinding, VM extends Base
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, initContentView(), container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, initContentView(inflater, container, savedInstanceState), container, false);
         binding.setVariable(initVariableId(), viewModel = initViewModel());
         return binding.getRoot();
     }
@@ -57,11 +58,11 @@ public abstract class NewBaseFragment<V extends ViewDataBinding, VM extends Base
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ScreenAdapterTools.getInstance().loadView((ViewGroup) view, new CustomConversion());
+
         initData();
 
         initViewObservable();
-
-        ScreenAdapterTools.getInstance().loadView((ViewGroup) view, new CustomConversion());
 
         viewModel.onCreate();
 
@@ -85,7 +86,7 @@ public abstract class NewBaseFragment<V extends ViewDataBinding, VM extends Base
      *
      * @return 布局layout的id
      */
-    public abstract int initContentView();
+    public abstract int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
     /**
      * 初始化ViewModel的id

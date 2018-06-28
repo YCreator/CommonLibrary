@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.frame.core.base.BaseFragment;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
@@ -55,7 +54,7 @@ public class ContainerActivity extends RxAppCompatActivity {
                 throw new IllegalArgumentException("can not find page fragmentName");
             }
             Class<?> fragmentClass = Class.forName(fragmentName);
-            BaseFragment fragment = (BaseFragment) fragmentClass.newInstance();
+            NewBaseFragment fragment = (NewBaseFragment) fragmentClass.newInstance();
 
             Bundle args = data.getBundleExtra(BUNDLE);
             if (args != null) {

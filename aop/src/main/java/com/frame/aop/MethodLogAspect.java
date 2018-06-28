@@ -1,6 +1,6 @@
 package com.frame.aop;
 
-import android.util.Log;
+import com.frame.core.util.utils.LogUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -28,10 +28,10 @@ public class MethodLogAspect {
     }
 
     Object methodLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        Log.w("Aop:methodLog", joinPoint.getSignature().toShortString() + " 方法参数 : " + (joinPoint.getArgs() != null ? Arrays.deepToString(joinPoint.getArgs()) : ""));
+        LogUtils.w("Aop:methodLog", joinPoint.getSignature().toShortString() + " 方法参数 : " + (joinPoint.getArgs() != null ? Arrays.deepToString(joinPoint.getArgs()) : ""));
         Object result = joinPoint.proceed();
         String type = ((MethodSignature) joinPoint.getSignature()).getReturnType().toString();
-        Log.w("Aop:methodLog", joinPoint.getSignature().toShortString() + " 返回结果 : " + ("void".equalsIgnoreCase(type) ? "void" : result));
+        LogUtils.w("Aop:methodLog", joinPoint.getSignature().toShortString() + " 返回结果 : " + ("void".equalsIgnoreCase(type) ? "void" : result));
         return result;
     }
 }

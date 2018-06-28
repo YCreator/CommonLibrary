@@ -79,7 +79,17 @@ public class SingleConfig {
     private int loadingScaleType;
     private int loadingResId;
 
+    private boolean cropFace;
+
+    public boolean widthWrapContent;
+    public boolean heightWrapContent;
+
+    public boolean widthMatchParent;
+    public boolean heightMatchParent;
+
     private ImageListener imageListener;
+
+
 
 
     public int getPlaceHolderScaleType() {
@@ -165,6 +175,12 @@ public class SingleConfig {
         this.loadingScaleType = builder.loadingScaleType;
         this.loadingResId = builder.loadingResId;
         this.imageListener = builder.imageListener;
+
+        this.cropFace = builder.cropFace;
+    }
+
+    public boolean isCropFace() {
+        return cropFace;
     }
 
     public boolean isAsBitmap() {
@@ -498,6 +514,8 @@ public class SingleConfig {
         private int loadingScaleType;
         private int loadingResId;
 
+        private boolean cropFace;
+
         private ImageListener imageListener;
 
         public ConfigBuilder(Context context) {
@@ -592,6 +610,11 @@ public class SingleConfig {
             if (url.contains("gif")) {
                 isGif = true;
             }
+            return this;
+        }
+
+        public ConfigBuilder cropFace(){
+            this.cropFace = true;
             return this;
         }
 

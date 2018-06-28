@@ -27,15 +27,15 @@ public abstract class NewBaseActivity<V extends ViewDataBinding, VM extends Base
 
         initParam();
 
-        initViewDataBinding();
-
-        initData();
-
-        initViewObservable();
+        initViewDataBinding(savedInstanceState);
 
         ScreenAdapterTools.getInstance().reset(this);//如果希望android7.0分屏也适配的话,加上这句
 
         ScreenAdapterTools.getInstance().loadView((ViewGroup) getWindow().getDecorView(), new CustomConversion());
+
+        initData();
+
+        initViewObservable();
 
         viewModel.onCreate();
 
@@ -58,9 +58,9 @@ public abstract class NewBaseActivity<V extends ViewDataBinding, VM extends Base
     /**
      * 注入绑定
      */
-    private void initViewDataBinding() {
+    private void initViewDataBinding(Bundle savedInstanceState) {
         //DataBindingUtil类需要在project的build中配置 dataBinding {enabled true }, 同步后会自动关联android.databinding包
-        binding = DataBindingUtil.setContentView(this, initContentView());
+        binding = DataBindingUtil.setContentView(this, initContentView(savedInstanceState));
         binding.setVariable(initVariableId(), viewModel = initViewModel());
     }
 
@@ -82,7 +82,7 @@ public abstract class NewBaseActivity<V extends ViewDataBinding, VM extends Base
      *
      * @return 布局layout的id
      */
-    public abstract int initContentView();
+    public abstract int initContentView(Bundle savedInstanceState);
 
     /**
      * 初始化ViewModel的id
