@@ -2,7 +2,6 @@ package com.frame.aop;
 
 import com.frame.aop.annotation.PrefsRead;
 import com.frame.core.util.SPrefsUtil;
-import com.frame.core.util.utils.Utils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -45,7 +44,7 @@ public class PrefsReadAspect {
 
             if (!"void".equalsIgnoreCase(type)) {
                 String className = signature.getReturnType().getCanonicalName();
-                SPrefsUtil appPrefs = SPrefsUtil.getInstance(Utils.getApp(), prefsName);
+                SPrefsUtil appPrefs = SPrefsUtil.getInstance(prefsName);
                 if ("int".equals(className) || "java.lang.Integer".equals(className)) {
                     result = appPrefs.loadIntSharedPreference(key);
                 } else if ("boolean".equals(className) || "java.lang.Boolean".equals(className)) {

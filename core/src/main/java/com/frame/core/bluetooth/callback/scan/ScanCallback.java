@@ -47,11 +47,7 @@ public class ScanCallback implements BluetoothAdapter.LeScanCallback, IScanFilte
             bluetoothLeDeviceStore.clear();
             if (BleConfig.getInstance().getScanTimeout() > 0) {
                 handler.postDelayed(() -> {
-                    isScanning = false;
-
-                    if (Bluetooth.getInstance().getBluetoothAdapter() != null) {
-                        Bluetooth.getInstance().getBluetoothAdapter().stopLeScan(ScanCallback.this);
-                    }
+                    stopLeScan();
 
                     if (bluetoothLeDeviceStore.getDeviceMap() != null
                             && bluetoothLeDeviceStore.getDeviceMap().size() > 0) {
@@ -65,11 +61,7 @@ public class ScanCallback implements BluetoothAdapter.LeScanCallback, IScanFilte
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        isScanning = false;
-
-                        if (Bluetooth.getInstance().getBluetoothAdapter() != null) {
-                            Bluetooth.getInstance().getBluetoothAdapter().stopLeScan(ScanCallback.this);
-                        }
+                        stopLeScan();
 
                         if (bluetoothLeDeviceStore.getDeviceMap() != null
                                 && bluetoothLeDeviceStore.getDeviceMap().size() > 0) {
@@ -77,23 +69,28 @@ public class ScanCallback implements BluetoothAdapter.LeScanCallback, IScanFilte
                         } else {
                             scanCallback.onScanTimeout();
                         }
-                        isScanning = true;
-                        if (Bluetooth.getInstance().getBluetoothAdapter() != null) {
-                            Bluetooth.getInstance().getBluetoothAdapter().startLeScan(ScanCallback.this);
-                        }
+                        startLeScan();
                         handler.postDelayed(this, BleConfig.getInstance().getScanRepeatInterval());
                     }
                 }, BleConfig.getInstance().getScanRepeatInterval());
             }
-            isScanning = true;
-            if (Bluetooth.getInstance().getBluetoothAdapter() != null) {
-                Bluetooth.getInstance().getBluetoothAdapter().startLeScan(ScanCallback.this);
-            }
+            startLeScan();
         } else {
-            isScanning = false;
-            if (Bluetooth.getInstance().getBluetoothAdapter() != null) {
-                Bluetooth.getInstance().getBluetoothAdapter().stopLeScan(ScanCallback.this);
-            }
+            stopLeScan();
+        }
+    }
+
+    public void startLeScan() {
+        isScanning = true;
+        if (Bluetooth.getInstance().getBluetoothAdapter() != null) {
+            Bluetooth.getInstance().getBluetoothAdapter().startLeScan(ScanCallback.this);
+        }
+    }
+
+    public void stopLeScan() {
+        isScanning = false;
+        if (Bluetooth.getInstance().getBluetoothAdapter() != null) {
+            Bluetooth.getInstance().getBluetoothAdapter().stopLeScan(ScanCallback.this);
         }
     }
 

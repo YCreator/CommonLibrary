@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -101,7 +102,7 @@ public class GlideLoader implements ILoader {
             if (config.getWidth() > 0 && config.getHeight() > 0) {
                 target = new SimpleTarget<Bitmap>(config.getWidth(), config.getHeight()) {
                     @Override
-                    public void onResourceReady(Bitmap resource, Transition transition) {
+                    public void onResourceReady(@NonNull Bitmap resource, Transition transition) {
                         if (config.getBitmapListener() != null)
                             config.getBitmapListener().onSuccess(resource);
                     }
@@ -115,7 +116,7 @@ public class GlideLoader implements ILoader {
             } else {
                 target = new SimpleTarget<Bitmap>() {
                     @Override
-                    public void onResourceReady(Bitmap resource, Transition transition) {
+                    public void onResourceReady(@NonNull Bitmap resource, Transition transition) {
                         if (config.getBitmapListener() != null)
                             config.getBitmapListener().onSuccess(resource);
                     }

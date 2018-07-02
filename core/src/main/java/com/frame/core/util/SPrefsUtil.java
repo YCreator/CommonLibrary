@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.frame.core.util.utils.Utils;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,16 +22,17 @@ public final class SPrefsUtil {
 
     private static String FILE_NAME = "file_name";
     private static String MAK = "innoview";// = "3Wri9i2abNXlLhme"; // "innoview";
-    private Context context;
     private static SPrefsUtil instance;
 
-    private SPrefsUtil(Context context) {
-        this.context = context.getApplicationContext();
+    private SPrefsUtil() {
+        if(Utils.getApp() == null) {
+            throw new IllegalArgumentException("please run Utils.init method in method onCreate of Application");
+        }
     }
 
-    public synchronized static SPrefsUtil getInstance(Context context, String filename) {
+    public synchronized static SPrefsUtil getInstance(String filename) {
         if (instance == null) {
-            instance = new SPrefsUtil(context);
+            instance = new SPrefsUtil();
         }
         if (filename != null) {
             FILE_NAME = filename;
@@ -98,7 +101,7 @@ public final class SPrefsUtil {
     }
 
     public synchronized SharedPreferences getShare() {
-        return this.context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        return Utils.getApp().getApplicationContext().getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
     }
 
     public void saveSharedPreferences(String key, int value) {

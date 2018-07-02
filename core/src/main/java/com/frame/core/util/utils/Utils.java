@@ -85,13 +85,13 @@ public final class Utils {
 
     public static boolean isDebug() {
         if (sApplication == null) return false;
-        SPrefsUtil shareUtil = SPrefsUtil.getInstance(sApplication, "total_app");
+        SPrefsUtil shareUtil = SPrefsUtil.getInstance("total_app");
         return shareUtil.loadBooleanSharedPreference("debug");
     }
 
     public static void setDebug(boolean isDebug) {
         if (sApplication == null) return;
-        SPrefsUtil shareUtil = SPrefsUtil.getInstance(sApplication, "total_app");
+        SPrefsUtil shareUtil = SPrefsUtil.getInstance("total_app");
         shareUtil.saveSharedPreferences("debug", isDebug);
     }
 
