@@ -2,7 +2,7 @@ package com.frame.core.bluetooth.callback.scan;
 
 import com.frame.core.bluetooth.Bluetooth;
 import com.frame.core.bluetooth.model.BluetoothLeDevice;
-import com.frame.core.bluetooth.scan.BleScanRuleConfig;
+import com.frame.core.bluetooth.common.BleScanRuleConfig;
 import com.frame.core.util.utils.StringUtils;
 
 /**

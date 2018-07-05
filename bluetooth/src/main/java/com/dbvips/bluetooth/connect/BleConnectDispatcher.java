@@ -49,7 +49,7 @@ public class BleConnectDispatcher implements IBleConnectDispatcher, RuntimeCheck
 
     private BleConnectDispatcher(String mac) {
         mAddress = mac;
-        mBleWorkList = new LinkedList<BleRequest>();
+        mBleWorkList = new LinkedList<>();
         mWorker = new BleConnectWorker(mac, this);
         mHandler = new Handler(Looper.myLooper(), this);
     }
@@ -61,7 +61,7 @@ public class BleConnectDispatcher implements IBleConnectDispatcher, RuntimeCheck
     public void disconnect() {
         checkRuntime();
 
-        BluetoothLog.w(String.format("Process disconnect"));
+        BluetoothLog.w("Process disconnect");
 
         if (mCurrentRequest != null) {
             mCurrentRequest.cancel();
@@ -84,9 +84,9 @@ public class BleConnectDispatcher implements IBleConnectDispatcher, RuntimeCheck
     public void clearRequest(int clearType) {
         checkRuntime();
 
-        BluetoothLog.w(String.format("clearRequest %d", clearType));
+        BluetoothLog.w(String.format("clearRequest %s", clearType));
 
-        List<BleRequest> requestClear = new LinkedList<BleRequest>();
+        List<BleRequest> requestClear = new LinkedList<>();
 
         if (clearType == 0) {
             requestClear.addAll(mBleWorkList);

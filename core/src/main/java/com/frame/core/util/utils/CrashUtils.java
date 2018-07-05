@@ -33,7 +33,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  *     time  : 2016/09/27
  *     desc  : utils about crash(崩溃工具)
  *     menu
- *          init: 初始化
+ *          init: 1.初始化
  * </pre>
  */
 public final class CrashUtils {

@@ -68,6 +68,7 @@ public class SingleConfig {
     private int rectRoundRadius;                //圆角矩形时圆角的半径
     private int diskCacheMode;                  //是否跳过磁盘存储
     private int scaleMode;                      //填充模式,默认centercrop,可选fitXY,centerInside...
+    private boolean skipMemoryCache;            //是否跳过内存缓存
 
     private int roundOverlayColor;//圆角/圆外覆盖一层背景色
     private int borderWidth;//边框的宽度
@@ -88,8 +89,6 @@ public class SingleConfig {
     public boolean heightMatchParent;
 
     private ImageListener imageListener;
-
-
 
 
     public int getPlaceHolderScaleType() {
@@ -177,6 +176,7 @@ public class SingleConfig {
         this.imageListener = builder.imageListener;
 
         this.cropFace = builder.cropFace;
+        this.skipMemoryCache = builder.skipMemoryCache;
     }
 
     public boolean isCropFace() {
@@ -420,6 +420,10 @@ public class SingleConfig {
         return isNeedVignette;
     }
 
+    public boolean isSkipMemoryCache() {
+        return skipMemoryCache;
+    }
+
     public interface BitmapListener {
         void onSuccess(Bitmap bitmap);
 
@@ -492,6 +496,8 @@ public class SingleConfig {
         private int rectRoundRadius;//圆角矩形时圆角的半径
 
         private int diskCacheMode;
+
+        private boolean skipMemoryCache;
 
         private int scaleMode;//填充模式,默认centercrop,可选fitXY,centerInside...
 
@@ -613,7 +619,7 @@ public class SingleConfig {
             return this;
         }
 
-        public ConfigBuilder cropFace(){
+        public ConfigBuilder cropFace() {
             this.cropFace = true;
             return this;
         }
@@ -893,6 +899,11 @@ public class SingleConfig {
 
         public ConfigBuilder vignetteFilter() {
             this.isNeedVignette = true;
+            return this;
+        }
+
+        public ConfigBuilder skipMemoryCache() {
+            this.skipMemoryCache = true;
             return this;
         }
 

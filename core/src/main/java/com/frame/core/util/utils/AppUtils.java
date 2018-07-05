@@ -27,29 +27,29 @@ import java.util.List;
  *     time  : 2016/08/02
  *     desc  : utils about app(App工具)
  *     menu
- *          installApp              : 安装 App（支持 8.0）
-            installAppSilent        : 静默安装 App
-            uninstallApp            : 卸载 App
-            uninstallAppSilent      : 静默卸载 App
-            isAppInstalled          : 判断 App 是否安装
-            isAppRoot               : 判断 App 是否有 root 权限
-            isAppDebug              : 判断 App 是否是 Debug 版本
-            isAppSystem             : 判断 App 是否是系统应用
-            isAppForeground         : 判断 App 是否处于前台
-            launchApp               : 打开 App
-            relaunchApp             : 重启 App
-            launchAppDetailsSettings: 打开 App 具体设置
-            exitApp                 : 关闭应用
-            getAppIcon              : 获取 App 图标
-            getAppPackageName       : 获取 App 包名
-            getAppName              : 获取 App 名称
-            getAppPath              : 获取 App 路径
-            getAppVersionName       : 获取 App 版本号
-            getAppVersionCode       : 获取 App 版本码
-            getAppSignature         : 获取 App 签名
-            getAppSignatureSHA1     : 获取应用签名的的 SHA1 值
-            getAppInfo              : 获取 App 信息
-            getAppsInfo             : 获取所有已安装 App 信息
+ *          installApp              : 1.安装 App（支持 8.0）
+            installAppSilent        : 2.静默安装 App
+            uninstallApp            : 3.卸载 App
+            uninstallAppSilent      : 4.静默卸载 App
+            isAppInstalled          : 5.判断 App 是否安装
+            isAppRoot               : 6.判断 App 是否有 root 权限
+            isAppDebug              : 7.判断 App 是否是 Debug 版本
+            isAppSystem             : 8.判断 App 是否是系统应用
+            isAppForeground         : 9.判断 App 是否处于前台
+            launchApp               : 10.打开 App
+            relaunchApp             : 11.重启 App
+            launchAppDetailsSettings: 12.打开 App 具体设置
+            exitApp                 : 13.关闭应用
+            getAppIcon              : 14.获取 App 图标
+            getAppPackageName       : 15.获取 App 包名
+            getAppName              : 16.获取 App 名称
+            getAppPath              : 17.获取 App 路径
+            getAppVersionName       : 18.获取 App 版本号
+            getAppVersionCode       : 19.获取 App 版本码
+            getAppSignature         : 20.获取 App 签名
+            getAppSignatureSHA1     : 21.获取应用签名的的 SHA1 值
+            getAppInfo              : 22.获取 App 信息
+            getAppsInfo             : 23.获取所有已安装 App 信息
  * </pre>
  */
 public final class AppUtils {

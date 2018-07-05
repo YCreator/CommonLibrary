@@ -31,24 +31,24 @@ import static android.Manifest.permission.EXPAND_STATUS_BAR;
  *     time  : 2016/09/23
  *     desc  : utils about bar(栏工具)
  *     menu
- *          getStatusBarHeight                   : 获取状态栏高度（px）
-            setStatusBarVisibility               : 设置状态栏是否可见
-            isStatusBarVisible                   : 判断状态栏是否可见
-            setStatusBarLightMode                : 设置状态栏是否为浅色模式
-            addMarginTopEqualStatusBarHeight     : 为 view 增加 MarginTop 为状态栏高度
-            subtractMarginTopEqualStatusBarHeight: 为 view 减少 MarginTop 为状态栏高度
-            setStatusBarColor                    : 设置状态栏颜色
-            setStatusBarAlpha                    : 设置状态栏透明度
-            setStatusBarColor4Drawer             : 为 DrawerLayout 设置状态栏颜色
-            setStatusBarAlpha4Drawer             : 为 DrawerLayout 设置状态栏透明度
-            getActionBarHeight                   : 获取 ActionBar 高度
-            setNotificationBarVisibility         : 设置通知栏是否可见
-            getNavBarHeight                      : 获取导航栏高度
-            setNavBarVisibility                  : 设置导航栏是否可见
-            setNavBarImmersive                   : 设置导航栏沉浸式
-            setNavBarColor                       : 设置导航栏颜色
-            getNavBarColor                       : 获取导航栏颜色
-            isNavBarVisible                      : 判断导航栏是否可见
+ *          getStatusBarHeight                   : 1.获取状态栏高度（px）
+            setStatusBarVisibility               : 2.设置状态栏是否可见
+            isStatusBarVisible                   : 3.判断状态栏是否可见
+            setStatusBarLightMode                : 4.设置状态栏是否为浅色模式
+            addMarginTopEqualStatusBarHeight     : 5.为 view 增加 MarginTop 为状态栏高度
+            subtractMarginTopEqualStatusBarHeight: 6.为 view 减少 MarginTop 为状态栏高度
+            setStatusBarColor                    : 7.设置状态栏颜色
+            setStatusBarAlpha                    : 8.设置状态栏透明度
+            setStatusBarColor4Drawer             : 9.为 DrawerLayout 设置状态栏颜色
+            setStatusBarAlpha4Drawer             : 10.为 DrawerLayout 设置状态栏透明度
+            getActionBarHeight                   : 11.获取 ActionBar 高度
+            setNotificationBarVisibility         : 12.设置通知栏是否可见
+            getNavBarHeight                      : 13.获取导航栏高度
+            setNavBarVisibility                  : 14.设置导航栏是否可见
+            setNavBarImmersive                   : 15.设置导航栏沉浸式
+            setNavBarColor                       : 16.设置导航栏颜色
+            getNavBarColor                       : 17.获取导航栏颜色
+            isNavBarVisible                      : 18.判断导航栏是否可见
  * </pre>
  */
 public final class BarUtils {

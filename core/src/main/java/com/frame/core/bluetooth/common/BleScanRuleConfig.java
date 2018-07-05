@@ -1,4 +1,4 @@
-package com.frame.core.bluetooth.scan;
+package com.frame.core.bluetooth.common;
 
 import com.frame.core.bluetooth.Bluetooth;
 

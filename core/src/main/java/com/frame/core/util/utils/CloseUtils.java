@@ -10,8 +10,8 @@ import java.io.IOException;
  *     time  : 2016/10/09
  *     desc  : utils about close(关闭工具)
  *     menu
- *          closeIO       : 关闭 IO
-            closeIOQuietly: 安静关闭 IO
+ *          closeIO       : 1.关闭 IO
+            closeIOQuietly: 2.安静关闭 IO
  * </pre>
  */
 public final class CloseUtils {

@@ -77,7 +77,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
 
         mRuntimeChecker = runtimeChecker;
         mWorkerHandler = new Handler(Looper.myLooper(), this);
-        mDeviceProfile = new HashMap<UUID, Map<UUID, BluetoothGattCharacteristic>>();
+        mDeviceProfile = new HashMap<>();
         mBluetoothGattResponse = ProxyUtils.getProxy(this, IBluetoothGattResponse.class, this);
     }
 
@@ -86,7 +86,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
 
         List<BluetoothGattService> services = mBluetoothGatt.getServices();
 
-        Map<UUID, Map<UUID, BluetoothGattCharacteristic>> newProfiles = new HashMap<UUID, Map<UUID, BluetoothGattCharacteristic>>();
+        Map<UUID, Map<UUID, BluetoothGattCharacteristic>> newProfiles = new HashMap<>();
 
         for (BluetoothGattService service : services) {
             UUID serviceUUID = service.getUuid();
@@ -95,7 +95,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
 
             if (map == null) {
                 BluetoothLog.v("Service: " + serviceUUID);
-                map = new HashMap<UUID, BluetoothGattCharacteristic>();
+                map = new HashMap<>();
                 newProfiles.put(service.getUuid(), map);
             }
 
@@ -145,7 +145,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
     public void onConnectionStateChange(int status, int newState) {
         checkRuntime();
 
-        BluetoothLog.v(String.format("onConnectionStateChange for %s: status = %d, newState = %d",
+        BluetoothLog.v(String.format("onConnectionStateChange for %s: status = %s, newState = %s",
                 mBluetoothDevice.getAddress(), status, newState));
 
         if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
@@ -163,7 +163,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
     public void onServicesDiscovered(int status) {
         checkRuntime();
 
-        BluetoothLog.v(String.format("onServicesDiscovered for %s: status = %d",
+        BluetoothLog.v(String.format("onServicesDiscovered for %s: status = %s",
                 mBluetoothDevice.getAddress(), status));
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -182,7 +182,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
         checkRuntime();
 
         BluetoothLog.v(String.format(
-                "onCharacteristicRead for %s: status = %d, service = 0x%s, character = 0x%s, value = %s",
+                "onCharacteristicRead for %s: status = %s, service = 0x%s, character = 0x%s, value = %s",
                 mBluetoothDevice.getAddress(),
                 status,
                 characteristic.getService().getUuid(),
@@ -199,7 +199,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
         checkRuntime();
 
         BluetoothLog.v(String.format(
-                "onCharacteristicWrite for %s: status = %d, service = 0x%s, character = 0x%s, value = %s",
+                "onCharacteristicWrite for %s: status = %s, service = 0x%s, character = 0x%s, value = %s",
                 mBluetoothDevice.getAddress(),
                 status,
                 characteristic.getService().getUuid(),
@@ -228,7 +228,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
     public void onDescriptorRead(BluetoothGattDescriptor descriptor, int status, byte[] value) {
         checkRuntime();
 
-        BluetoothLog.v(String.format("onDescriptorRead for %s: status = %d, service = 0x%s, character = 0x%s, descriptor = 0x%s",
+        BluetoothLog.v(String.format("onDescriptorRead for %s: status = %s, service = 0x%s, character = 0x%s, descriptor = 0x%s",
                 mBluetoothDevice.getAddress(),
                 status,
                 descriptor.getCharacteristic().getService().getUuid(),
@@ -244,7 +244,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
     public void onDescriptorWrite(BluetoothGattDescriptor descriptor, int status) {
         checkRuntime();
 
-        BluetoothLog.v(String.format("onDescriptorWrite for %s: status = %d, service = 0x%s, character = 0x%s, descriptor = 0x%s",
+        BluetoothLog.v(String.format("onDescriptorWrite for %s: status = %s, service = 0x%s, character = 0x%s, descriptor = 0x%s",
                 mBluetoothDevice.getAddress(),
                 status,
                 descriptor.getCharacteristic().getService().getUuid(),
@@ -260,7 +260,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
     public void onReadRemoteRssi(int rssi, int status) {
         checkRuntime();
 
-        BluetoothLog.v(String.format("onReadRemoteRssi for %s, rssi = %d, status = %d",
+        BluetoothLog.v(String.format("onReadRemoteRssi for %s, rssi = %s, status = %s",
                 mBluetoothDevice.getAddress(), rssi, status));
 
         if (mGattResponseListener != null && mGattResponseListener instanceof ReadRssiListener) {
@@ -272,7 +272,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
     public void onMtuChanged(int mtu, int status) {
         checkRuntime();
 
-        BluetoothLog.v(String.format("onMtuChanged for %s, mtu = %d, status = %d",
+        BluetoothLog.v(String.format("onMtuChanged for %s, mtu = %s, status = %s",
                 mBluetoothDevice.getAddress(), mtu, status));
 
         if (mGattResponseListener != null && mGattResponseListener instanceof RequestMtuListener) {
@@ -306,7 +306,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
         BluetoothLog.v(String.format("openGatt for %s", getAddress()));
 
         if (mBluetoothGatt != null) {
-            BluetoothLog.e(String.format("Previous gatt not closed"));
+            BluetoothLog.e("Previous gatt not closed");
             return true;
         }
 
@@ -320,7 +320,7 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
         }
 
         if (mBluetoothGatt == null) {
-            BluetoothLog.e(String.format("openGatt failed: connectGatt return null!"));
+            BluetoothLog.e("openGatt failed: connectGatt return null!");
             return false;
         }
 
@@ -357,12 +357,12 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
         BluetoothLog.v(String.format("discoverService for %s", getAddress()));
 
         if (mBluetoothGatt == null) {
-            BluetoothLog.e(String.format("discoverService but gatt is null!"));
+            BluetoothLog.e("discoverService but gatt is null!");
             return false;
         }
 
         if (!mBluetoothGatt.discoverServices()) {
-            BluetoothLog.e(String.format("discoverServices failed"));
+            BluetoothLog.e("discoverServices failed");
             return false;
         }
 
@@ -397,12 +397,12 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
         checkRuntime();
 
         if (mBluetoothGatt == null) {
-            BluetoothLog.e(String.format("ble gatt null"));
+            BluetoothLog.e("ble gatt null");
             return false;
         }
 
         if (!BluetoothUtils.refreshGattCache(mBluetoothGatt)) {
-            BluetoothLog.e(String.format("refreshDeviceCache failed"));
+            BluetoothLog.e("refreshDeviceCache failed");
             return false;
         }
 

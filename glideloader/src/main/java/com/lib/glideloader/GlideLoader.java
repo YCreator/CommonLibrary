@@ -1,5 +1,6 @@
 package com.lib.glideloader;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
@@ -18,12 +19,20 @@ import com.bumptech.glide.MemoryCategory;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CenterInside;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
@@ -46,6 +55,8 @@ import com.lib.imagelib.utils.ImageUtil;
 import com.lib.imagelib.utils.ThreadPoolFactory;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -64,6 +75,7 @@ import jp.wasabeef.glide.transformations.gpu.ToonFilterTransformation;
 import jp.wasabeef.glide.transformations.gpu.VignetteFilterTransformation;
 
 /**
+ * Glide加载器
  * Created by yzd on 2018/3/17 0017.
  */
 
@@ -147,6 +159,11 @@ public class GlideLoader implements ILoader {
                         ? DiskCacheStrategy.RESOURCE : DiskCacheStrategy.NONE);
             }
 
+            //是否跳过内存缓存
+            if (config.isSkipMemoryCache()) {
+                options = options.skipMemoryCache(true);
+            }
+
             request = request.apply(options);
             request.into(target);
         } else {
@@ -157,23 +174,6 @@ public class GlideLoader implements ILoader {
 
             if (ImageUtil.shouldSetPlaceHolder(config)) {
                 options = options.placeholder(config.getPlaceHolderResId());
-            }
-
-            int scaleMode = config.getScaleMode();
-
-            switch (scaleMode) {
-                case ScaleMode.CENTER_CROP:
-                    options.centerCrop();
-                    break;
-                case ScaleMode.FIT_CENTER:
-                    options.fitCenter();
-                    break;
-                case ScaleMode.CENTER_INSIDE:
-                    options.centerInside();
-                    break;
-                default:
-                    options.fitCenter();
-                    break;
             }
 
             setShapeModeAndBlur(config, options);
@@ -199,6 +199,11 @@ public class GlideLoader implements ILoader {
                         ? DiskCacheStrategy.RESOURCE : DiskCacheStrategy.NONE);
             }
 
+            //是否跳过内存缓存
+            if (config.isSkipMemoryCache()) {
+                options = options.skipMemoryCache(true);
+            }
+
             //设置图片加载优先级
             setPriority(config, options);
 
@@ -207,7 +212,15 @@ public class GlideLoader implements ILoader {
             }
             request = request.apply(options);
             if (config.getTarget() instanceof ImageView) {
-                request.into((ImageView) config.getTarget());
+                //request.into((ImageView) config.getTarget());
+                request.into(new DrawableImageViewTarget((ImageView) config.getTarget()) {
+
+                    @Nullable
+                    @Override
+                    public Drawable getCurrentDrawable() {
+                        return null;
+                    }
+                });
             }
         }
     }
@@ -224,12 +237,7 @@ public class GlideLoader implements ILoader {
 
     @Override
     public void clearDiskCache() {
-        ThreadPoolFactory.getNormalPool().execute(new Runnable() {
-            @Override
-            public void run() {
-                Glide.get(GlobalConfig.context).clearDiskCache();
-            }
-        });
+        ThreadPoolFactory.getNormalPool().execute(() -> Glide.get(GlobalConfig.context).clearDiskCache());
     }
 
     @Override
@@ -422,55 +430,58 @@ public class GlideLoader implements ILoader {
      * @param config
      * @param options
      */
+    @SuppressLint("CheckResult")
     private void setShapeModeAndBlur(SingleConfig config, RequestOptions options) {
 
+        List<Transformation<Bitmap>> transformations = new ArrayList<>();
+
         if (config.isNeedBlur()) {
-            options.getTransformations().put(BlurTransformation.class, new BlurTransformation(config.getBlurRadius()));
+            transformations.add(new BlurTransformation(config.getBlurRadius()));
         }
 
         if (config.isNeedBrightness()) {
-            options.getTransformations().put(BrightnessFilterTransformation.class, new BrightnessFilterTransformation(config.getBrightnessLeve())); //亮度
+            transformations.add(new BrightnessFilterTransformation(config.getBrightnessLeve()));     //亮度
         }
 
         if (config.isNeedGrayscale()) {
-            options.getTransformations().put(GrayscaleTransformation.class, new GrayscaleTransformation()); //黑白效果
+            transformations.add(new GrayscaleTransformation()); //黑白效果
         }
 
         if (config.isNeedFilteColor()) {
-            options.getTransformations().put(ColorFilterTransformation.class, new ColorFilterTransformation(config.getFilteColor()));
+            transformations.add(new ColorFilterTransformation(config.getFilteColor()));
         }
 
         if (config.isNeedSwirl()) {
-            options.getTransformations().put(SwirlFilterTransformation.class, new SwirlFilterTransformation(0.5f, 1.0f, new PointF(0.5f, 0.5f))); //漩涡
+            transformations.add(new SwirlFilterTransformation(0.5f, 1.0f, new PointF(0.5f, 0.5f)));     //漩涡
         }
 
         if (config.isNeedToon()) {
-            options.getTransformations().put(ToonFilterTransformation.class, new ToonFilterTransformation()); //油画
+            transformations.add(new ToonFilterTransformation());    //油画
         }
 
         if (config.isNeedSepia()) {
-            options.getTransformations().put(SepiaFilterTransformation.class, new SepiaFilterTransformation()); //墨画
+            transformations.add(new SepiaFilterTransformation());   //墨画
         }
 
         if (config.isNeedContrast()) {
-            options.getTransformations().put(ContrastFilterTransformation.class, new ContrastFilterTransformation(config.getContrastLevel())); //锐化
+            transformations.add(new ContrastFilterTransformation(config.getContrastLevel()));   //锐化
         }
 
         if (config.isNeedInvert()) {
-            options.getTransformations().put(InvertFilterTransformation.class, new InvertFilterTransformation()); //胶片
+            transformations.add(new InvertFilterTransformation());  //胶片
         }
 
         if (config.isNeedPixelation()) {
-            options.getTransformations().put(PixelationFilterTransformation.class, new PixelationFilterTransformation(config.getPixelationLevel())); //马赛克
+            transformations.add(new PixelationFilterTransformation(config.getPixelationLevel()));  //马赛克
         }
 
         if (config.isNeedSketch()) {
-            options.getTransformations().put(SketchFilterTransformation.class, new SketchFilterTransformation()); //素描
+            transformations.add(new SketchFilterTransformation());  //素描
         }
 
         if (config.isNeedVignette()) {
-            options.getTransformations().put(VignetteFilterTransformation.class, new VignetteFilterTransformation(new PointF(0.5f, 0.5f),
-                    new float[]{0.0f, 0.0f, 0.0f}, 0f, 0.75f)); //晕映
+            transformations.add(new VignetteFilterTransformation(new PointF(0.5f, 0.5f),
+                    new float[]{0.0f, 0.0f, 0.0f}, 0f, 0.75f));     //晕映
         }
 
         switch (config.getShapeMode()) {
@@ -478,16 +489,47 @@ public class GlideLoader implements ILoader {
 
                 break;
             case ShapeMode.RECT_ROUND:
-                options.getTransformations().put(RoundedCornersTransformation.class, new RoundedCornersTransformation(config.getRectRoundRadius(), 0, RoundedCornersTransformation.CornerType.ALL));
+                transformations.add(new RoundedCornersTransformation(config.getRectRoundRadius(), 0, RoundedCornersTransformation.CornerType.ALL));
                 break;
             case ShapeMode.OVAL:
-                options.circleCrop();
+                //options.circleCrop();
+                options.downsample(DownsampleStrategy.CENTER_INSIDE);
+                transformations.add(new CircleCrop());
                 //options.getTransformations().put(CropCircleTransformation.class, new CropCircleTransformation());
                 break;
 
             case ShapeMode.SQUARE:
-                options.getTransformations().put(CropSquareTransformation.class, new CropSquareTransformation());
+                transformations.add(new CropSquareTransformation());
                 break;
+        }
+
+        int scaleMode = config.getScaleMode();
+
+        switch (scaleMode) {
+            case ScaleMode.CENTER_CROP:
+                options.downsample(DownsampleStrategy.CENTER_OUTSIDE);
+                transformations.add(new CenterCrop());
+                //options.centerCrop();
+                break;
+            case ScaleMode.FIT_CENTER:
+                options.downsample(DownsampleStrategy.FIT_CENTER);
+                transformations.add(new FitCenter());
+                //options.fitCenter();
+                break;
+            case ScaleMode.CENTER_INSIDE:
+                options.downsample(DownsampleStrategy.CENTER_INSIDE);
+                transformations.add(new CenterInside());
+                //options.centerInside();
+                break;
+            default:
+                options.downsample(DownsampleStrategy.FIT_CENTER);
+                transformations.add(new FitCenter());
+                //options.fitCenter();
+                break;
+        }
+        if (transformations.size() > 0) {
+            MultiTransformation<Bitmap> multiTransformation = new MultiTransformation<>(transformations);
+            options.transform(multiTransformation);
         }
     }
 

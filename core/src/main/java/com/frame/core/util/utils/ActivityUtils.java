@@ -26,20 +26,20 @@ import java.util.Stack;
  *     time  : 2016/09/23
  *     desc  : utils about activity(Activity工具)
  *     menu
- *          isActivityExists               : 判断 Activity 是否存在
-            startActivity                  : 启动 Activity
-            startActivityForResult         : 启动 Activity 为返回结果
-            startActivities                : 启动多个 Activity
-            startHomeActivity              : 回到桌面
-            getActivityList                : 获取 Activity 栈链表
-            getLauncherActivity            : 获取启动项 Activity
-            getTopActivity                 : 获取栈顶 Activity
-            isActivityExistsInStack        : 判断 Activity 是否存在栈中
-            finishActivity                 : 结束 Activity
-            finishToActivity               : 结束到指定 Activity
-            finishOtherActivities          : 结束所有其他类型的 Activity
-            finishAllActivities            : 结束所有 Activity
-            finishAllActivitiesExceptNewest: 结束除最新之外的所有 Activity
+ *          isActivityExists               : 1.判断 Activity 是否存在
+            startActivity                  : 2.启动 Activity
+            startActivityForResult         : 3.启动 Activity 为返回结果
+            startActivities                : 4.启动多个 Activity
+            startHomeActivity              : 5.回到桌面
+            getActivityList                : 6.获取 Activity 栈链表
+            getLauncherActivity            : 7.获取启动项 Activity
+            getTopActivity                 : 8.获取栈顶 Activity
+            isActivityExistsInStack        : 9.判断 Activity 是否存在栈中
+            finishActivity                 : 10.结束 Activity
+            finishToActivity               : 11.结束到指定 Activity
+            finishOtherActivities          : 12.结束所有其他类型的 Activity
+            finishAllActivities            : 13.结束所有 Activity
+            finishAllActivitiesExceptNewest: 14.结束除最新之外的所有 Activity
  * </pre>
  */
 public final class ActivityUtils {

@@ -22,15 +22,17 @@ import static android.Manifest.permission.CALL_PHONE;
  *     time  : 2016/09/23
  *     desc  : utils about intent(意图工具)
  *     menu
- *          getInstallAppIntent              : 获取安装 App（支持 6.0）的意图
-            getUninstallAppIntent            : 获取卸载 App 的意图
-            getLaunchAppIntent               : 获取打开 App 的意图
-            getLaunchAppDetailsSettingsIntent: 获取 App 具体设置的意图
-            getShareTextIntent               : 获取分享文本的意图
-            getShareImageIntent              : 获取分享图片的意图
-            getComponentIntent               : 获取其他应用组件的意图
-            getShutdownIntent                : 获取关机的意图
-            getCaptureIntent                 : 获取拍照的意图
+ * getInstallAppIntent              : 获取安装 App（支持 6.0）的意图
+ * getUninstallAppIntent            : 获取卸载 App 的意图
+ * getLaunchAppIntent               : 获取打开 App 的意图
+ * getLaunchAppDetailsSettingsIntent: 获取 App 具体设置的意图
+ * getShareTextIntent               : 获取分享文本的意图
+ * getShareImageIntent              : 获取分享图片的意图
+ * getComponentIntent               : 获取其他应用组件的意图
+ * getShutdownIntent                : 获取关机的意图
+ * getCaptureIntent                 : 获取拍照的意图
+ * getSystemWebIntent               : 获取系统浏览器的意图
+ * buildImageCropIntent             : 获取剪切图片的意图
  * </pre>
  */
 public final class IntentUtils {
@@ -576,6 +578,10 @@ public final class IntentUtils {
         intent.putExtra("noFaceDetection", true);
         intent.putExtra("return-data", false);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uriTo);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
         return intent;
     }
 
@@ -592,6 +598,10 @@ public final class IntentUtils {
         intent.putExtra("scale", true);
         intent.putExtra("return-data", returnData);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
         return intent;
     }
 //

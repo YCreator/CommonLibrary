@@ -99,7 +99,7 @@ public class Constants {
             case Constants.STATUS_DEVICE_DISCONNECTING: return "Disconnecting";
             case Constants.STATUS_DEVICE_DISCONNECTED: return "Disconnected";
             case Constants.STATUS_DEVICE_SERVICE_READY: return "Service Ready";
-            default: return String.format("Unknown %d", status);
+            default: return String.format("Unknown %s", status);
         }
     }
 

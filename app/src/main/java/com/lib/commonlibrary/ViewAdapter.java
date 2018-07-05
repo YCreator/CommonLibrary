@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.lib.imagelib.ImageEngine;
+import com.lib.imagelib.config.DiskCacheMode;
 
 /**
  * Created by yzd on 2018/5/23 0023.
@@ -23,7 +24,9 @@ public final class ViewAdapter {
         if (!TextUtils.isEmpty(url)) {
             ImageEngine.with(imageView.getContext())
                     .url(url)
+                    .grayscaleFilter()
                     .asCircle()
+                    .diskCacheMod(DiskCacheMode.NONE)
                     .placeHolder(placeholderRes)
                     .into(imageView);
         }

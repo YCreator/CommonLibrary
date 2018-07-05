@@ -1,14 +1,6 @@
 package com.frame.core.util.utils;
 
 import android.annotation.SuppressLint;
-import android.content.ContentUris;
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -37,38 +29,38 @@ import java.util.List;
  *     time  : 2016/05/03
  *     desc  : utils about file(文件工具)
  *     menu
- *          getFileByPath             : 根据文件路径获取文件
-            isFileExists              : 判断文件是否存在
-            rename                    : 重命名文件
-            isDir                     : 判断是否是目录
-            isFile                    : 判断是否是文件
-            createOrExistsDir         : 判断目录是否存在，不存在则判断是否创建成功
-            createOrExistsFile        : 判断文件是否存在，不存在则判断是否创建成功
-            createFileByDeleteOldFile : 判断文件是否存在，存在则在创建之前删除
-            copyDir                   : 复制目录
-            copyFile                  : 复制文件
-            moveDir                   : 移动目录
-            moveFile                  : 移动文件
-            deleteDir                 : 删除目录
-            deleteFile                : 删除文件
-            deleteAllInDir            : 删除目录下所有东西
-            deleteFilesInDir          : 删除目录下所有文件
-            deleteFilesInDirWithFilter: 删除目录下所有过滤的文件
-            listFilesInDir            : 获取目录下所有文件
-            listFilesInDirWithFilter  : 获取目录下所有过滤的文件
-            getFileLastModified       : 获取文件最后修改的毫秒时间戳
-            getFileCharsetSimple      : 简单获取文件编码格式
-            getFileLines              : 获取文件行数
-            getDirSize                : 获取目录大小
-            getFileSize               : 获取文件大小
-            getDirLength              : 获取目录长度
-            getFileLength             : 获取文件长度
-            getFileMD5                : 获取文件的 MD5 校验码
-            getFileMD5ToString        : 获取文件的 MD5 校验码
-            getDirName                : 根据全路径获取最长目录
-            getFileName               : 根据全路径获取文件名
-            getFileNameNoExtension    : 根据全路径获取文件名不带拓展名
-            getFileExtension          : 根据全路径获取文件拓展名
+ *          getFileByPath             : 0.根据文件路径获取文件
+ *          isFileExists              : 1.判断文件是否存在
+ *          rename                    : 2.重命名文件
+ *          isDir                     : 3.判断是否是目录
+ *          isFile                    : 4.判断是否是文件
+ *          createOrExistsDir         : 5.判断目录是否存在，不存在则判断是否创建成功
+ *          createOrExistsFile        : 6.判断文件是否存在，不存在则判断是否创建成功
+ *          createFileByDeleteOldFile : 7.判断文件是否存在，存在则在创建之前删除
+ *          copyDir                   : 8.复制目录
+ *          copyFile                  : 9.复制文件
+ *          moveDir                   : 10.移动目录
+ *          moveFile                  : 11.移动文件
+ *          deleteDir                 : 12.删除目录
+ *          deleteFile                : 13.删除文件
+ *          deleteAllInDir            : 14.删除目录下所有东西
+ *          deleteFilesInDir          : 15.删除目录下所有文件
+ *          deleteFilesInDirWithFilter: 16.删除目录下所有过滤的文件
+ *          listFilesInDir            : 17.获取目录下所有文件
+ *          listFilesInDirWithFilter  : 18.获取目录下所有过滤的文件
+ *          getFileLastModified       : 19.获取文件最后修改的毫秒时间戳
+ *          getFileCharsetSimple      : 20.简单获取文件编码格式
+ *          getFileLines              : 21.获取文件行数
+ *          getDirSize                : 22.获取目录大小
+ *          getFileSize               : 23.获取文件大小
+ *          getDirLength              : 24.获取目录长度
+ *          getFileLength             : 25.获取文件长度
+ *          getFileMD5                : 26.获取文件的 MD5 校验码
+ *          getFileMD5ToString        : 27.获取文件的 MD5 校验码
+ *          getDirName                : 28.根据全路径获取最长目录
+ *          getFileName               : 29.根据全路径获取文件名
+ *          getFileNameNoExtension    : 30.根据全路径获取文件名不带拓展名
+ *          getFileExtension          : 31.根据全路径获取文件拓展名
  * </pre>
  */
 public final class FileUtils {
@@ -1080,54 +1072,6 @@ public final class FileUtils {
         return filePath.substring(lastPoi + 1);
     }
 
-    /**
-     * 根据uri获取绝对路径
-     *
-     * @param uri
-     * @return
-     */
-    public static String getPathByUri(Uri uri) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && DocumentsContract.isDocumentUri(Utils.getApp(), uri)) {
-            if (isExternalStorageDocument(uri)) {
-                String docId = DocumentsContract.getDocumentId(uri);
-                String[] split = docId.split(":");
-                String type = split[0];
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-            } else if (isDownloadsDocument(uri)) {
-                String id = DocumentsContract.getDocumentId(uri);
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads")
-                        , Long.valueOf(id));
-                return getDataColumn(Utils.getApp(), contentUri, null, null);
-            } else if (isMediaDocument(uri)) {
-                String docId = DocumentsContract.getDocumentId(uri);
-                String[] split = docId.split(":");
-                String type = split[0];
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-                String selection = "_id=?";
-                String[] selectionArgs = new String[]{split[1]};
-                return getDataColumn(Utils.getApp(), contentUri, selection, selectionArgs);
-            }
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            if (isGooglePhotosUri(uri))
-                return uri.getLastPathSegment();
-
-            return getDataColumn(Utils.getApp(), uri, null, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-        return null;
-    }
-
     public static String txtReader(File txtFile) {
         try {
             InputStreamReader isr = new InputStreamReader(new FileInputStream(txtFile), "UTF-8");
@@ -1156,42 +1100,6 @@ public final class FileUtils {
             e.printStackTrace();
         }
 
-    }
-
-    private static String getDataColumn(Context context, Uri uri, String selection,
-                                        String[] selectionArgs) {
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {column};
-
-        try {
-            cursor = context.getContentResolver().query(uri, projection,
-                    selection, selectionArgs, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
-    }
-
-    private static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
-
-    private static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    private static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    private static boolean isGooglePhotosUri(Uri uri) {
-        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
     ///////////////////////////////////////////////////////////////////////////

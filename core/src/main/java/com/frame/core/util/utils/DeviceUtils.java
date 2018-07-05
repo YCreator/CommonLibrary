@@ -30,18 +30,18 @@ import static android.Manifest.permission.INTERNET;
  *     time  : 2016/8/1
  *     desc  : utils about device(设备工具)
  *     menu
- *          isDeviceRooted   : 判断设备是否 rooted
-            getSDKVersionName: 获取设备系统版本号
-            getSDKVersionCode: 获取设备系统版本码
-            getAndroidID     : 获取设备 AndroidID
-            getMacAddress    : 获取设备 MAC 地址
-            getManufacturer  : 获取设备厂商
-            getModel         : 获取设备型号
-            getABIs          : 获取设备 ABIs
-            shutdown         : 关机
-            reboot           : 重启
-            reboot2Recovery  : 重启到 recovery
-            reboot2Bootloader: 重启到 bootloader
+ *          isDeviceRooted   : 1.判断设备是否 rooted
+            getSDKVersionName: 2.获取设备系统版本号
+            getSDKVersionCode: 3.获取设备系统版本码
+            getAndroidID     : 4.获取设备 AndroidID
+            getMacAddress    : 5.获取设备 MAC 地址
+            getManufacturer  : 6.获取设备厂商
+            getModel         : 7.获取设备型号
+            getABIs          : 8.获取设备 ABIs
+            shutdown         : 9.关机
+            reboot           : 10.重启
+            reboot2Recovery  : 11.重启到 recovery
+            reboot2Bootloader: 12.重启到 bootloader
  * </pre>
  */
 public final class DeviceUtils {

@@ -13,7 +13,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                includeCompileClasspath = true 
+                includeCompileClasspath = true
             }
         }
         multiDexEnabled true
@@ -74,7 +74,7 @@ dependencies {
     //compile(name: 'tplibrary-release', ext: 'aar')
     //compile(name: 'core-release', ext: 'aar')
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile(rootProject.ext.androidtest.espresso_core, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -92,7 +92,7 @@ compile fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.dependencies.SmartRefreshLayout
     api rootProject.ext.dependencies.SmartRefreshHeader
 
-    api (rootProject.ext.dependencies.tkrefreshlayout, {
+    api(rootProject.ext.dependencies.tkrefreshlayout, {
         exclude group: 'com.android.support'
     })
 

@@ -11,13 +11,13 @@ import java.io.File;
  *     time  : 2016/09/27
  *     desc  : utils about clean(清除工具)
  *     menu
- *          cleanInternalCache   : 清除内部缓存
-            cleanInternalFiles   : 清除内部文件
-            cleanInternalDbs     : 清除内部数据库
-            cleanInternalDbByName: 根据名称清除数据库
-            cleanInternalSp      : 清除内部 SP
-            cleanExternalCache   : 清除外部缓存
-            cleanCustomDir       : 清除自定义目录下的文件
+ *          cleanInternalCache   : 1.清除内部缓存
+            cleanInternalFiles   : 2.清除内部文件
+            cleanInternalDbs     : 3.清除内部数据库
+            cleanInternalDbByName: 4.根据名称清除数据库
+            cleanInternalSp      : 5.清除内部 SP
+            cleanExternalCache   : 6.清除外部缓存
+            cleanCustomDir       : 7.清除自定义目录下的文件
  * </pre>
  */
 public final class CleanUtils {
