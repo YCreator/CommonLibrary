@@ -24,6 +24,7 @@ public class LvDataManager<T> {
     private OnNotifyPageListener notifyDataStatus;
     private CreateAdapterItem<T> rvAdapterItem;
     private int canUpPosition;
+    private boolean autoBindView;
 
     private LvDataManager() {
     }
@@ -36,6 +37,7 @@ public class LvDataManager<T> {
         notifyDataStatus = builder.listener;
         rvAdapterItem = builder.adapterItem;
         canUpPosition = builder.canUpPosition;
+        autoBindView = builder.autoBindView;
         setScrollListener();
     }
 
@@ -123,7 +125,7 @@ public class LvDataManager<T> {
     }
 
     private void newAdapter(List<T> data) {
-        adapter = new BaseLvAdapter<T>(data) {
+        adapter = new BaseLvAdapter<T>(data, autoBindView) {
             @NonNull
             @Override
             public AdapterItem<T> onCreateItem(int viewType) {
@@ -139,6 +141,7 @@ public class LvDataManager<T> {
         private CreateAdapterItem<T> adapterItem;
         private OnNotifyPageListener listener;
         private int canUpPosition;
+        private boolean autoBindView = true;
 
         public Builder<T> setListView(ListView listView) {
             this.listView = listView;
@@ -162,6 +165,11 @@ public class LvDataManager<T> {
 
         public Builder<T> setCanUpPosition(int position) {
             this.canUpPosition = position;
+            return this;
+        }
+
+        public Builder<T> setAutoBindView(boolean isAutoBindView) {
+            this.autoBindView = isAutoBindView;
             return this;
         }
 

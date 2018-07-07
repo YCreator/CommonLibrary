@@ -14,7 +14,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 /**
- *
  * Created by yzd on 2016/6/23.
  */
 public abstract class CommPagerAdapter<T> extends BasePagerAdapter<View> implements IAdapter<T> {
@@ -24,6 +23,8 @@ public abstract class CommPagerAdapter<T> extends BasePagerAdapter<View> impleme
     private LayoutInflater mInflater;
 
     private boolean mIsLazy = false;
+
+    private boolean autoBindView = true;
 
     public CommPagerAdapter(@Nullable List<T> data) {
         this(data, false);
@@ -35,6 +36,15 @@ public abstract class CommPagerAdapter<T> extends BasePagerAdapter<View> impleme
         }
         mDataList = data;
         mIsLazy = isLazy;
+    }
+
+    public CommPagerAdapter(@Nullable List<T> data, boolean isLazy, boolean isAutoBindView) {
+        if (data == null) {
+            data = new ArrayList<>();
+        }
+        mDataList = data;
+        mIsLazy = isLazy;
+        this.autoBindView = isAutoBindView;
     }
 
     @Override
@@ -78,7 +88,7 @@ public abstract class CommPagerAdapter<T> extends BasePagerAdapter<View> impleme
         }
         AdapterItem item = onCreateItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
-        ButterKnife.bind(item, view);
+        if (autoBindView) ButterKnife.bind(item, view);
         view.setTag(R.id.viewPage, item);
         item.initItemViews(view);
         item.onSetViews();

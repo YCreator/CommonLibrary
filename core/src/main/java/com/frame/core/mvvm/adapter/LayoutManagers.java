@@ -6,6 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.frame.core.adapter.FullyGridLayoutManager;
+import com.frame.core.adapter.FullyLinearLayoutManager;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -33,6 +36,14 @@ public class LayoutManagers {
      */
     public static LayoutManagerFactory linear(@Orientation final int orientation, final boolean reverseLayout) {
         return recyclerView -> new LinearLayoutManager(recyclerView.getContext(), orientation, reverseLayout);
+    }
+
+    /**
+     *
+     * A {@link LinearLayoutManager}.
+     */
+    public static LayoutManagerFactory linearFull() {
+        return recyclerView -> new FullyLinearLayoutManager(recyclerView.getContext());
     }
 
     /**
@@ -69,6 +80,15 @@ public class LayoutManagers {
             manager.setSpanSizeLookup(sizeLookup);
             return manager;
         };
+    }
+
+    /**
+     *
+     * @param spanCount
+     * @return
+     */
+    public static LayoutManagerFactory gridFull(int spanCount) {
+        return recyclerView -> new FullyGridLayoutManager(recyclerView.getContext(), spanCount);
     }
 
     /**

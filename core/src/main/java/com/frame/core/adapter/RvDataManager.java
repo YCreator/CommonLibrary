@@ -26,6 +26,7 @@ public class RvDataManager<T> {
     private CreateAdapterItem<T> rvAdapterItem;
     private LinearLayoutManager manager;
     private int canUpPosition;
+    private boolean autoBindView = true;
 
     private RvDataManager() {
 
@@ -41,6 +42,7 @@ public class RvDataManager<T> {
             setSpanSizeAndScrollListener(builder.spanSize);
         }
         canUpPosition = builder.canUpPosition;
+        autoBindView = builder.autoBindView;
 
     }
 
@@ -157,7 +159,7 @@ public class RvDataManager<T> {
     }
 
     private void newAdapter(List<T> list) {
-        adapter = new BaseRvAdapter<T>(list) {
+        adapter = new BaseRvAdapter<T>(list, autoBindView) {
 
             @Override
             public int getItemCount() {
@@ -193,6 +195,7 @@ public class RvDataManager<T> {
         private CreateAdapterItem<T> item;                  //每项实现方式
         private int spanSize;                           //列数
         private int canUpPosition;                      //显示置顶的位置
+        private boolean autoBindView = true;
 
         public Builder<T> setRecyclerView(RecyclerView recyclerView) {
             this.recyclerView = recyclerView;
@@ -221,6 +224,11 @@ public class RvDataManager<T> {
 
         public Builder<T> setCanUpPosition(int position) {
             this.canUpPosition = position;
+            return this;
+        }
+
+        public Builder<T> setAutoBindView(boolean isAutoBindView) {
+            this.autoBindView = isAutoBindView;
             return this;
         }
 

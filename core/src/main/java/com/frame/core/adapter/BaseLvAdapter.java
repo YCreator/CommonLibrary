@@ -24,11 +24,21 @@ public abstract class BaseLvAdapter<T> extends BaseAdapter implements IAdapter<T
 
     private LayoutInflater mInflater;
 
-    protected BaseLvAdapter( List<T> mData) {
+    private boolean autoBindView = true;
+
+    protected BaseLvAdapter(List<T> mData) {
         if (mData == null) {
             mData = new ArrayList<>();
         }
         this.mData = mData;
+    }
+
+    protected BaseLvAdapter(List<T> mData, boolean isAutoBindView) {
+        if (mData == null) {
+            mData = new ArrayList<>();
+        }
+        this.mData = mData;
+        this.autoBindView = isAutoBindView;
     }
 
     @Override
@@ -61,7 +71,7 @@ public abstract class BaseLvAdapter<T> extends BaseAdapter implements IAdapter<T
             item = onCreateItem(getItemViewType(position));
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
             convertView.setTag(item);
-            ButterKnife.bind(item, convertView);
+            if (autoBindView) ButterKnife.bind(item, convertView);
             item.initItemViews(convertView);
             item.onSetViews();
         } else {
@@ -78,7 +88,7 @@ public abstract class BaseLvAdapter<T> extends BaseAdapter implements IAdapter<T
 
     @Override
     public void setData(@NonNull List<T> data) {
-       // this.mData.clear();
+        // this.mData.clear();
         this.mData = data;
         notifyDataSetChanged();
     }

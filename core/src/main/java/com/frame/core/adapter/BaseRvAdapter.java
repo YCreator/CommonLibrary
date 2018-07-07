@@ -22,9 +22,17 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter implements I
 
     private List<T> mData;
 
+    private boolean autoBindView = true;
+
     protected BaseRvAdapter(List<T> data) {
         if (data == null) data = new ArrayList<>();
         this.mData = data;
+    }
+
+    protected BaseRvAdapter(List<T> data, boolean isAutoBindView) {
+        if (data == null) data = new ArrayList<>();
+        this.mData = data;
+        this.autoBindView = isAutoBindView;
     }
 
     @Override
@@ -71,7 +79,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter implements I
         protected RcvAdapterItemViewHolder(Context context, ViewGroup parent, AdapterItem<T> item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
             this.mItem = item;
-            ButterKnife.bind(item, itemView);
+            if (autoBindView) ButterKnife.bind(item, itemView);
             this.mItem.initItemViews(itemView);
             this.mItem.onSetViews();
         }
